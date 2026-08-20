@@ -184,6 +184,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .busimgs{display:grid;gap:1rem}
 .busimgs figure{margin:0}
 .busimgs figure:first-child{margin-right:-3rem}
+.busimgs figure:first-child img{aspect-ratio:4/5;object-fit:cover;width:100%;height:auto}
 @media(max-width:880px){.busimgs figure:first-child{margin-right:0}}
 .figcap{display:flex;justify-content:space-between;gap:1rem;margin-top:.7rem;color:rgba(217,198,165,.55)}
 
