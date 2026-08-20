@@ -1,0 +1,49 @@
+# Bouwt de site bij elke push naar main en zet hem via FTPS op de server.
+# De inloggegevens staan in GitHub onder Settings > Secrets and variables > Actions.
+# Handmatig starten kan ook, via het tabblad Actions.
+
+name: Bouwen en publiceren
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+jobs:
+  publiceren:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code ophalen
+        uses: actions/checkout@v4
+
+      - name: Node installeren
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Pakketten installeren
+        run: npm ci
+
+      - name: Site bouwen
+        run: npm run build
+
+      - name: Naar de server zetten
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./dist/
+          server-dir: ./
+          # Deze bestanden nooit weggooien of overschrijven op de server
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            .well-known/**
