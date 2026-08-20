@@ -116,6 +116,10 @@ De finca, de verbouwing, before-after, het budget, de plattegrond, de aflevering
 
 ## Deploy
 
-Push naar `main`. De Git Deploy plugin in DirectAdmin bouwt en zet live. Rollback zit in dezelfde plugin.
+CloudMonsters luistert niet naar pushes. De Git Deploy plugin in DirectAdmin haalt de code zelf op als zip:
+
+`https://github.com/wesleyvaders/wesleyvaders/archive/refs/heads/main.zip`
+
+**Na een push gebeurt er dus niks vanzelf.** Je moet in DirectAdmin handmatig op deploy drukken. Rollback zit in dezelfde plugin.
 
 Handmatig kan ook: `npm run build` en dan de inhoud van `dist/` naar `public_html/`. Zie `deploy.sh`.
