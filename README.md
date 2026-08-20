@@ -13,15 +13,9 @@ Open http://localhost:4321
 
 ## Live zetten
 
-Push naar `main`. CloudMonsters bouwt en deployt via de Git Deploy plugin in DirectAdmin.
+Push naar `main`. GitHub Actions bouwt de site en zet hem via FTPS op de server (`.github/workflows/deploy.yml`). Handmatig starten kan via het tabblad Actions.
 
-Instellen in DirectAdmin:
-
-- Repository: deze repo, branch `main`
-- Projecttype: **statisch**
-- Buildcommando: `npm run build`
-- Output-map: `dist`
-- Node: 20 of hoger
+De secrets `FTP_HOST`, `FTP_USER` en `FTP_PASSWORD` staan in GitHub onder Settings > Secrets and variables > Actions.
 
 Werkt dat niet, gebruik dan `./deploy.sh` (rsync, gegevens bovenin invullen).
 

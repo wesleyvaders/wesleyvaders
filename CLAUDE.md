@@ -116,10 +116,8 @@ De finca, de verbouwing, before-after, het budget, de plattegrond, de aflevering
 
 ## Deploy
 
-CloudMonsters luistert niet naar pushes. De Git Deploy plugin in DirectAdmin haalt de code zelf op als zip:
+Elke push naar `main` deployt vanzelf. GitHub Actions (`.github/workflows/deploy.yml`) bouwt de site en zet `dist/` via FTPS op de server. De inloggegevens staan in GitHub onder Settings > Secrets and variables > Actions: `FTP_HOST`, `FTP_USER`, `FTP_PASSWORD`.
 
-`https://github.com/wesleyvaders/wesleyvaders/archive/refs/heads/main.zip`
+**Gebruik de Git Deploy plugin in DirectAdmin niet meer.** Die schrijft naar dezelfde map en overschrijft dan wat Actions net heeft neergezet.
 
-**Na een push gebeurt er dus niks vanzelf.** Je moet in DirectAdmin handmatig op deploy drukken. Rollback zit in dezelfde plugin.
-
-Handmatig kan ook: `npm run build` en dan de inhoud van `dist/` naar `public_html/`. Zie `deploy.sh`.
+Handmatig kan nog steeds: `npm run build` en dan de inhoud van `dist/` naar `public_html/`. Zie `deploy.sh`.
