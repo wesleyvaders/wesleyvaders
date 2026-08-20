@@ -11,7 +11,8 @@ const {
   omschrijving = site.omschrijving,
   og = '/fotos/transporter.webp',
   type = 'website',
-  schema = null
+  schema = null,
+  navDonker = false
 } = Astro.props;
 
 const volledigeTitel = titel ? `${titel} · ${site.naam}` : `${site.naam} · ${site.serie}`;
@@ -68,7 +69,7 @@ const persoon = {
 </head>
 <body>
   <a class="skip" href="#hoofd">Naar de inhoud</a>
-  <Nav />
+  <Nav donker={navDonker} />
   <main id="hoofd">
     <slot />
   </main>

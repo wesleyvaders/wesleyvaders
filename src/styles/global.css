@@ -76,6 +76,10 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   letter-spacing:.3em;opacity:.6;margin-top:.35rem}
 .nav .brand .wm small{display:none}
 .nav .brand .wm{text-shadow:0 1px 14px rgba(20,20,18,.85)}
+/* op lichte pagina's: inkt, geen schaduw, donkere randen */
+.nav-licht{color:var(--ink)}
+.nav-licht .brand .wm{text-shadow:none}
+.nav-licht .navcta{border-color:rgba(20,20,18,.28)}
 footer .brand .wm small{font-size:.5rem;letter-spacing:.24em;opacity:.8;margin-top:.45rem}
 .navlinks{display:flex;gap:1.75rem;margin-left:auto}
 .navlinks a{font-size:.8125rem;opacity:.72;transition:opacity .25s}
