@@ -32,6 +32,9 @@ jobs:
       - name: Site bouwen
         run: npm run build
 
+      - name: Versiestempel
+        run: echo "$GITHUB_SHA $(date -u +%FT%TZ)" > dist/versie.txt
+
       - name: Naar de server zetten
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
