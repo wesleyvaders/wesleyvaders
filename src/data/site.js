@@ -34,7 +34,7 @@ export const cookiebanner = {
 // klaar: false = de pagina bestaat nog niet en wordt niet getoond.
 // Zet op true zodra je hem gebouwd hebt. Zo geen kapotte links in de nav.
 export const navAlles = [
-  { titel: 'Mijn verhaal', href: '/mijn-verhaal/', klaar: false },
+  { titel: 'Mijn verhaal', href: '/mijn-verhaal/', klaar: true },
   { titel: 'Het avontuur', href: '/#route', klaar: true },
   { titel: 'Afleveringen', href: '/afleveringen/', klaar: false },
   { titel: 'Verhalen', href: '/verhalen/', klaar: true },

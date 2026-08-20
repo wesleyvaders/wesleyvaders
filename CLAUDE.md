@@ -93,8 +93,8 @@ Stap je ooit over naar `cloudflare`, `plausible` of `umami`, dan verdwijnt de ba
 
 `src/data/site.js` heeft `navAlles` met een `klaar`-vlag per item. Alleen items met `klaar: true` verschijnen in de navigatie en de footer. **Bouw je een nieuwe pagina, zet dan pas daarna de vlag om.** Zo staan er nooit links naar pagina's die nog niet bestaan.
 
-Nu klaar: Het avontuur, Verhalen, Privacy, Cookies, Contact.
-Nog niet: Mijn verhaal, Afleveringen, Spanje.
+Nu klaar: Het avontuur, Mijn verhaal, Verhalen, Privacy, Cookies, Contact.
+Nog niet: Afleveringen, Spanje.
 
 ## Juridische pagina's
 
