@@ -29,7 +29,7 @@ const schema = {
   <!-- opening -->
   <header class="opening">
     <div class="grain"></div>
-    <div class="wrap op-in">
+    <div class="mv-wrap op-in">
       <p class="op-eyebrow mono">Mijn verhaal <i>/</i> acht hoofdstukken</p>
       <h1 class="op-titel">Waarom ik<br /><span>dit doe.</span></h1>
       <p class="op-lead">Van hutten bouwen in de Gaardes naar een finca in de bergen. Het is niet in één rechte lijn gegaan.</p>
@@ -40,7 +40,7 @@ const schema = {
   <!-- 01 + 02 -->
   <section class="vlak paper">
     <div class="grain"></div>
-    <div class="wrap">
+    <div class="mv-wrap raster">
       <article class="hfd">
         <p class="cijfer">01</p>
         <div class="tekst">
@@ -66,8 +66,8 @@ const schema = {
   <!-- 03 · zand, met beeld -->
   <section class="vlak zand">
     <div class="grain"></div>
-    <div class="wrap">
-      <article class="hfd met-beeld">
+    <div class="mv-wrap raster">
+      <article class="hfd">
         <p class="cijfer">03</p>
         <div class="tekst">
           <h2>Wes, Jeff, Dev</h2>
@@ -76,9 +76,9 @@ const schema = {
           <p>Mijn vader Leo was schoenmaker, tot hij rond zijn veertigste MS kreeg.</p>
           <p>We gingen bijna elk jaar op vakantie. Eerst Benidorm, later bij vrienden in Alfaz del Pi. Daar wonen was altijd hun droom. Ze hebben het nooit gedaan, omdat ze de kinderen en de kleinkinderen niet achter wilden laten.</p>
         </div>
-        <figure class="beeld">
+        <figure class="beeld vk">
           <Image src={bbqWes} alt="Wesley aan de barbecue op een terras in Alfaz del Pi" widths={[400, 800]} sizes="(max-width:900px) 90vw, 32vw" />
-          <figcaption class="mono">Alfaz del Pi</figcaption>
+          <figcaption class="bijschrift">Alfaz del Pi</figcaption>
         </figure>
       </article>
     </div>
@@ -87,7 +87,7 @@ const schema = {
   <!-- 04 -->
   <section class="vlak paper">
     <div class="grain"></div>
-    <div class="wrap">
+    <div class="mv-wrap raster">
       <article class="hfd">
         <p class="cijfer">04</p>
         <div class="tekst">
@@ -110,7 +110,7 @@ const schema = {
   <!-- 05 · donker -->
   <section class="vlak donker">
     <div class="grain"></div>
-    <div class="wrap">
+    <div class="mv-wrap raster">
       <article class="hfd">
         <p class="cijfer">05</p>
         <div class="tekst">
@@ -128,8 +128,8 @@ const schema = {
   <!-- 06 -->
   <section class="vlak paper">
     <div class="grain"></div>
-    <div class="wrap">
-      <article class="hfd met-beeld">
+    <div class="mv-wrap raster">
+      <article class="hfd">
         <p class="cijfer">06</p>
         <div class="tekst">
           <h2>Wat ik verloor</h2>
@@ -139,23 +139,18 @@ const schema = {
           <p>Op 8 april 2026 is hij overleden.</p>
         </div>
         <!-- Deze foto mag weg door dit hele figure-blok te verwijderen. -->
-        <figure class="beeld klein">
+        <figure class="beeld breed169">
           <Image src={leo} alt="Wesley bij zijn vader in het verzorgingstehuis" widths={[380, 760]} sizes="(max-width:900px) 80vw, 26vw" />
-          <figcaption class="mono">2025</figcaption>
+          <figcaption class="bijschrift">2025</figcaption>
         </figure>
       </article>
     </div>
   </section>
 
-  <figure class="breed hoog">
-    <Image src={boBus} alt="Bo, blonde labrador, in de bus onderweg naar Spanje" widths={[700, 1100]} sizes="100vw" />
-    <figcaption class="mono">Bo, op weg naar zijn laatste goede weken</figcaption>
-  </figure>
-
-  <!-- 07 -->
-  <section class="vlak paper">
+  <!-- 07 · loopt door op 06 -->
+  <section class="vlak paper geen-top">
     <div class="grain"></div>
-    <div class="wrap">
+    <div class="mv-wrap raster">
       <article class="hfd">
         <p class="cijfer">07</p>
         <div class="tekst">
@@ -164,15 +159,19 @@ const schema = {
           <p>Mijn moeder is 58 geworden. Mijn vader 61. Ik ben 40.</p>
           <p>Dat rekensommetje laat weinig ruimte voor uitstel.</p>
         </div>
+        <figure class="beeld staand">
+          <Image src={boBus} alt="Bo, blonde labrador, in de bus onderweg naar Spanje" widths={[700, 1100]} sizes="(max-width:900px) 90vw, 32vw" />
+          <figcaption class="bijschrift">Bo, op weg naar zijn laatste goede weken</figcaption>
+        </figure>
       </article>
       <blockquote class="citaat">Je kunt beter nu iets doen en er spijt van hebben, dan achteraf spijt hebben van dromen die je nooit geprobeerd hebt.</blockquote>
     </div>
   </section>
 
-  <!-- 08 · zand, twee beelden -->
+  <!-- 08 · zand -->
   <section class="vlak zand">
     <div class="grain"></div>
-    <div class="wrap">
+    <div class="mv-wrap raster">
       <article class="hfd">
         <p class="cijfer">08</p>
         <div class="tekst">
@@ -182,18 +181,16 @@ const schema = {
           <p>Ruimte, bergen, en genoeg werk om mezelf de komende jaren bezig te houden. Iets om te bouwen.</p>
           <p>Ik was ooit een jongen die hutten bouwde in de Gaardes. Zo veel is er niet veranderd.</p>
         </div>
+        <figure class="beeld vk">
+          <Image src={duinen} alt="Pat, Leo en Wesley in de duinen" widths={[420, 840]} sizes="(max-width:900px) 90vw, 32vw" />
+          <figcaption class="bijschrift">Pat, mijn vader en ik</figcaption>
+        </figure>
       </article>
 
-      <div class="duo">
-        <figure>
-          <Image src={duinen} alt="Pat, Leo en Wesley in de duinen" widths={[420, 840]} sizes="(max-width:760px) 90vw, 34vw" />
-          <figcaption class="mono">Pat, mijn vader en ik</figcaption>
-        </figure>
-        <figure>
-          <Image src={bbqPat} alt="Pat en Wesley bij de buitenkeuken in Spanje" widths={[560, 1100]} sizes="(max-width:760px) 90vw, 46vw" />
-          <figcaption class="mono">Bij Pat, Alfaz del Pi</figcaption>
-        </figure>
-      </div>
+      <figure class="halfbreed">
+        <Image src={bbqPat} alt="Pat en Wesley bij de buitenkeuken in Spanje" widths={[560, 1100]} sizes="(max-width:900px) 90vw, 55vw" />
+        <figcaption class="bijschrift">Bij Pat, Alfaz del Pi</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -203,19 +200,27 @@ const schema = {
 
   <section class="vlak donker slot">
     <div class="grain"></div>
-    <div class="wrap">
-      <p class="eyebrow" style="color:var(--gold)">Waar het nu staat</p>
-      <h2 class="slot-h">Hier zit ik dan,<br />half tussen de dozen.</h2>
-      <p class="slot-p">Nog een paar weken en dan ben ik dakloos. Wat er daarna gebeurt komt allemaal hier terecht.</p>
-      <div class="slot-cta">
-        <a class="btn btn-f" href="/#volg">Volg het avontuur</a>
-        <a class="btn btn-l" href="/#route">Bekijk de route</a>
+    <div class="mv-wrap raster">
+      <div class="slot-in">
+        <p class="eyebrow" style="color:var(--gold)">Waar het nu staat</p>
+        <h2 class="slot-h">Hier zit ik dan,<br />half tussen de dozen.</h2>
+        <p class="slot-p">Nog een paar weken en dan ben ik dakloos. Wat er daarna gebeurt komt allemaal hier terecht.</p>
+        <div class="slot-cta">
+          <a class="btn btn-f" href="/#volg">Volg het avontuur</a>
+          <a class="btn btn-l" href="/#route">Bekijk de route</a>
+        </div>
       </div>
     </div>
   </section>
 </Base>
 
 <style>
+  /* ---------- container en raster ---------- */
+  .mv-wrap{width:min(1180px,100% - 3rem);margin-inline:auto}
+  @media(max-width:640px){.mv-wrap{width:calc(100% - 2.25rem)}}
+  .raster{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));
+    column-gap:clamp(1rem,2vw,1.75rem)}
+
   /* ---------- opening ---------- */
   .opening {
     position: relative; min-height: 92svh; display: flex; align-items: flex-end;
@@ -245,25 +250,26 @@ const schema = {
   .vlak { position: relative; padding-block: clamp(4.5rem, 9vw, 8rem); }
   .zand { background: var(--sand); color: var(--ink); }
   .donker { background: var(--forest); color: var(--paper); }
+  .vlak.geen-top{padding-top:0}
+  .vlak.geen-top .hfd:first-child{border-top:1px solid;
+    border-color:color-mix(in srgb,currentColor 15%,transparent)}
 
-  /* ---------- hoofdstuk ---------- */
-  .hfd {
-    display: grid; grid-template-columns: 7.5rem minmax(0, 46ch) 1fr;
-    gap: clamp(1.5rem, 4vw, 3.5rem);
-    padding-block: clamp(2rem, 4vw, 3.25rem);
-  }
-  .hfd + .hfd { border-top: 1px solid currentColor; border-color: color-mix(in srgb, currentColor 16%, transparent); }
-  @media (max-width: 900px) {
-    .hfd { grid-template-columns: 1fr; gap: 1rem; }
-  }
+  /* ---------- hoofdstuk op het raster ---------- */
+  .hfd{grid-column:1/-1;display:grid;grid-template-columns:subgrid;
+    padding-block:clamp(2.25rem,4vw,3.5rem);align-items:start}
+  .hfd + .hfd{border-top:1px solid;
+    border-color:color-mix(in srgb,currentColor 15%,transparent)}
+  .cijfer{grid-column:1/3;font-family:var(--serif);
+    font-size:clamp(2.5rem,4.4vw,4rem);line-height:.8;letter-spacing:-.04em;
+    margin:0;color:currentColor;opacity:.2}
+  .tekst{grid-column:3/9}
+  .beeld{grid-column:9/13;margin:0;align-self:start}
 
-  .cijfer {
-    font-family: var(--serif); font-size: clamp(3rem, 6vw, 5.5rem);
-    line-height: .8; margin: 0; letter-spacing: -.04em;
-    color: transparent; -webkit-text-stroke: 1px currentColor; opacity: .3;
-  }
   @media (max-width: 900px) {
-    .cijfer { font-size: 2.75rem; opacity: .35; }
+    .hfd{grid-template-columns:1fr;gap:1rem}
+    .cijfer,.tekst,.beeld{grid-column:1/-1}
+    .cijfer{font-size:2.5rem;opacity:.26}
+    .beeld{margin-top:1rem}
   }
 
   .tekst h2 {
@@ -273,63 +279,37 @@ const schema = {
   }
   .tekst p {
     font-size: 1.0625rem; line-height: 1.78; margin: 0 0 1.25rem;
+    max-width: 46ch;
     color: color-mix(in srgb, currentColor 80%, transparent);
   }
   .tekst p:last-child { margin-bottom: 0; }
   .tekst em { font-family: var(--serif); font-style: italic; font-size: 1.125em; }
 
-  /* hoofdstuk met beeld in de derde kolom */
-  .met-beeld .beeld { margin: 0; align-self: start; }
-  .met-beeld .beeld img { width: 100%; }
-  .met-beeld .beeld.klein { max-width: 20rem; }
-  .beeld figcaption {
-    margin-top: .7rem; opacity: .5;
-    font-family: var(--mono); font-size: .625rem;
-    letter-spacing: .15em; text-transform: uppercase;
-  }
-  @media (max-width: 900px) {
-    .met-beeld .beeld { margin-top: 2rem; max-width: 22rem; }
-  }
+  /* ---------- beelden in eigen verhouding ---------- */
+  .beeld img,.halfbreed img{width:100%;height:auto}
+  .beeld.vk img{aspect-ratio:1/1;object-fit:cover}
+  .beeld.staand img{aspect-ratio:1000/1777;object-fit:cover}
+  .beeld.breed169 img{aspect-ratio:16/9;object-fit:cover}
+
+  .halfbreed{grid-column:3/10;margin:clamp(2rem,4vw,3rem) 0 0}
+  .halfbreed img{aspect-ratio:16/9;object-fit:cover}
+
+  .bijschrift{margin-top:.6rem;opacity:.5;font-family:var(--mono);
+    font-size:.5625rem;letter-spacing:.15em;text-transform:uppercase;
+    line-height:1.5}
 
   /* ---------- citaat ---------- */
-  .citaat {
-    margin: clamp(1rem, 3vw, 2rem) 0 0; padding: 0;
-    max-width: 22ch; border: 0;
-    font-family: var(--serif); font-style: italic;
-    font-size: clamp(1.625rem, 3.6vw, 2.875rem); line-height: 1.18;
-    color: var(--terra);
-  }
-  @media (min-width: 901px) { .citaat { margin-left: calc(7.5rem + clamp(1.5rem, 4vw, 3.5rem)); } }
+  .citaat{grid-column:3/10;margin:0 0 clamp(1rem,2vw,2rem);padding:0;border:0;
+    max-width:22ch;font-family:var(--serif);font-style:italic;
+    font-size:clamp(1.625rem,3.6vw,2.875rem);line-height:1.18;color:var(--terra)}
 
-  /* ---------- volle beelden ---------- */
-  .breed { margin: 0; position: relative; }
-  .breed img { width: 100%; max-height: 72svh; object-fit: cover; }
-  .breed.hoog img { max-height: 60svh; object-position: 50% 30%; }
-  .breed figcaption {
-    position: absolute; left: 0; right: 0; bottom: 0;
-    width: min(1340px, 100% - 3rem); margin-inline: auto;
-    padding-bottom: 1.25rem; color: var(--sand);
-    font-family: var(--mono); font-size: .625rem;
-    letter-spacing: .15em; text-transform: uppercase;
-    text-shadow: 0 1px 12px rgba(20, 20, 18, .9);
-  }
-
-  /* ---------- duo ---------- */
-  .duo {
-    display: grid; grid-template-columns: .8fr 1.2fr;
-    gap: clamp(1rem, 3vw, 2rem); align-items: end;
-    margin-top: clamp(2.5rem, 5vw, 4rem);
-  }
-  @media (max-width: 760px) { .duo { grid-template-columns: 1fr; } }
-  .duo figure { margin: 0; }
-  .duo img { width: 100%; }
-  .duo figcaption {
-    margin-top: .7rem; opacity: .55;
-    font-family: var(--mono); font-size: .625rem;
-    letter-spacing: .15em; text-transform: uppercase;
-  }
+  /* ---------- volle liggende beelden ---------- */
+  .breed{margin:0}
+  .breed img{width:100%;height:auto;aspect-ratio:21/9;object-fit:cover}
+  @media(max-width:760px){.breed img{aspect-ratio:4/3}}
 
   /* ---------- slot ---------- */
+  .slot-in{grid-column:3/10}
   .slot-h {
     font-family: var(--serif); font-weight: 400;
     font-size: clamp(2rem, 4.6vw, 3.5rem); line-height: 1.02;
@@ -340,4 +320,9 @@ const schema = {
     margin: 0 0 2rem; color: rgba(245, 241, 232, .74);
   }
   .slot-cta { display: flex; gap: .7rem; flex-wrap: wrap; }
+
+  /* na de kolomregels, zodat deze winnen onder 900px */
+  @media (max-width: 900px) {
+    .citaat,.slot-in,.halfbreed{grid-column:1/-1}
+  }
 </style>
