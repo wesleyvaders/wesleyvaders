@@ -1,0 +1,36 @@
+---
+import { analytics, cookiebanner as c } from '../data/site.js';
+const nodig = c.aan && analytics.aan && analytics.provider === 'ga4';
+---
+{nodig && (
+  <div class="cbar" id="cbar" hidden>
+    <p class="cbar-t">{c.tekst} <a href="/privacy-policy/">Privacy</a></p>
+    <div class="cbar-b">
+      <button class="btn btn-l" data-consent="nee">{c.nee}</button>
+      <button class="btn btn-f" data-consent="ja">{c.ja}</button>
+    </div>
+  </div>
+
+  <script is:inline>
+    (function () {
+      var bar = document.getElementById('cbar');
+      if (!bar) return;
+      var keuze = localStorage.getItem('wv-consent');
+      if (!keuze) {
+        // Niet meteen in beeld springen. Pas tonen als iemand echt aan het lezen is.
+        setTimeout(function () { bar.hidden = false; requestAnimationFrame(function(){ bar.dataset.in = 'true'; }); }, 1200);
+      }
+      bar.querySelectorAll('[data-consent]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          var v = b.dataset.consent;
+          localStorage.setItem('wv-consent', v);
+          if (v === 'ja' && window.gtag) {
+            gtag('consent', 'update', { analytics_storage: 'granted' });
+          }
+          bar.dataset.in = 'false';
+          setTimeout(function () { bar.hidden = true; }, 400);
+        });
+      });
+    })();
+  </script>
+)}

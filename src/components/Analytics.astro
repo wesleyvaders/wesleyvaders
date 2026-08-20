@@ -1,0 +1,43 @@
+---
+import { analytics as a } from '../data/site.js';
+---
+{a.aan && a.provider === 'ga4' && a.ga4Id && (
+  <>
+    {/* Consent Mode v2. Alles staat op geweigerd tot de bezoeker akkoord gaat. */}
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      window.gtag = gtag;
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        functionality_storage: 'granted',
+        security_storage: 'granted',
+        wait_for_update: 500
+      });
+      if (localStorage.getItem('wv-consent') === 'ja') {
+        gtag('consent', 'update', { analytics_storage: 'granted' });
+      }
+    </script>
+    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${a.ga4Id}`}></script>
+    <script is:inline define:vars={{ id: a.ga4Id }}>
+      gtag('js', new Date());
+      gtag('config', id, { anonymize_ip: true });
+    </script>
+  </>
+)}
+
+{a.aan && a.provider === 'cloudflare' && a.token && (
+  <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js"
+    data-cf-beacon={`{"token": "${a.token}"}`}></script>
+)}
+
+{a.aan && a.provider === 'plausible' && (
+  <script is:inline defer data-domain={a.domein} src="https://plausible.io/js/script.js"></script>
+)}
+
+{a.aan && a.provider === 'umami' && a.umamiUrl && (
+  <script is:inline defer src={a.umamiUrl} data-website-id={a.umamiId}></script>
+)}

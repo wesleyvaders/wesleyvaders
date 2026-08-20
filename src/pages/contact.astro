@@ -1,0 +1,28 @@
+---
+import Base from '../layouts/Base.astro';
+import { contact, socials } from '../data/site.js';
+---
+<Base titel="Contact" omschrijving="Iets vragen, iets tippen of gewoon even reageren.">
+  <section class="paper" style="padding:clamp(9rem,16vw,13rem) 0 var(--lucht)">
+    <div class="grain"></div>
+    <div class="wrap">
+      <p class="eyebrow">Contact</p>
+      <h1 class="h2" style="margin:.7rem 0 2rem">Even<br />een berichtje.</h1>
+      <div class="artikel" style="margin-inline:0">
+        <p>Geen formulier, want dan moet ik weer van alles regelen. Gewoon mailen werkt beter.</p>
+        <p style="font-family:var(--serif);font-size:1.75rem;margin:2rem 0">
+          <a href={`mailto:${contact.email}`}>{contact.email}</a>
+        </p>
+        <p>Reageren op een aflevering of een tip over een finca gaat het snelst via de socials.</p>
+      </div>
+      <div style="margin-top:2.5rem;border-top:1px solid var(--lijn)">
+        {socials.map(s => (
+          <a href={s.href} rel="noopener" style="display:flex;justify-content:space-between;gap:1.5rem;padding:1.1rem 0;border-bottom:1px solid var(--lijn)">
+            <span style="font-family:var(--serif);font-size:1.375rem">{s.naam}</span>
+            <span class="mono" style="color:var(--terra);align-self:center">{s.actie}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>

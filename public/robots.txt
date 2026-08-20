@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://wesleyvaders.nl/sitemap-index.xml

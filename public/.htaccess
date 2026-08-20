@@ -1,0 +1,110 @@
+# ==========================================================
+#  wesleyvaders.nl
+#  Astro levert statische HTML. Dit bestand doet drie dingen:
+#  1. de oude therapeuten-URL's doorsturen naar burovaders.nl
+#  2. compressie en caching
+#  3. een paar beveiligingsheaders
+# ==========================================================
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+</IfModule>
+
+# ---------- 1 · Oude site ----------
+# Alle content over webdesign voor therapeuten is weg. Die hoort
+# bij het bedrijf, niet bij dit verhaal. Alles gaat daarom naar de
+# homepage van burovaders.nl.
+#
+# LET OP: /, /contact/, /cookies/ en /privacy-policy/ staan hier
+# BEWUST NIET tussen. Die paden bestaan op de nieuwe site en zouden
+# anders onbereikbaar worden. Voeg hier nooit een regel toe die met
+# een bestaand pad van deze site botst.
+
+<IfModule mod_alias.c>
+  Redirect 301 /algemene-voorwaarden/ https://burovaders.nl/
+  Redirect 301 /artikelen/ https://burovaders.nl/
+  Redirect 301 /artikelen/bloggen-voor-coaches-en-therapeuten/ https://burovaders.nl/
+  Redirect 301 /artikelen/de-belangrijkste-elementen-van-een-website/ https://burovaders.nl/
+  Redirect 301 /artikelen/e-mailmarketing/ https://burovaders.nl/
+  Redirect 301 /artikelen/een-cursus-als-uitbreiding/ https://burovaders.nl/
+  Redirect 301 /artikelen/het-gebruik-van-facebook-groepen/ https://burovaders.nl/
+  Redirect 301 /artikelen/het-opzetten-van-een-marketingplan/ https://burovaders.nl/
+  Redirect 301 /artikelen/hoe-je-een-e-book-of-cursus-ontwikkelt/ https://burovaders.nl/
+  Redirect 301 /artikelen/hoe-maak-je-effectieve-videos/ https://burovaders.nl/
+  Redirect 301 /artikelen/jouw-energie-online-uitstralen/ https://burovaders.nl/
+  Redirect 301 /artikelen/jouw-ideale-niche-en-doelgroep/ https://burovaders.nl/
+  Redirect 301 /artikelen/logos-en-kleurenschemas/ https://burovaders.nl/
+  Redirect 301 /artikelen/marketing-funnels/ https://burovaders.nl/
+  Redirect 301 /artikelen/podcasten/ https://burovaders.nl/
+  Redirect 301 /artikelen/social-media-voor-je-praktijk-of-onderneming/ https://burovaders.nl/
+  Redirect 301 /artikelen/tips-voor-groei-op-instagram/ https://burovaders.nl/
+  Redirect 301 /artikelen/waarom-een-goede-website-essentieel-is/ https://burovaders.nl/
+  Redirect 301 /artikelen/wat-is-mindful-marketing/ https://burovaders.nl/
+  Redirect 301 /artikelen/wordt-gevonden-in-google/ https://burovaders.nl/
+  Redirect 301 /artikelen/zelf-een-website-bouwen-of-uitbesteden/ https://burovaders.nl/
+  Redirect 301 /betaalde-advertenties-op-facebook-en-instagram/ https://burovaders.nl/
+  Redirect 301 /blog-op-je-website/ https://burovaders.nl/
+  Redirect 301 /contentstrategie/ https://burovaders.nl/
+  Redirect 301 /de-5-belangrijkste-elementen-van-een-website/ https://burovaders.nl/
+  Redirect 301 /de-basis-van-branding/ https://burovaders.nl/
+  Redirect 301 /de-kracht-van-een-goed-verhaal/ https://burovaders.nl/
+  Redirect 301 /de-kracht-van-linkedin/ https://burovaders.nl/
+  Redirect 301 /de-kracht-van-reviews/ https://burovaders.nl/
+  Redirect 301 /e-maillijst/ https://burovaders.nl/
+  Redirect 301 /eenvoudige-seo-tips/ https://burovaders.nl/
+  Redirect 301 /gratis-e-book/ https://burovaders.nl/
+  Redirect 301 /hashtags-en-algoritmes/ https://burovaders.nl/
+  Redirect 301 /hoe-creeer-je-een-visuele-stijl/ https://burovaders.nl/
+  Redirect 301 /hoe-gebruik-je-storytelling/ https://burovaders.nl/
+  Redirect 301 /hoe-ontdek-je-jouw-unieke-niche-en-ideale-klant/ https://burovaders.nl/
+  Redirect 301 /hoe-schrijf-je-blogs/ https://burovaders.nl/
+  Redirect 301 /hoe-schrijf-je-een-over-mij-pagina/ https://burovaders.nl/
+  Redirect 301 /hoe-schrijf-je-teksten/ https://burovaders.nl/
+  Redirect 301 /instagram-stories-en-reels/ https://burovaders.nl/
+  Redirect 301 /je-eerste-e-book/ https://burovaders.nl/
+  Redirect 301 /nieuwsbrief/ https://burovaders.nl/
+  Redirect 301 /online-zichtbaarheid-voor-therapeuten-en-coaches/ https://burovaders.nl/
+  Redirect 301 /onweerstaanbare-aanbiedingen/ https://burovaders.nl/
+  Redirect 301 /over-mij/ https://burovaders.nl/
+  Redirect 301 /project/centrum-heelheid-een-nieuwe-online-basis-voor-opleidingen/ https://burovaders.nl/
+  Redirect 301 /project/therapienuante-nl-therapie-die-je-verbindt-met-je-ware-zelf/ https://burovaders.nl/
+  Redirect 301 /project/zen-ja-hypnotherapeut-mindfulness-trainer/ https://burovaders.nl/
+  Redirect 301 /samenwerking/ https://burovaders.nl/
+  Redirect 301 /seo-voor-gevorderden/ https://burovaders.nl/
+  Redirect 301 /social-media-content/ https://burovaders.nl/
+  Redirect 301 /veelgemaakte-fouten-op-websites/ https://burovaders.nl/
+  Redirect 301 /video-voor-online-zichtbaarheid/ https://burovaders.nl/
+  Redirect 301 /waarom-consistentie-op-social-media-de-sleutel-is-tot-succes/ https://burovaders.nl/
+  Redirect 301 /waarom-een-nieuwsbrief-belangrijk-is/ https://burovaders.nl/
+  Redirect 301 /website-sneller/ https://burovaders.nl/
+  Redirect 301 /websites-voor-therapeuten/ https://burovaders.nl/
+  Redirect 301 /welke-social-media-platformen-werken-het-beste/ https://burovaders.nl/
+</IfModule>
+
+# ---------- 2 · Compressie ----------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml
+  AddOutputFilterByType DEFLATE application/javascript application/json image/svg+xml
+</IfModule>
+
+# ---------- 3 · Caching ----------
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/webp             "access plus 1 year"
+  ExpiresByType image/jpeg             "access plus 1 year"
+  ExpiresByType image/png              "access plus 1 year"
+  ExpiresByType image/svg+xml          "access plus 1 year"
+  ExpiresByType text/css               "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/html              "access plus 10 minutes"
+</IfModule>
+
+# ---------- 4 · Headers ----------
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Strict-Transport-Security "max-age=31536000"
+</IfModule>
+
+# ---------- 5 · Nette 404 ----------
+ErrorDocument 404 /404.html

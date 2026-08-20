@@ -1,0 +1,86 @@
+---
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Analytics from '../components/Analytics.astro';
+import Cookiebanner from '../components/Cookiebanner.astro';
+import { site } from '../data/site.js';
+
+const {
+  titel,
+  omschrijving = site.omschrijving,
+  og = '/fotos/transporter.webp',
+  type = 'website',
+  schema = null
+} = Astro.props;
+
+const volledigeTitel = titel ? `${titel} · ${site.naam}` : `${site.naam} · ${site.serie}`;
+const url = new URL(Astro.url.pathname, site.domein).href;
+
+const persoon = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.naam,
+  url: site.domein,
+  description: site.omschrijving,
+  sameAs: [
+    'https://www.youtube.com/@wesleyvaders9102',
+    'https://www.instagram.com/wesleyvaders/',
+    'https://www.tiktok.com/@wesleyvaders',
+    'https://www.facebook.com/wesleyvaders'
+  ]
+};
+---
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{volledigeTitel}</title>
+  <meta name="description" content={omschrijving} />
+  <link rel="canonical" href={url} />
+  <link rel="sitemap" href="/sitemap-index.xml" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <meta property="og:type" content={type} />
+  <meta property="og:title" content={volledigeTitel} />
+  <meta property="og:description" content={omschrijving} />
+  <meta property="og:url" content={url} />
+  <meta property="og:image" content={new URL(og, site.domein).href} />
+  <meta property="og:image:width" content="1600" />
+  <meta property="og:image:height" content="1200" />
+  <meta property="og:image:alt" content="De bus van Wesley bij de bergen in Spanje" />
+  <meta property="og:locale" content="nl_NL" />
+  <meta property="og:site_name" content={site.naam} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#141412" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
+
+  <script type="application/ld+json" set:html={JSON.stringify(persoon)} />
+  {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+
+  <Analytics />
+</head>
+<body>
+  <a class="skip" href="#hoofd">Naar de inhoud</a>
+  <Nav />
+  <main id="hoofd">
+    <slot />
+  </main>
+  <Footer />
+  <Cookiebanner />
+
+  <script>
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }),
+      { threshold: 0.1 }
+    );
+    document.querySelectorAll('.rv').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>

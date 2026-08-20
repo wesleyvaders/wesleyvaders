@@ -1,0 +1,39 @@
+---
+import Merkteken from './Merkteken.astro';
+import { site, nav, socials } from '../data/site.js';
+---
+<nav class="nav" aria-label="Hoofdnavigatie">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label={site.naam + ', home'}>
+      <Merkteken size={34} />
+      <span class="wm">{site.naam}<small>{site.serie}</small></span>
+    </a>
+    <div class="navlinks">
+      {nav.map(i => <a href={i.href}>{i.titel}</a>)}
+    </div>
+    <a class="navcta" href="#volg">Volg de reis</a>
+    <button class="burger" data-menu aria-expanded="false" aria-controls="menu">Menu</button>
+  </div>
+</nav>
+
+<div class="menu" id="menu" data-open="false">
+  <button class="close mono" data-menu-close>Sluiten</button>
+  <a href="/">Home</a>
+  {nav.map(i => <a href={i.href}>{i.titel}</a>)}
+  <div class="mfoot mono">
+    {socials.slice(0, 3).map(s => <a href={s.href} rel="noopener">{s.naam}</a>)}
+  </div>
+</div>
+
+<script>
+  const menu = document.getElementById('menu');
+  const open = (v) => {
+    menu.dataset.open = String(v);
+    document.querySelectorAll('[data-menu]').forEach(b => b.setAttribute('aria-expanded', String(v)));
+    document.body.style.overflow = v ? 'hidden' : '';
+  };
+  document.querySelectorAll('[data-menu]').forEach(b => b.addEventListener('click', () => open(true)));
+  document.querySelectorAll('[data-menu-close]').forEach(b => b.addEventListener('click', () => open(false)));
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => open(false)));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') open(false); });
+</script>

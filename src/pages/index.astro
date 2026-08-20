@@ -1,0 +1,222 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Routelijn from '../components/Routelijn.astro';
+import { site, nu, route, stappen, mowgli, socials } from '../data/site.js';
+
+import transporter from '../../public/fotos/transporter.webp';
+import landschap from '../../public/fotos/hero.webp';
+import tekoop from '../../public/fotos/tekoop.webp';
+import dozen from '../../public/fotos/dozen.webp';
+import boBus from '../../public/fotos/bo_bus.webp';
+import boZwem from '../../public/fotos/bo_zwem.webp';
+import mo from '../../public/fotos/mowgli.webp';
+
+const berichten = await Promise.all(
+  (await getCollection('hierennu', e => !e.data.concept))
+    .sort((a, b) => b.data.nummer - a.data.nummer)
+    .slice(0, 3)
+    .map(async (b) => ({ data: b.data, Content: (await render(b)).Content }))
+);
+
+const fmt = (d) =>
+  new Intl.DateTimeFormat('nl-NL', { day: '2-digit', month: '2-digit', year: 'numeric' })
+    .format(d).replaceAll('-', '.');
+---
+
+<Base>
+  <!-- 1 · Hero -->
+  <header class="hero">
+    <Image src={transporter} alt="De zwarte VW Transporter langs de weg bij de bergen in Spanje"
+      class="hero-bg" widths={[900, 1400, 1900]} sizes="100vw" loading="eager" fetchpriority="high" />
+    <div class="hero-veil"></div>
+    <div class="grain"></div>
+    <div class="wrap">
+      <p class="hrow mono"><span>Hoofdstuk 00</span><i>/</i><span>Den Haag</span><i>/</i><span>Nog 4 weken</span></p>
+      <h1 class="htitle">De Spaanse<span class="l2">droom</span></h1>
+      <div class="hbot">
+        <p class="hsub">{site.omschrijving}</p>
+        <div class="cta">
+          <a class="btn btn-f" href="#volg">Volg het avontuur</a>
+          <a class="btn btn-l" href="#verhaal">Begin bij het begin</a>
+        </div>
+      </div>
+      <Routelijn />
+    </div>
+  </header>
+
+  <!-- 2 · Geen masterplan -->
+  <section class="paper sec" id="verhaal">
+    <div class="grain"></div>
+    <div class="wrap">
+      <div class="grid2 g-intro rv">
+        <h2 class="h2">Geen masterplan.<br />Wel een <em>droom</em>.</h2>
+        <div class="lead">
+          <p>Ik laat me leven in Nederland achter en vertrek richting Spanje. Eerst een tijdje bij een vriend, daarna zoeken naar een eigen plek. Liefst met ruimte, bergen en genoeg werk om mezelf de komende jaren bezig te houden.</p>
+          <p>Met Mo naast me en waarschijnlijk regelmatig geen idee waar ik aan begonnen ben.</p>
+        </div>
+      </div>
+      <div class="steps rv">
+        {stappen.map(s => (
+          <div class={s.nu ? 'step now' : 'step'}>
+            <div class="step-n">{s.n}</div>
+            <div class="step-t">{s.titel}</div>
+            <div class="step-d">{s.tekst}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · Nu -->
+  <section class="sec" id="nu">
+    <div class="grain"></div>
+    <div class="wrap">
+      <div class="grid2 g-nu rv">
+        <div class="nuphotos">
+          <Image src={tekoop} alt="Het te-koop-bord van de makelaar aan de gevel" widths={[500, 900]} sizes="(max-width:880px) 90vw, 45vw" />
+          <Image src={dozen} class="nu-b" alt="Verhuisdozen opgestapeld tegen de muur" widths={[400, 700]} sizes="30vw" />
+          <p class="nucap mono">Augustus 2026 · Den Haag</p>
+        </div>
+        <div>
+          <p class="eyebrow" style="color:var(--gold)">{nu.label}</p>
+          <h2 class="nu-h">{nu.kop}</h2>
+          <p class="nu-p">{nu.tekst}</p>
+          <dl class="log">
+            {nu.logboek.map(([k, v]) => (
+              <div class="logrow"><dt>{k}</dt><dd>{v}</dd></div>
+            ))}
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · Story break -->
+  <section class="break">
+    <Image src={landschap} alt="Spaans berglandschap met terrassen en amandelbomen"
+      class="break-bg" widths={[900, 1400, 1900]} sizes="100vw" />
+    <div class="wrap">
+      <p class="quote rv">Alles komt goed, zou me vader zeggen. En dat zeg ik ook altijd.
+        <span>Zo vader, zo zoon</span></p>
+    </div>
+  </section>
+
+  <!-- 5 · De bus -->
+  <section class="bus sec-ruim">
+    <div class="grain"></div>
+    <div class="wrap">
+      <div class="grid2 g-bus rv">
+        <div class="bustext">
+          <p class="eyebrow" style="color:var(--gold)">De bus</p>
+          <h2 class="bus-h">De Transporter<br />van me vader.</h2>
+          <p>Acht jaar geleden reed ik hiermee naar Alfaz del Pi. Met mijn vader Leo en met Bo. We hebben toen een route door de Pyreneeën gereden waarvan we soms dachten dat we in Zwitserland zaten.</p>
+          <p>Mijn vader is er niet meer. Mijn moeder ook niet. En lieve Bo ook niet. De bus staat er nog, en daar rijd ik straks weer mee naar beneden. Alleen nu met Mo erbij.</p>
+          <p>Naar Spanje gaan was altijd hun droom. Ze hebben het nooit gedaan, omdat ze de kinderen en de kleinkinderen niet achter wilden laten. Nu maak ik hem alsnog waar.</p>
+        </div>
+        <div class="busimgs">
+          <figure>
+            <Image src={boBus} alt="Bo, witte labrador, in de bus onderweg" widths={[500, 900]} sizes="(max-width:880px) 90vw, 45vw" />
+            <figcaption class="figcap mono"><span>Lieve Bo</span><span>Onderweg naar het zuiden</span></figcaption>
+          </figure>
+          <figure style="width:70%">
+            <Image src={boZwem} alt="Wesley in het zwembad met Bo aan de rand" widths={[400, 800]} sizes="30vw" />
+            <figcaption class="figcap mono"><span>Alfaz del Pi</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · De route -->
+  <section class="paper sec" id="route">
+    <div class="grain"></div>
+    <div class="wrap">
+      <div class="rt-head rv">
+        <h2 class="h2">De route<br />tot nu toe</h2>
+        <p class="rt-sub">Van Den Haag naar waar we uitkomen. Deze lijn groeit mee.</p>
+      </div>
+      <div class="rail rv">
+        <div class="stops">
+          {route.map(r => (
+            <div class="stop" data-status={r.status}>
+              <p class="stop-d">{r.wanneer}</p>
+              <h3 class="stop-t">{r.titel}</h3>
+              <p class="stop-x">{r.tekst}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · Mowgli -->
+  <section class="mow sec">
+    <div class="grain"></div>
+    <div class="wrap">
+      <div class="grid2 g-mow rv">
+        <Image src={mo} alt="Mowgli op de rotsen aan de Spaanse kust" widths={[400, 800]} sizes="(max-width:760px) 90vw, 32vw" />
+        <div>
+          <p class="eyebrow">Mowgli's inspectierapport</p>
+          <h2 class="mow-h">De hond<br />heeft al gekeurd.</h2>
+          <div class="verdict">
+            <b>{mowgli.rapport}</b>
+            {mowgli.tekst}
+            <p class="sign">Mo</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · Even in het hier en nu -->
+  {berichten.length > 0 && (
+    <section class="paper sec-krap" id="hierennu">
+      <div class="grain"></div>
+      <div class="wrap">
+        <div class="rv" style="margin-bottom:2.5rem">
+          <p class="eyebrow">Even in het hier en nu</p>
+          <h2 class="h2" style="margin-top:.6rem">Korte berichten<br />onderweg</h2>
+        </div>
+        <div class="kaarten rv">
+          {berichten.map((b) => {
+            const Content = b.Content;
+            return (
+              <article class="kaart">
+                <p class="kaart-m mono">
+                  <span>{fmt(b.data.datum)}</span>
+                  {b.data.locatie && <><i>/</i><span>{b.data.locatie}</span></>}
+                  <i>/</i><span>Nr. {String(b.data.nummer).padStart(3, '0')}</span>
+                </p>
+                {b.data.titel && <h3>{b.data.titel}</h3>}
+                <Content />
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- 9 · Volg onderweg mee -->
+  <section class="sec" id="volg">
+    <div class="grain"></div>
+    <div class="wrap">
+      <div class="rv" style="max-width:34ch;margin-bottom:3.25rem">
+        <h2 class="h2">Volg onderweg mee</h2>
+        <p style="color:rgba(245,241,232,.6);font-size:.9375rem;line-height:1.65;margin-top:1.1rem">
+          Alles komt hier terecht. Op de socials gaat het sneller en korter.</p>
+      </div>
+      <div class="rv">
+        {socials.map(s => (
+          <a class="chan" href={s.href} target="_blank" rel="noopener">
+            <span class="chan-n">{s.naam}</span>
+            <span class="chan-d">{s.omschrijving}</span>
+            <span class="chan-a">{s.actie}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>

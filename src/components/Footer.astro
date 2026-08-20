@@ -1,0 +1,33 @@
+---
+import Merkteken from './Merkteken.astro';
+import { site, nav, socials } from '../data/site.js';
+---
+<footer>
+  <svg class="ridge" viewBox="0 0 1440 88" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 88 L0 60 L120 42 L215 64 L330 28 L430 56 L560 20 L660 50 L790 32 L900 62 L1030 36 L1150 58 L1270 38 L1360 56 L1440 42 L1440 88 Z"
+      fill="none" stroke="#D9C6A5" stroke-width="1.2" />
+  </svg>
+  <div class="wrap">
+    <div class="ftop">
+      <div>
+        <div class="brand">
+          <Merkteken size={30} />
+          <span class="wm">{site.naam}<small>{site.serie}</small></span>
+        </div>
+        <p class="ftag">{site.slotzin[0]}<br />{site.slotzin[1]}</p>
+      </div>
+      <div class="fcol">
+        <h4>De reis</h4>
+        {nav.map(i => <a href={i.href}>{i.titel}</a>)}
+      </div>
+      <div class="fcol">
+        <h4>Onderweg</h4>
+        {socials.map(s => <a href={s.href} rel="noopener">{s.naam}</a>)}
+      </div>
+    </div>
+    <div class="fbot mono">
+      <span>&copy; {new Date().getFullYear()} {site.naam}</span>
+      <span><a href="/privacy-policy/">Privacy</a> &middot; <a href="/cookies/">Cookies</a> &middot; <a href="/contact/">Contact</a></span>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,52 @@
+---
+import Base from '../layouts/Base.astro';
+import { site, contact, analytics } from '../data/site.js';
+
+const bijgewerkt = '20 augustus 2026';
+---
+
+<Base
+  titel="Privacy"
+  omschrijving="Wat er op wesleyvaders.nl aan gegevens wordt verwerkt, en wat niet."
+>
+  <section class="paper" style="padding:clamp(9rem,16vw,13rem) 0 clamp(4rem,8vw,6rem)">
+    <div class="grain"></div>
+    <div class="wrap">
+      <p class="eyebrow">Bijgewerkt {bijgewerkt}</p>
+      <h1 class="h2" style="margin-top:.7rem">Privacy</h1>
+    </div>
+  </section>
+
+  <section class="paper" style="padding-bottom:var(--lucht)">
+    <div class="wrap">
+      <div class="artikel">
+        <p>Kort samengevat: dit is een persoonlijke site over mijn vertrek naar Spanje. Ik verkoop hier niks, ik heb geen inlogschermen, geen nieuwsbrief en geen klantenbestand. Het enige wat ik meet is hoeveel mensen er komen en wat ze lezen.</p>
+
+        <h2>Wie is verantwoordelijk</h2>
+        <p>{site.naam}, gevestigd in {contact.plaats}. Vragen over je gegevens kun je stellen via <a href={`mailto:${contact.email}`}>{contact.email}</a>.</p>
+
+        <h2>Statistieken</h2>
+        <p>Ik gebruik Google Analytics 4 om te zien hoeveel bezoekers er zijn, welke pagina's gelezen worden en via welk kanaal mensen binnenkomen. Dat gebeurt met meet-id <code>{analytics.ga4Id}</code>.</p>
+        <p>Google Analytics staat standaard uit. Pas als je in de balk onderaan op Prima klikt, worden er analytische cookies geplaatst. Klik je op Liever niet, of doe je niks, dan blijven die cookies weg en ontvangt Google alleen een geanonimiseerd signaal zonder identificerende gegevens. Je IP-adres wordt in alle gevallen ingekort voordat het wordt opgeslagen.</p>
+        <p>Ik gebruik deze cijfers niet voor advertenties en deel ze met niemand. Ik kan er niet uit afleiden wie jij bent.</p>
+
+        <h2>Hosting en techniek</h2>
+        <p>De site draait bij CloudMonsters in Nederland en wordt uitgeserveerd via het Bunny CDN. Zoals bij elke website leggen die servers technische gegevens vast, zoals je IP-adres, het opgevraagde bestand en je browsertype. Dat gebeurt om de site te laten werken en om misbruik tegen te gaan, en die logboeken worden na korte tijd verwijderd.</p>
+        <p>Voor de lettertypen laadt de site Instrument Serif, Instrument Sans en JetBrains Mono via Google Fonts. Daarbij gaat je IP-adres naar Google.</p>
+
+        <h2>Wat ik niet doe</h2>
+        <p>Geen nieuwsbrief. Geen contactformulier dat gegevens opslaat. Geen advertentienetwerken, geen trackingpixels van Meta of TikTok, geen profielen, geen doorverkoop. Video's en foto's van sociale media worden niet ingesloten maar alleen gelinkt, zodat die platformen je niet volgen zolang je op mijn site bent.</p>
+
+        <h2>E-mail</h2>
+        <p>Stuur je mij een bericht, dan bewaar ik dat mailtje zolang dat nodig is om je te antwoorden. Ik zet je daarmee nergens op een lijst.</p>
+
+        <h2>Je rechten</h2>
+        <p>Je mag opvragen welke gegevens ik van je heb, ze laten corrigeren of laten verwijderen, en je toestemming voor statistieken op elk moment intrekken. Dat laatste doe je door de cookies van deze site in je browser te wissen, waarna de balk opnieuw verschijnt.</p>
+        <p>Kom je er met mij niet uit, dan kun je een klacht indienen bij de Autoriteit Persoonsgegevens.</p>
+
+        <h2>Wijzigingen</h2>
+        <p>Deze pagina verandert mee als de site verandert. Bovenaan staat wanneer hij voor het laatst is bijgewerkt.</p>
+      </div>
+    </div>
+  </section>
+</Base>

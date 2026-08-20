@@ -1,0 +1,81 @@
+---
+import Base from '../layouts/Base.astro';
+import { contact, analytics } from '../data/site.js';
+
+const bijgewerkt = '20 augustus 2026';
+
+const cookies = [
+  {
+    naam: '_ga',
+    partij: 'Google Analytics',
+    doel: 'Onderscheidt bezoekers van elkaar zodat ik weet hoeveel mensen er komen.',
+    duur: '2 jaar',
+    soort: 'Statistieken'
+  },
+  {
+    naam: '_ga_' + analytics.ga4Id.replace('G-', ''),
+    partij: 'Google Analytics',
+    doel: 'Houdt de sessie bij tijdens je bezoek.',
+    duur: '2 jaar',
+    soort: 'Statistieken'
+  },
+  {
+    naam: 'wv-consent',
+    partij: 'Deze site',
+    doel: 'Onthoudt of je de statistieken hebt toegestaan, zodat de balk niet elke keer terugkomt.',
+    duur: 'Tot je hem wist',
+    soort: 'Noodzakelijk'
+  }
+];
+---
+
+<Base
+  titel="Cookies"
+  omschrijving="Welke cookies wesleyvaders.nl gebruikt en wanneer."
+>
+  <section class="paper" style="padding:clamp(9rem,16vw,13rem) 0 clamp(4rem,8vw,6rem)">
+    <div class="grain"></div>
+    <div class="wrap">
+      <p class="eyebrow">Bijgewerkt {bijgewerkt}</p>
+      <h1 class="h2" style="margin-top:.7rem">Cookies</h1>
+    </div>
+  </section>
+
+  <section class="paper" style="padding-bottom:var(--lucht)">
+    <div class="wrap">
+      <div class="artikel">
+        <p>Drie cookies. Twee daarvan komen pas als jij daar ja tegen zegt.</p>
+      </div>
+
+      <div style="max-width:60rem;margin-top:2.5rem;border-top:1px solid var(--lijn)">
+        {cookies.map(c => (
+          <div style="display:grid;grid-template-columns:minmax(9rem,1fr) 2.4fr auto;gap:1.5rem;padding:1.4rem 0;border-bottom:1px solid var(--lijn);align-items:baseline">
+            <div>
+              <p class="mono" style="color:var(--terra);margin:0 0 .35rem">{c.soort}</p>
+              <code style="font-family:var(--mono);font-size:.8125rem">{c.naam}</code>
+            </div>
+            <div>
+              <p style="margin:0 0 .3rem;font-size:.9375rem;line-height:1.6;color:rgba(20,20,18,.78)">{c.doel}</p>
+              <p style="margin:0;font-size:.8125rem;color:rgba(20,20,18,.5)">{c.partij}</p>
+            </div>
+            <p class="mono" style="color:rgba(20,20,18,.5);margin:0;white-space:nowrap">{c.duur}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="artikel" style="margin-top:3rem">
+        <h2>Hoe het werkt</h2>
+        <p>Als je hier voor het eerst komt, staan de statistiekcookies uit. Onderin verschijnt na een seconde een smalle balk met twee knoppen. Klik je op Prima, dan mag Google Analytics zijn cookies plaatsen. Klik je op Liever niet, dan gebeurt dat niet en werkt de site verder precies hetzelfde.</p>
+        <p>Die keuze wordt lokaal in je browser bewaard onder <code>wv-consent</code>, zodat je er niet elk bezoek opnieuw last van hebt.</p>
+
+        <h2>Van gedachten veranderd</h2>
+        <p>Wis de cookies en de opslag van deze site in je browserinstellingen. De balk verschijnt dan opnieuw en je kunt opnieuw kiezen.</p>
+
+        <h2>Wat er niet is</h2>
+        <p>Geen advertentiecookies, geen trackingpixels van Meta of TikTok, geen ingesloten video's die je volgen. Video's link ik naar YouTube of TikTok in plaats van ze hier in te sluiten, precies om die reden.</p>
+
+        <p>Meer weten? Dat staat op de <a href="/privacy-policy/">privacypagina</a>, of mail me op <a href={`mailto:${contact.email}`}>{contact.email}</a>.</p>
+      </div>
+    </div>
+  </section>
+</Base>
