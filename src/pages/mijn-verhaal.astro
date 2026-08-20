@@ -3,9 +3,13 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import { site } from '../data/site.js';
 
-import bus from '../../public/fotos/transporter.webp';
 import landschap from '../../public/fotos/hero.webp';
+import bus from '../../public/fotos/transporter.webp';
 import boBus from '../../public/fotos/bo_bus.webp';
+import duinen from '../../public/fotos/duinen.webp';
+import bbqPat from '../../public/fotos/bbq_pat.webp';
+import bbqWes from '../../public/fotos/bbq_wes.webp';
+import leo from '../../public/fotos/leo.webp';
 
 const schema = {
   '@context': 'https://schema.org',
@@ -21,60 +25,71 @@ const schema = {
   omschrijving="Van hutten bouwen in de Gaardes naar een finca in de Spaanse bergen. Hoe ik hier terecht ben gekomen."
   schema={schema}
 >
-  <!-- kop -->
-  <header class="paper kop">
+  <!-- opening -->
+  <header class="opening">
     <div class="grain"></div>
-    <div class="wrap">
-      <p class="eyebrow">Mijn verhaal</p>
-      <h1 class="h2 titel">Waarom ik<br />dit doe.</h1>
-      <p class="inleiding">Van hutten bouwen in de Gaardes naar een finca in de bergen. Het is niet in één rechte lijn gegaan.</p>
+    <div class="wrap op-in">
+      <p class="op-eyebrow mono">Mijn verhaal <i>/</i> acht hoofdstukken</p>
+      <h1 class="op-titel">Waarom ik<br /><span>dit doe.</span></h1>
+      <p class="op-lead">Van hutten bouwen in de Gaardes naar een finca in de bergen. Het is niet in één rechte lijn gegaan.</p>
+      <p class="op-scroll mono">Begin bij het begin &darr;</p>
     </div>
   </header>
 
-  <article class="paper verhaal">
+  <!-- 01 + 02 -->
+  <section class="vlak paper">
+    <div class="grain"></div>
     <div class="wrap">
-
-      <section class="hfd">
-        <p class="hfd-n">01</p>
-        <div class="hfd-c">
+      <article class="hfd">
+        <p class="cijfer">01</p>
+        <div class="tekst">
           <h2>De Gaardes</h2>
           <p>Geboren en getogen in Den Haag, 29 juli 1986, in de Wantsnijdersgaarde. De Gaardes noemden we die wijk.</p>
           <p>Hutten bouwen was mijn passie. En oorlogje spelen. Dan liep je daar in je legerpak met een blaaspijp. Geen last van schuld of schaamte. Gewoon lekker kind zijn.</p>
           <p>En als ik geen hutten aan het bouwen was, was ik aan het tekenen.</p>
         </div>
-      </section>
+      </article>
 
-      <section class="hfd">
-        <p class="hfd-n">02</p>
-        <div class="hfd-c">
+      <article class="hfd">
+        <p class="cijfer">02</p>
+        <div class="tekst">
           <h2>Wateringse Veld</h2>
           <p>Toen ik een jaar of twaalf was werd mijn wijk gesloopt en moesten we verhuizen. Wateringse Veld werd de bestemming. Alles nieuwbouw en nog volop in aanbouw.</p>
           <p>Een nieuwe start die minder liep dan gehoopt. Ik raakte er al snel in contact met de verkeerde vrienden en op jonge leeftijd met drugs. Het jeugdige was er ineens vanaf.</p>
           <p>In diezelfde periode ging ik naar het Johan de Witt in Scheveningen, grafisch en creatief. Daar maakte ik kennis met het begin van internet, met vormgeven en met fotografie. Veel vrije denkers, die ook niet vies waren van verdovende middelen.</p>
         </div>
-      </section>
+      </article>
+    </div>
+  </section>
 
-      <section class="hfd">
-        <p class="hfd-n">03</p>
-        <div class="hfd-c">
+  <!-- 03 · zand, met beeld -->
+  <section class="vlak zand">
+    <div class="grain"></div>
+    <div class="wrap">
+      <article class="hfd met-beeld">
+        <p class="cijfer">03</p>
+        <div class="tekst">
           <h2>Wes, Jeff, Dev</h2>
           <p>Mijn moeder heette Fabiola. Zorgzaam, en de motor van ons gezin. Het was de hele dag door Wes, Jeff, Dev. Mijn broertje, mijn zusje en ik.</p>
           <p>Ze maakte altijd grapjes met taal. <em>Nothing on the hand.</em> Of <em>I do not wanne praat about is.</em> En als ze de telefoon opnam: <em>it's me, Flappie.</em></p>
           <p>Mijn vader Leo was schoenmaker, tot hij rond zijn veertigste MS kreeg.</p>
           <p>We gingen bijna elk jaar op vakantie. Eerst Benidorm, later bij vrienden in Alfaz del Pi. Daar wonen was altijd hun droom. Ze hebben het nooit gedaan, omdat ze de kinderen en de kleinkinderen niet achter wilden laten.</p>
         </div>
-      </section>
+        <figure class="beeld">
+          <Image src={bbqWes} alt="Wesley aan de barbecue op een terras in Alfaz del Pi" widths={[400, 800]} sizes="(max-width:900px) 90vw, 32vw" />
+          <figcaption class="mono">Alfaz del Pi</figcaption>
+        </figure>
+      </article>
     </div>
+  </section>
 
-    <figure class="breed">
-      <Image src={landschap} alt="Spaans berglandschap met terrassen en amandelbomen" widths={[900, 1400, 1900]} sizes="100vw" />
-      <figcaption class="mono">Alfaz del Pi lag een uur hiervandaan</figcaption>
-    </figure>
-
+  <!-- 04 -->
+  <section class="vlak paper">
+    <div class="grain"></div>
     <div class="wrap">
-      <section class="hfd">
-        <p class="hfd-n">04</p>
-        <div class="hfd-c">
+      <article class="hfd">
+        <p class="cijfer">04</p>
+        <div class="tekst">
           <h2>Bouwen en tekenen</h2>
           <p>Na wat bewogen jaren stroomde ik door naar het Grafisch Lyceum in Rotterdam. Daar maakte ik er een puinhoop van en werd ik in mijn tweede jaar van school gestuurd. Ik moest maar gaan werken. Mooi zo, ik was klaar met school.</p>
           <p>Twee, drie jaar schoonmaak en glasbewassing later kwam ik erachter dat dit niet mijn droombaan was. Terug naar Rotterdam, toegelaten, en afgestudeerd als multimedia vormgever.</p>
@@ -82,15 +97,22 @@ const schema = {
           <p>Wat er kwam was weer de glazenwasserij. Buiten werken, onder de mensen, in de natuur. Maar mijn creatieve ei miste. Dus bouwde ik er in 2014 een website naast: Bouwsteentjes, een blog over lego. Dat werd een groot succes, met veel bezoekers en zelfs inkomsten. En rond 2018 werd het dagelijkse bloggen me te veel en heb ik hem overgedragen. Daar heb ik achteraf spijt van.</p>
           <p>Maar het leerde me wel iets.</p>
         </div>
-      </section>
+      </article>
+      <blockquote class="citaat">Ik hou nog steeds van bouwen.<br />Maar het moeten vind ik niks.</blockquote>
+    </div>
+  </section>
 
-      <blockquote class="citaat">
-        Ik hou nog steeds van bouwen. Maar het moeten vind ik niks.
-      </blockquote>
+  <figure class="breed">
+    <Image src={landschap} alt="Spaans berglandschap met terrassen en amandelbomen" widths={[900, 1400, 1900]} sizes="100vw" />
+  </figure>
 
-      <section class="hfd">
-        <p class="hfd-n">05</p>
-        <div class="hfd-c">
+  <!-- 05 · donker -->
+  <section class="vlak donker">
+    <div class="grain"></div>
+    <div class="wrap">
+      <article class="hfd">
+        <p class="cijfer">05</p>
+        <div class="tekst">
           <h2>Terug naar de grond</h2>
           <p>Die paniekaanvallen bleven. Ik ging naar een fysiotherapeut voor ademhalingsoefeningen, maar die zei dat er met mijn ademhaling niets aan de hand was en stuurde me door naar een alternatief therapeut. Als het helpt, dacht ik.</p>
           <p>Daar gebeurde iets bijzonders. Ze zei dat ik alles was behalve in mijn lichaam. Jij schiet alle kanten op, waren haar woorden. Ze noemde me hooggevoelig en liet me voor het eerst mediteren.</p>
@@ -98,132 +120,223 @@ const schema = {
           <p>Er ging een wereld voor me open. Ik bleek helderhorend, en later dat ik kon magnetiseren. Ik dacht half gek te worden en wilde er een verklaring voor, dus begon ik aan een vierjarige opleiding hypnotherapie. Daar vielen een hoop puzzelstukjes op hun plek, al zat ik nog niet helemaal op de goede plek. In mijn tweede jaar ging ik er energetische therapie naast doen. Daar voelde ik me wel thuis. Ik leerde afstromen, energie scheiden, en vooral hoe ik mijn dagelijks leven dragelijker kon maken.</p>
           <p>Sinds mijn vader ziek werd heb ik afstand genomen van alles wat buiten me ligt. Gronden, aarden, in het hier en nu. Dat is wat er is overgebleven, en eigenlijk is dat ook het meeste waard.</p>
         </div>
-      </section>
+      </article>
+    </div>
+  </section>
 
-      <section class="hfd">
-        <p class="hfd-n">06</p>
-        <div class="hfd-c">
+  <!-- 06 -->
+  <section class="vlak paper">
+    <div class="grain"></div>
+    <div class="wrap">
+      <article class="hfd met-beeld">
+        <p class="cijfer">06</p>
+        <div class="tekst">
           <h2>Wat ik verloor</h2>
           <p>In 2021, ik had net vijf lesweekenden gehad, overleed mijn moeder plotseling. Ik had veel moeite om me op de opleiding te focussen, maar uiteindelijk heeft diezelfde opleiding me er ook doorheen geholpen.</p>
           <p>Ik was net een praktijk als magnetiseur begonnen toen mijn vader in 2022 de diagnose ALS kreeg. Hij had daarvoor al jaren MS en een aantal tia's gehad.</p>
           <p>Ik ben gestopt met de praktijk en gestopt met de glazenwasserij, en ben voor hem gaan zorgen. Alleen de websites hield ik aan, want dat kon ik bij hem thuis doen en later in het verzorgingstehuis. Daar zat ik de laatste periode zes dagen per week.</p>
           <p>Op 8 april 2026 is hij overleden.</p>
         </div>
-      </section>
+        <!-- Deze foto mag weg door dit hele figure-blok te verwijderen. -->
+        <figure class="beeld klein">
+          <Image src={leo} alt="Wesley bij zijn vader in het verzorgingstehuis" widths={[380, 760]} sizes="(max-width:900px) 80vw, 26vw" />
+          <figcaption class="mono">2025</figcaption>
+        </figure>
+      </article>
     </div>
+  </section>
 
-    <figure class="breed">
-      <Image src={boBus} alt="Bo, blonde labrador, in de bus onderweg naar Spanje" widths={[700, 1100]} sizes="(max-width:900px) 100vw, 70vw" />
-      <figcaption class="mono">Bo, op weg naar zijn laatste goede weken</figcaption>
-    </figure>
+  <figure class="breed hoog">
+    <Image src={boBus} alt="Bo, blonde labrador, in de bus onderweg naar Spanje" widths={[700, 1100]} sizes="100vw" />
+    <figcaption class="mono">Bo, op weg naar zijn laatste goede weken</figcaption>
+  </figure>
 
+  <!-- 07 -->
+  <section class="vlak paper">
+    <div class="grain"></div>
     <div class="wrap">
-      <section class="hfd">
-        <p class="hfd-n">07</p>
-        <div class="hfd-c">
+      <article class="hfd">
+        <p class="cijfer">07</p>
+        <div class="tekst">
           <h2>Waarom nu</h2>
           <p>Acht jaar geleden reed ik met mijn vader naar Alfaz del Pi, in de Transporter die ik nu van hem heb. Mijn blonde labrador Bo was toen tien en begon ziek te worden. In Spanje leefde hij helemaal op. Kort na de terugreis hebben we hem in moeten laten slapen. Die rit was zijn laatste geluksmoment.</p>
           <p>Mijn moeder is 58 geworden. Mijn vader 61. Ik ben 40.</p>
           <p>Dat rekensommetje laat weinig ruimte voor uitstel.</p>
         </div>
-      </section>
+      </article>
+      <blockquote class="citaat">Je kunt beter nu iets doen en er spijt van hebben, dan achteraf spijt hebben van dromen die je nooit geprobeerd hebt.</blockquote>
+    </div>
+  </section>
 
-      <blockquote class="citaat">
-        Je kunt beter nu iets doen en er spijt van hebben, dan achteraf spijt hebben van dromen die je nooit geprobeerd hebt.
-      </blockquote>
-
-      <section class="hfd">
-        <p class="hfd-n">08</p>
-        <div class="hfd-c">
+  <!-- 08 · zand, twee beelden -->
+  <section class="vlak zand">
+    <div class="grain"></div>
+    <div class="wrap">
+      <article class="hfd">
+        <p class="cijfer">08</p>
+        <div class="tekst">
           <h2>En nu dan</h2>
           <p>Mijn huis is verkocht. Mijn werk gaat mee, want websites bouw ik overal. En Mo natuurlijk, mijn bruine labrador van acht.</p>
           <p>In september rijd ik naar Pat. De zoon van de vrienden van mijn ouders in Alfaz del Pi, bij wie ik als kind al kwam. Geen vriend maar hermano, want zo voelt het. De eerste tijd woon ik bij hem, daarna ga ik zoeken naar een eigen plek.</p>
           <p>Ruimte, bergen, en genoeg werk om mezelf de komende jaren bezig te houden. Iets om te bouwen.</p>
           <p>Ik was ooit een jongen die hutten bouwde in de Gaardes. Zo veel is er niet veranderd.</p>
         </div>
-      </section>
-    </div>
+      </article>
 
-    <figure class="breed">
-      <Image src={bus} alt="De VW Transporter langs de weg bij de bergen in Spanje" widths={[900, 1400, 1900]} sizes="100vw" />
-      <figcaption class="mono">Dezelfde bus, straks weer dezelfde weg</figcaption>
-    </figure>
-
-    <div class="wrap slot">
-      <p class="eyebrow">Waar het nu staat</p>
-      <h2 class="h2 slot-h">Hier zit ik dan,<br />half tussen de dozen.</h2>
-      <div class="slot-b">
-        <p>Nog een paar weken en dan ben ik dakloos. Wat er daarna gebeurt komt allemaal op deze site terecht.</p>
-        <div class="slot-cta">
-          <a class="btn btn-f" href="/#volg">Volg het avontuur</a>
-          <a class="btn btn-l donker" href="/#route">Bekijk de route</a>
-        </div>
+      <div class="duo">
+        <figure>
+          <Image src={duinen} alt="Pat, Leo en Wesley in de duinen" widths={[420, 840]} sizes="(max-width:760px) 90vw, 34vw" />
+          <figcaption class="mono">Pat, mijn vader en ik</figcaption>
+        </figure>
+        <figure>
+          <Image src={bbqPat} alt="Pat en Wesley bij de buitenkeuken in Spanje" widths={[560, 1100]} sizes="(max-width:760px) 90vw, 46vw" />
+          <figcaption class="mono">Bij Pat, Alfaz del Pi</figcaption>
+        </figure>
       </div>
     </div>
-  </article>
+  </section>
+
+  <figure class="breed">
+    <Image src={bus} alt="De VW Transporter langs de weg bij de bergen in Spanje" widths={[900, 1400, 1900]} sizes="100vw" />
+  </figure>
+
+  <section class="vlak donker slot">
+    <div class="grain"></div>
+    <div class="wrap">
+      <p class="eyebrow" style="color:var(--gold)">Waar het nu staat</p>
+      <h2 class="slot-h">Hier zit ik dan,<br />half tussen de dozen.</h2>
+      <p class="slot-p">Nog een paar weken en dan ben ik dakloos. Wat er daarna gebeurt komt allemaal hier terecht.</p>
+      <div class="slot-cta">
+        <a class="btn btn-f" href="/#volg">Volg het avontuur</a>
+        <a class="btn btn-l" href="/#route">Bekijk de route</a>
+      </div>
+    </div>
+  </section>
 </Base>
 
 <style>
-  .kop { padding: clamp(9rem, 16vw, 13rem) 0 clamp(2.5rem, 5vw, 4rem); }
-  .titel { margin: .7rem 0 1.75rem; }
-  .inleiding {
-    font-size: clamp(1.0625rem, 1.6vw, 1.25rem);
-    line-height: 1.6; max-width: 38ch; color: rgba(20, 20, 18, .66); margin: 0;
+  /* ---------- opening ---------- */
+  .opening {
+    position: relative; min-height: 92svh; display: flex; align-items: flex-end;
+    background: var(--ink); color: var(--paper);
+    padding-block: 9rem 3.5rem; overflow: hidden;
   }
-
-  .verhaal { padding-bottom: clamp(4rem, 8vw, 7rem); }
-
-  .hfd {
-    display: grid; grid-template-columns: 5rem 1fr;
-    gap: clamp(1.25rem, 4vw, 3.5rem);
-    padding: clamp(2.5rem, 5vw, 4rem) 0;
-    border-top: 1px solid rgba(20, 20, 18, .14);
+  .opening::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(110% 70% at 8% 108%, rgba(176, 87, 58, .34), transparent 62%);
   }
-  @media (max-width: 760px) {
-    .hfd { grid-template-columns: 1fr; gap: .75rem; padding: 2rem 0; }
-  }
-  .hfd-n {
-    font-family: var(--mono); font-size: .6875rem; letter-spacing: .16em;
-    color: rgba(20, 20, 18, .38); margin: 0; padding-top: .55rem;
-  }
-  .hfd-c { max-width: 46ch; }
-  .hfd-c h2 {
+  .op-in { position: relative; z-index: 2; }
+  .op-eyebrow { color: var(--sand); opacity: .75; margin: 0 0 2rem; }
+  .op-eyebrow i { font-style: normal; opacity: .4; }
+  .op-titel {
     font-family: var(--serif); font-weight: 400;
-    font-size: clamp(1.875rem, 4vw, 3rem); line-height: 1;
-    letter-spacing: -.015em; margin: 0 0 1.5rem;
+    font-size: clamp(3rem, 10vw, 9rem); line-height: .86;
+    letter-spacing: -.03em; margin: 0;
   }
-  .hfd-c p {
-    font-size: 1.0625rem; line-height: 1.75;
-    color: rgba(20, 20, 18, .8); margin: 0 0 1.2rem;
+  .op-titel span { color: var(--sand); }
+  .op-lead {
+    font-size: clamp(1.0625rem, 1.6vw, 1.3125rem); line-height: 1.55;
+    max-width: 34ch; margin: 2.5rem 0 0; color: rgba(245, 241, 232, .82);
   }
-  .hfd-c p:last-child { margin-bottom: 0; }
-  .hfd-c em { font-family: var(--serif); font-style: italic; font-size: 1.125em; }
+  .op-scroll { color: var(--sand); opacity: .55; margin: 3.5rem 0 0; }
 
+  /* ---------- vlakken ---------- */
+  .vlak { position: relative; padding-block: clamp(4.5rem, 9vw, 8rem); }
+  .zand { background: var(--sand); color: var(--ink); }
+  .donker { background: var(--forest); color: var(--paper); }
+
+  /* ---------- hoofdstuk ---------- */
+  .hfd {
+    display: grid; grid-template-columns: 7.5rem minmax(0, 46ch) 1fr;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    padding-block: clamp(2rem, 4vw, 3.25rem);
+  }
+  .hfd + .hfd { border-top: 1px solid currentColor; border-color: color-mix(in srgb, currentColor 16%, transparent); }
+  @media (max-width: 900px) {
+    .hfd { grid-template-columns: 1fr; gap: 1rem; }
+  }
+
+  .cijfer {
+    font-family: var(--serif); font-size: clamp(3rem, 6vw, 5.5rem);
+    line-height: .8; margin: 0; letter-spacing: -.04em;
+    color: transparent; -webkit-text-stroke: 1px currentColor; opacity: .3;
+  }
+  @media (max-width: 900px) {
+    .cijfer { font-size: 2.75rem; opacity: .35; }
+  }
+
+  .tekst h2 {
+    font-family: var(--serif); font-weight: 400;
+    font-size: clamp(2rem, 4.2vw, 3.25rem); line-height: 1;
+    letter-spacing: -.02em; margin: 0 0 1.6rem;
+  }
+  .tekst p {
+    font-size: 1.0625rem; line-height: 1.78; margin: 0 0 1.25rem;
+    color: color-mix(in srgb, currentColor 80%, transparent);
+  }
+  .tekst p:last-child { margin-bottom: 0; }
+  .tekst em { font-family: var(--serif); font-style: italic; font-size: 1.125em; }
+
+  /* hoofdstuk met beeld in de derde kolom */
+  .met-beeld .beeld { margin: 0; align-self: start; }
+  .met-beeld .beeld img { width: 100%; }
+  .met-beeld .beeld.klein { max-width: 20rem; }
+  .beeld figcaption {
+    margin-top: .7rem; opacity: .5;
+    font-family: var(--mono); font-size: .625rem;
+    letter-spacing: .15em; text-transform: uppercase;
+  }
+  @media (max-width: 900px) {
+    .met-beeld .beeld { margin-top: 2rem; max-width: 22rem; }
+  }
+
+  /* ---------- citaat ---------- */
   .citaat {
-    margin: clamp(1rem, 3vw, 2.5rem) 0 clamp(2rem, 4vw, 3.5rem);
-    padding: 0 0 0 clamp(1.25rem, 4vw, 3.5rem);
-    max-width: 24ch; border: 0;
+    margin: clamp(1rem, 3vw, 2rem) 0 0; padding: 0;
+    max-width: 22ch; border: 0;
     font-family: var(--serif); font-style: italic;
-    font-size: clamp(1.5rem, 3.2vw, 2.5rem); line-height: 1.22;
+    font-size: clamp(1.625rem, 3.6vw, 2.875rem); line-height: 1.18;
     color: var(--terra);
   }
-  @media (min-width: 761px) { .citaat { margin-left: 5rem; } }
+  @media (min-width: 901px) { .citaat { margin-left: calc(7.5rem + clamp(1.5rem, 4vw, 3.5rem)); } }
 
-  .breed { margin: clamp(2.5rem, 6vw, 5rem) 0; }
-  .breed img { width: 100%; max-height: 78svh; object-fit: cover; }
+  /* ---------- volle beelden ---------- */
+  .breed { margin: 0; position: relative; }
+  .breed img { width: 100%; max-height: 72svh; object-fit: cover; }
+  .breed.hoog img { max-height: 60svh; object-position: 50% 30%; }
   .breed figcaption {
-    width: min(1340px, 100% - 3rem); margin: .9rem auto 0;
-    color: rgba(20, 20, 18, .45);
+    position: absolute; left: 0; right: 0; bottom: 0;
+    width: min(1340px, 100% - 3rem); margin-inline: auto;
+    padding-bottom: 1.25rem; color: var(--sand);
+    font-family: var(--mono); font-size: .625rem;
+    letter-spacing: .15em; text-transform: uppercase;
+    text-shadow: 0 1px 12px rgba(20, 20, 18, .9);
   }
 
-  .slot { padding-top: clamp(1.5rem, 4vw, 2.5rem); }
-  .slot-h { margin: .7rem 0 1.5rem; }
-  .slot-b { max-width: 42ch; }
-  .slot-b p {
-    font-size: 1.0625rem; line-height: 1.7;
-    color: rgba(20, 20, 18, .7); margin: 0 0 2rem;
+  /* ---------- duo ---------- */
+  .duo {
+    display: grid; grid-template-columns: .8fr 1.2fr;
+    gap: clamp(1rem, 3vw, 2rem); align-items: end;
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+  @media (max-width: 760px) { .duo { grid-template-columns: 1fr; } }
+  .duo figure { margin: 0; }
+  .duo img { width: 100%; }
+  .duo figcaption {
+    margin-top: .7rem; opacity: .55;
+    font-family: var(--mono); font-size: .625rem;
+    letter-spacing: .15em; text-transform: uppercase;
+  }
+
+  /* ---------- slot ---------- */
+  .slot-h {
+    font-family: var(--serif); font-weight: 400;
+    font-size: clamp(2rem, 4.6vw, 3.5rem); line-height: 1.02;
+    margin: .7rem 0 1.4rem;
+  }
+  .slot-p {
+    font-size: 1.0625rem; line-height: 1.7; max-width: 40ch;
+    margin: 0 0 2rem; color: rgba(245, 241, 232, .74);
   }
   .slot-cta { display: flex; gap: .7rem; flex-wrap: wrap; }
-  .btn-l.donker { border-color: rgba(20, 20, 18, .28); }
-  .btn-l.donker:hover { border-color: var(--ink); background: rgba(20, 20, 18, .05); }
 </style>
