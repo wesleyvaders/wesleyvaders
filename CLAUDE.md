@@ -73,6 +73,8 @@ Astro maakt zelf de responsive varianten. Gebruik altijd `<Image>` uit `astro:as
 
 Verboden woorden: ontdek, discover, learn more, get started, stap voor stap, steen voor steen, authentiek, transformatie, journey, mindset, reis als metafoor, en alles met een uitroepteken.
 
+Wesley woont in Monster maar is een Hagenees, en zo communiceert hij ook. Den Haag gebruiken bij afkomst en identiteit: de hero, Mijn verhaal, de routelijn, de footer. Monster gebruiken bij feitelijke locaties bij een datum: korte berichten, verhalen, locatiebadges. Nooit Westland gebruiken.
+
 **Over zijn ouders.** Zijn vader Leo en zijn moeder zijn overleden, zijn oude hond Bo ook. Daar wordt over geschreven zoals hij erover praat: gewoon, tussen de dagelijkse dingen door. Geen kader, geen zwart-witfilter, geen plechtige typografie, nooit als opener en nooit als verkoopargument. Dit gaat over vooruit kijken, niet over verdriet. Schrijf er nooit omheen, maar maak er ook nooit een verhaal op zich van.
 
 **Geen verzonnen content.** Nooit volgersaantallen, kosten, aantallen bekeken finca's, testimonials of data verzinnen. Bestaat het nog niet, bouw het dan niet. Lege modules maken deze site kapot.

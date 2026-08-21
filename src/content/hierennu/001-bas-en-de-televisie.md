@@ -1,6 +1,6 @@
 ---
 datum: 2026-08-19
-locatie: Den Haag
+locatie: Monster
 nummer: 1
 ---
 
