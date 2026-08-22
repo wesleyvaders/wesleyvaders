@@ -14,6 +14,9 @@ const { Content } = await render(v);
 const d = v.data;
 const fmt = new Intl.DateTimeFormat('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' }).format(d.datum);
 
+// deelplaatje van de hoofdfoto, gemaakt door scripts/og.py
+const ogNaam = d.foto ? d.foto.src.split('/').pop().split('.')[0] : null;
+
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Article',
@@ -24,7 +27,9 @@ const schema = {
   mainEntityOfPage: new URL(Astro.url.pathname, site.domein).href
 };
 ---
-<Base titel={d.titel} omschrijving={d.kort} type="article" schema={schema}>
+<Base titel={d.titel} omschrijving={d.kort} type="article" schema={schema}
+  og={ogNaam ? `/og/${ogNaam}.jpg` : undefined}
+  ogAlt={ogNaam ? (d.fotoAlt ?? d.titel) : undefined}>
   <article>
     <header class="paper" style="padding:clamp(9rem,16vw,13rem) 0 clamp(2.5rem,5vw,4rem)">
       <div class="wrap" style="max-width:52rem">

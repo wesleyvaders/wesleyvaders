@@ -9,7 +9,8 @@ import { site } from '../data/site.js';
 const {
   titel,
   omschrijving = site.omschrijving,
-  og = '/fotos/transporter.webp',
+  og = '/og/transporter.jpg',
+  ogAlt = 'De bus van Wesley bij de bergen in Spanje',
   type = 'website',
   schema = null,
   navDonker = false
@@ -49,12 +50,13 @@ const persoon = {
   <meta property="og:description" content={omschrijving} />
   <meta property="og:url" content={url} />
   <meta property="og:image" content={new URL(og, site.domein).href} />
-  <meta property="og:image:width" content="1600" />
-  <meta property="og:image:height" content="1200" />
-  <meta property="og:image:alt" content="De bus van Wesley bij de bergen in Spanje" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content={ogAlt} />
   <meta property="og:locale" content="nl_NL" />
   <meta property="og:site_name" content={site.naam} />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content={new URL(og, site.domein).href} />
   <meta name="theme-color" content="#141412" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
