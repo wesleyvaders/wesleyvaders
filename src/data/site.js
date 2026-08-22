@@ -56,7 +56,7 @@ export const socials = [
 
 // Het NU-blok. Dit is het enige dat je echt vaak aanpast.
 export const nu = {
-  label: 'Nu · 19 augustus 2026',
+  label: 'Nu · 22 augustus 2026',
   kop: 'Hier zit ik dan, half tussen de dozen.',
   tekst:
     'Nog een kleine vier weken en ik ben dakloos. Een deel gaat de opslag in, de rest gaat mee als prio 1. Zoveel te regelen. Wat een drama. Maar alles komt goed.',
