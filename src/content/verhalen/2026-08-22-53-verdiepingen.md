@@ -24,6 +24,8 @@ Spullen uitgezocht. Wat naar Jeff gaat staat in de gang, hij heeft ook nog even 
 
 ![De gang vol tassen en een doos schilderijen voor Jeff](../../../public/fotos/gang-spullen-jeff.webp)
 
+![Bas op de bank, druk met LEGO tussen de verhuisdozen](../../../public/fotos/bas-lego.webp)
+
 Rond een uur of vijf waren we behoorlijk naar de conjo van al die trappen en dat gesjouw. Toch nog richting Brabant gereden om alles wat daar achterblijft weer uit te laden. Eten besteld, want koken zag niemand meer zitten.
 
 Volgens mijn telefoon: 53 verdiepingen en ruim vijftienduizend stappen. Ik heb nu pijn aan spieren waarvan ik niet wist dat ik ze had.
