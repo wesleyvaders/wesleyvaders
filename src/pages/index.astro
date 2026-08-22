@@ -20,6 +20,10 @@ const berichten = await Promise.all(
     .map(async (b) => ({ data: b.data, Content: (await render(b)).Content }))
 );
 
+const laatsteVerhalen = (await getCollection('verhalen', e => !e.data.concept))
+  .sort((a, b) => b.data.datum - a.data.datum)
+  .slice(0, 3);
+
 const fmt = (d) =>
   new Intl.DateTimeFormat('nl-NL', { day: '2-digit', month: '2-digit', year: 'numeric' })
     .format(d).replaceAll('-', '.');
@@ -172,6 +176,31 @@ const fmt = (d) =>
   </section>
 
   <!-- 8 · Even in het hier en nu -->
+  {laatsteVerhalen.length > 0 && (
+    <section class="paper sec-krap" id="laatste-verhalen">
+      <div class="grain"></div>
+      <div class="wrap">
+        <div class="rv" style="margin-bottom:2.5rem">
+          <p class="eyebrow">Het archief</p>
+          <h2 class="h2" style="margin-top:.6rem">Laatste verhalen</h2>
+        </div>
+        <div class="arch-lijst rv">
+          {laatsteVerhalen.map(v => (
+            <a class="arch" href={`/verhalen/${v.id}/`}>
+              <span class="arch-f" aria-hidden="true">
+                {v.data.foto && <Image src={v.data.foto} alt="" widths={[200, 400]} sizes="7.5rem" />}
+              </span>
+              <span class="arch-n">{fmt(v.data.datum)}</span>
+              <span class="arch-t">{v.data.titel}</span>
+              <span class="arch-d">{v.data.kort}</span>
+            </a>
+          ))}
+        </div>
+        <a class="arch-alle rv" href="/verhalen/">Alle verhalen</a>
+      </div>
+    </section>
+  )}
+
   {berichten.length > 0 && (
     <section class="paper sec-krap" id="hierennu">
       <div class="grain"></div>

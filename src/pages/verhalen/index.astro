@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 
 const verhalen = (await getCollection('verhalen', e => !e.data.concept))
@@ -21,12 +22,15 @@ const fmt = (d) => new Intl.DateTimeFormat('nl-NL', { day: '2-digit', month: '2-
           <p style="color:rgba(20,20,18,.6);line-height:1.7;margin-top:1rem">Kom later nog eens terug.</p>
         </div>
       ) : (
-        <div class="steps" style="margin-top:0">
+        <div class="arch-lijst">
           {verhalen.map(v => (
-            <a class="step" href={`/verhalen/${v.id}/`}>
-              <span class="step-n">{fmt(v.data.datum)}</span>
-              <span class="step-t">{v.data.titel}</span>
-              <span class="step-d">{v.data.kort}</span>
+            <a class="arch" href={`/verhalen/${v.id}/`}>
+              <span class="arch-f" aria-hidden="true">
+                {v.data.foto && <Image src={v.data.foto} alt="" widths={[200, 400]} sizes="7.5rem" />}
+              </span>
+              <span class="arch-n">{fmt(v.data.datum)}</span>
+              <span class="arch-t">{v.data.titel}</span>
+              <span class="arch-d">{v.data.kort}</span>
             </a>
           ))}
         </div>

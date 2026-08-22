@@ -161,6 +161,32 @@ footer .brand .wm small{font-size:.5rem;letter-spacing:.24em;opacity:.8;margin-t
 .step.now .step-n{color:var(--terra)}
 .step.now .step-n::after{content:" ●";font-size:.6em;vertical-align:.2em;color:var(--gold)}
 
+/* ---------- verhalenrijen met thumbnail ---------- */
+.arch-lijst{border-top:1px solid var(--lijn)}
+.arch{display:grid;grid-template-columns:7.5rem 6.5rem 1fr 1.1fr;
+  gap:clamp(1rem,3.5vw,2.75rem);align-items:center;
+  padding:clamp(1.4rem,2.8vw,2rem) 0;border-bottom:1px solid var(--lijn);
+  transition:background .35s,padding-left .35s}
+.arch:hover{background:rgba(217,198,165,.24);padding-left:1rem}
+.arch-f{display:block}
+.arch-f img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:2px;display:block}
+.arch-n{font-family:var(--mono);font-size:.75rem;letter-spacing:.1em;color:rgba(20,20,18,.42)}
+.arch-t{font-family:var(--serif);font-size:clamp(1.75rem,3.4vw,2.6rem);line-height:1}
+.arch-d{font-size:.9375rem;line-height:1.6;color:rgba(20,20,18,.66);max-width:38ch}
+.arch-alle{display:inline-flex;align-items:center;margin-top:1.75rem;min-height:44px;
+  font-family:var(--mono);font-size:.6875rem;letter-spacing:.14em;text-transform:uppercase;
+  border:1px solid rgba(20,20,18,.28);padding:.75rem 1.2rem;border-radius:2px;
+  transition:border-color .25s,background .25s}
+.arch-alle:hover{border-color:var(--ink);background:rgba(20,20,18,.05)}
+@media(max-width:760px){
+  .arch{grid-template-columns:5.5rem 1fr;gap:1rem 1.25rem;align-items:start;padding-block:1.4rem}
+  .arch:hover{padding-left:0}
+  .arch-f{grid-row:1/4}
+  .arch-f img{aspect-ratio:1/1}
+  .arch-n,.arch-t,.arch-d{grid-column:2}
+  .arch-t{font-size:1.5rem}
+}
+
 /* ---------- nu ---------- */
 .nuphotos{position:relative}
 .nu-b{width:58%;margin-left:auto;margin-top:-18%;position:relative;z-index:2;
