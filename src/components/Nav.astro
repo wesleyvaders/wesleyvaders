@@ -4,7 +4,7 @@ import { site, nav, socials } from '../data/site.js';
 
 const { donker = false } = Astro.props;
 ---
-<nav class:list={['nav', { 'nav-licht': !donker }]} aria-label="Hoofdnavigatie">
+<nav class:list={['nav', donker ? 'nav-donker' : 'nav-licht']} aria-label="Hoofdnavigatie">
   <div class="wrap">
     <a class="brand" href="/" aria-label={site.naam + ', home'}>
       <Merkteken size={34} />

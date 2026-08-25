@@ -71,6 +71,7 @@ const persoon = {
 </head>
 <body>
   <a class="skip" href="#hoofd">Naar de inhoud</a>
+  <div class="voortgang" aria-hidden="true"></div>
   <Nav donker={navDonker} />
   <main id="hoofd">
     <slot />
@@ -84,6 +85,31 @@ const persoon = {
       { threshold: 0.1 }
     );
     document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+    // sticky nav: achtergrond na 40px, en op donkere hero's pas omslaan
+    // naar inkt zodra de hero uit beeld is
+    const nav = document.querySelector('.nav');
+    const voortgang = document.querySelector('.voortgang');
+    const hero = document.querySelector('.hero, .opening');
+
+    const opScroll = () => {
+      nav.dataset.vast = String(scrollY > 40);
+      const h = document.documentElement;
+      const p = h.scrollTop / (h.scrollHeight - h.clientHeight || 1);
+      voortgang.style.width = (p * 100) + '%';
+    };
+    addEventListener('scroll', opScroll, { passive: true });
+    opScroll();
+
+    if (hero) {
+      new IntersectionObserver(([e]) => {
+        nav.dataset.hero = String(e.isIntersecting);
+        nav.classList.toggle('nav-donker', e.isIntersecting);
+        nav.classList.toggle('nav-licht', !e.isIntersecting);
+      }, { rootMargin: '-70px 0px 0px 0px' }).observe(hero);
+    } else {
+      nav.dataset.hero = 'false';
+    }
   </script>
 </body>
 </html>
