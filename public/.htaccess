@@ -79,6 +79,9 @@
   Redirect 301 /website-sneller/ https://burovaders.nl/
   Redirect 301 /websites-voor-therapeuten/ https://burovaders.nl/
   Redirect 301 /welke-social-media-platformen-werken-het-beste/ https://burovaders.nl/
+
+  # Eigen verhalen die van URL zijn veranderd
+  Redirect 301 /verhalen/2026-08-26-mijn-bed-gaat-naar-rijswijk/ https://wesleyvaders.nl/verhalen/2026-08-25-mijn-bed-gaat-naar-rijswijk/
 </IfModule>
 
 # ---------- 2 · Compressie ----------

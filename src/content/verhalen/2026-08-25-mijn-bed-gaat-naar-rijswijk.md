@@ -1,6 +1,6 @@
 ---
 titel: Mijn bed gaat naar Rijswijk
-datum: 2026-08-26
+datum: 2026-08-25
 locatie: Monster
 coordinaten: [52.0258, 4.1735]
 hoofdstuk: "00"

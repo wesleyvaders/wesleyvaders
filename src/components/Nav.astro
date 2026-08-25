@@ -1,8 +1,13 @@
 ---
 import Merkteken from './Merkteken.astro';
-import { site, nav, socials } from '../data/site.js';
+import { site, nav, socials, nu } from '../data/site.js';
 
 const { donker = false } = Astro.props;
+
+const menuItems = [{ titel: 'Home', href: '/' }, ...nav];
+const pad = Astro.url.pathname;
+const isHuidig = (href) =>
+  href === pad || (href !== '/' && !href.includes('#') && pad.startsWith(href));
 ---
 <nav class:list={['nav', donker ? 'nav-donker' : 'nav-licht']} aria-label="Hoofdnavigatie">
   <div class="wrap">
@@ -18,24 +23,58 @@ const { donker = false } = Astro.props;
   </div>
 </nav>
 
-<div class="menu" id="menu" data-open="false">
-  <button class="close mono" data-menu-close>Sluiten</button>
-  <a href="/">Home</a>
-  {nav.map(i => <a href={i.href}>{i.titel}</a>)}
-  <div class="mfoot mono">
-    {socials.slice(0, 3).map(s => <a href={s.href} rel="noopener">{s.naam}</a>)}
+<div class="menu" id="menu" data-open="false" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="menu-top" data-item style="--i:0">
+    <Merkteken size={30} />
+    <button class="close mono" data-menu-close>Sluiten</button>
+  </div>
+
+  <nav class="menu-nav" aria-label="Menu">
+    {menuItems.map((i, n) => (
+      <a href={i.href} data-item style={`--i:${n + 1}`}
+        aria-current={isHuidig(i.href) ? 'page' : undefined}>
+        <span class="m-num mono">{String(n + 1).padStart(2, '0')}</span>
+        <span class="m-titel">{i.titel}</span>
+      </a>
+    ))}
+  </nav>
+
+  <div class="menu-nu" data-item style={`--i:${menuItems.length + 1}`}>
+    <span class="m-punt" aria-hidden="true"></span>
+    <p>{nu.label}<br /><span>{nu.kop}</span></p>
+  </div>
+
+  <div class="menu-soc" data-item style={`--i:${menuItems.length + 2}`}>
+    {socials.map(s => (
+      <a href={s.href} rel="noopener">
+        <span class="m-soc-n">{s.naam}</span>
+        <span class="m-soc-d">{s.omschrijving}</span>
+      </a>
+    ))}
   </div>
 </div>
 
 <script>
   const menu = document.getElementById('menu');
+  const focusbaar = () => [...menu.querySelectorAll('a[href], button')];
   const open = (v) => {
     menu.dataset.open = String(v);
     document.querySelectorAll('[data-menu]').forEach(b => b.setAttribute('aria-expanded', String(v)));
     document.body.style.overflow = v ? 'hidden' : '';
+    if (v) menu.querySelector('[data-menu-close]').focus();
+    else document.querySelector('[data-menu]')?.focus();
   };
   document.querySelectorAll('[data-menu]').forEach(b => b.addEventListener('click', () => open(true)));
   document.querySelectorAll('[data-menu-close]').forEach(b => b.addEventListener('click', () => open(false)));
   menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => open(false)));
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') open(false); });
+  document.addEventListener('keydown', e => {
+    if (menu.dataset.open !== 'true') return;
+    if (e.key === 'Escape') open(false);
+    if (e.key === 'Tab') {
+      const els = focusbaar();
+      const eerste = els[0], laatste = els[els.length - 1];
+      if (e.shiftKey && document.activeElement === eerste) { e.preventDefault(); laatste.focus(); }
+      else if (!e.shiftKey && document.activeElement === laatste) { e.preventDefault(); eerste.focus(); }
+    }
+  });
 </script>
