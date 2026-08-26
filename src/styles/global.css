@@ -340,6 +340,27 @@ footer .brand .wm small{font-size:.5rem;letter-spacing:.24em;opacity:.8;margin-t
   color:var(--sand);opacity:.7}
 .chan:hover .chan-a{color:var(--gold);opacity:1}
 
+/* ---------- gastenboek ---------- */
+.gb-intro{font-size:1.0625rem;line-height:1.7;color:rgba(20,20,18,.7);margin:1.25rem 0 0}
+.gb-form{max-width:44ch;margin-bottom:clamp(3rem,6vw,4.5rem)}
+.gb-veld{display:block;margin-bottom:1.4rem}
+.gb-veld .mono{display:block;font-size:.5625rem;color:rgba(20,20,18,.5);margin-bottom:.5rem}
+.gb-veld input,.gb-veld textarea{width:100%;font:inherit;font-size:1rem;line-height:1.6;
+  color:var(--ink);background:transparent;border:1px solid rgba(20,20,18,.28);
+  border-radius:2px;padding:.75rem .9rem;resize:vertical}
+.gb-veld input:focus-visible,.gb-veld textarea:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.gb-honing{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.gb-form button[disabled]{opacity:.55;cursor:default}
+.gb-melding{display:block;margin-top:1rem;font-size:.6875rem;color:var(--terra);min-height:1.2em}
+.gb-lijst{border-top:1px solid var(--lijn);max-width:60ch}
+.gb-leeg{padding:1.75rem 0;color:rgba(20,20,18,.5);font-size:.9375rem;margin:0}
+.gb-item{padding:1.6rem 0;border-bottom:1px solid var(--lijn)}
+.gb-kop{display:flex;align-items:baseline;gap:1rem;margin:0 0 .55rem}
+.gb-naam{font-family:var(--serif);font-size:1.375rem;line-height:1.1}
+.gb-datum{font-size:.625rem;color:rgba(20,20,18,.42)}
+.gb-tekst{margin:0;font-size:.9375rem;line-height:1.7;color:rgba(20,20,18,.75);
+  white-space:pre-line;overflow-wrap:anywhere}
+
 /* ---------- footer ---------- */
 footer{background:var(--forest);color:var(--paper);position:relative;overflow:hidden}
 .ridge{display:block;width:100%;height:clamp(56px,7vw,96px);opacity:1;margin-bottom:-1px}
@@ -361,6 +382,13 @@ footer{background:var(--forest);color:var(--paper);position:relative;overflow:hi
 .artikel blockquote{font-family:var(--serif);font-style:italic;font-size:1.5rem;line-height:1.35;
   color:var(--terra);margin:2.5rem 0;padding:0}
 .artikel img{margin:2rem 0}
+.deel{margin-top:clamp(2.5rem,5vw,3.5rem);padding-top:1.6rem;border-top:1px solid var(--lijn)}
+.deel-l{font-size:.5625rem;color:rgba(20,20,18,.45);margin:0 0 .9rem}
+.deel-k{display:flex;gap:.6rem;flex-wrap:wrap}
+.deel-knop{display:inline-flex;align-items:center;min-height:44px;padding:.7rem 1.1rem;
+  font-size:.6875rem;letter-spacing:.14em;border:1px solid rgba(20,20,18,.28);
+  border-radius:2px;color:var(--ink);transition:border-color .25s,background .25s}
+.deel-knop:hover{border-color:var(--ink);background:rgba(20,20,18,.05)}
 
 @media(prefers-reduced-motion:reduce){
   *,*::after,*::before{animation:none !important;transition:none !important}

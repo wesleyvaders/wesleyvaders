@@ -3,7 +3,8 @@ import { Image } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Routelijn from '../components/Routelijn.astro';
-import { site, nu, route, stappen, mowgli, socials } from '../data/site.js';
+import { site, nu, route, stappen, mowgli, socials, vertrek } from '../data/site.js';
+import Gastenboek from '../components/Gastenboek.astro';
 
 import transporter from '../../public/fotos/transporter.webp';
 import landschap from '../../public/fotos/hero.webp';
@@ -27,6 +28,12 @@ const laatsteVerhalen = (await getCollection('verhalen', e => !e.data.concept))
 const fmt = (d) =>
   new Intl.DateTimeFormat('nl-NL', { day: '2-digit', month: '2-digit', year: 'numeric' })
     .format(d).replaceAll('-', '.');
+
+// beginwaarde van de aftelling; de browser rekent hem daarna zelf bij
+const vandaag = new Date(); vandaag.setHours(0, 0, 0, 0);
+const dagenTot = Math.round((new Date(vertrek + 'T00:00:00') - vandaag) / 86400000);
+const aftelStart = dagenTot > 0 ? `Nog ${dagenTot} dagen`
+  : dagenTot === 0 ? 'Vandaag' : `${-dagenTot} dagen in Spanje`;
 ---
 
 <Base navDonker={true}>
@@ -37,7 +44,7 @@ const fmt = (d) =>
     <div class="hero-veil"></div>
     <div class="grain"></div>
     <div class="wrap">
-      <p class="hrow mono"><span>Hoofdstuk 00</span><i>/</i><span>Den Haag</span><i>/</i><span>Nog 4 weken</span></p>
+      <p class="hrow mono"><span>Hoofdstuk 00</span><i>/</i><span>Den Haag</span><i>/</i><span data-aftel data-vertrek={vertrek}>{aftelStart}</span></p>
       <h1 class="htitle">De Spaanse<span class="l2">droom</span></h1>
       <div class="hbot">
         <p class="hsub">{site.omschrijving}</p>
@@ -249,4 +256,20 @@ const fmt = (d) =>
       </div>
     </div>
   </section>
+
+  <!-- 10 · Gastenboek -->
+  <Gastenboek />
 </Base>
+
+<script>
+  // aftelling naar de sleuteldatum, in de browser bijgerekend
+  const el = document.querySelector('[data-aftel]');
+  if (el) {
+    const doel = new Date(el.dataset.vertrek + 'T00:00:00');
+    const nu0 = new Date(); nu0.setHours(0, 0, 0, 0);
+    const d = Math.round((doel - nu0) / 86400000);
+    el.textContent = d > 0 ? `Nog ${d} dagen` : d === 0 ? 'Vandaag' : `${-d} dagen in Spanje`;
+    const kort = document.querySelector('[data-dagen-kort]');
+    if (kort && d > 0) kort.textContent = d;
+  }
+</script>

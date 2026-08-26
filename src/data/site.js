@@ -54,6 +54,11 @@ export const socials = [
   { naam: 'Facebook', omschrijving: 'Voor iedereen die daar zit', actie: 'Volgen', href: 'https://www.facebook.com/wesleyvaders' }
 ];
 
+// De vertrekdatum naar Spanje. De aftelling in de hero en het
+// gastenboek rekenen hiermee. Losstaand van de sleuteloverdracht
+// van het huis, die is op 17 september.
+export const vertrek = '2026-09-20';
+
 // Het NU-blok. Dit is het enige dat je echt vaak aanpast.
 export const nu = {
   label: 'Nu · 22 augustus 2026',

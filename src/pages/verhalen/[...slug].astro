@@ -17,6 +17,10 @@ const fmt = new Intl.DateTimeFormat('nl-NL', { day: 'numeric', month: 'long', ye
 // deelplaatje van de hoofdfoto, gemaakt door scripts/og.py
 const ogNaam = d.foto ? d.foto.src.split('/').pop().split('.')[0] : null;
 
+const deelUrl = new URL(Astro.url.pathname, site.domein).href;
+const waHref = `https://wa.me/?text=${encodeURIComponent(`${d.titel} ${deelUrl}`)}`;
+const fbHref = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(deelUrl)}`;
+
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Article',
@@ -51,8 +55,29 @@ const schema = {
       <div class="wrap">
         <div class="artikel">
           <Content />
+
+          <div class="deel">
+            <p class="deel-l mono">Delen</p>
+            <div class="deel-k">
+              <a class="deel-knop mono" href={waHref} target="_blank" rel="noopener">WhatsApp</a>
+              <a class="deel-knop mono" href={fbHref} target="_blank" rel="noopener">Facebook</a>
+              <button class="deel-knop mono" type="button" data-kopieer data-url={deelUrl}>Link kopiëren</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </article>
 </Base>
+
+<script>
+  const knop = document.querySelector('[data-kopieer]');
+  knop?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(knop.dataset.url);
+      const was = knop.textContent;
+      knop.textContent = 'Gekopieerd';
+      setTimeout(() => { knop.textContent = was; }, 1800);
+    } catch { /* zonder clipboard-toegang doet de knop gewoon niks */ }
+  });
+</script>
