@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
+    "prebuild": "python3 scripts/og-gastenboek.py || echo 'og-gastenboek overgeslagen: Python, Pillow of fontTools ontbreekt'",
     "build": "astro build",
     "preview": "astro preview"
   },

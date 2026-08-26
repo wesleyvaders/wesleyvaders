@@ -26,6 +26,14 @@ jobs:
           node-version: 22
           cache: npm
 
+      - name: Python installeren
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Python-pakketten voor het deelplaatje
+        run: python3 -m pip install --quiet pillow fonttools brotli
+
       - name: Pakketten installeren
         run: npm ci
 

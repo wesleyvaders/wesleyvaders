@@ -1,18 +1,21 @@
 ---
-import { getCollection } from 'astro:content';
-import { Image } from 'astro:assets';
-import Base from '../../layouts/Base.astro';
-import { vertrek } from '../../data/site.js';
+import { getCollection, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { vertrek } from '../data/site.js';
 
 const PER = 12;
-const GRENS = 30; // daarboven echte paginering, zodat het indexeerbaar blijft
+const GRENS = 30; // daarboven echte paginering
 
-const alle = (await getCollection('verhalen', e => !e.data.concept))
-  .sort((a, b) => b.data.datum - a.data.datum);
+const alle = (await getCollection('hierennu', e => !e.data.concept))
+  .sort((a, b) => b.data.nummer - a.data.nummer);
 
 const paginering = alle.length > GRENS;
-const verhalen = paginering ? alle.slice(0, PER) : alle;
+const zichtbaar = paginering ? alle.slice(0, PER) : alle;
 const paginas = paginering ? Math.ceil(alle.length / PER) : 1;
+
+const berichten = await Promise.all(
+  zichtbaar.map(async (b) => ({ data: b.data, Content: (await render(b)).Content }))
+);
 
 const fmt = (d) => new Intl.DateTimeFormat('nl-NL', { day: '2-digit', month: '2-digit', year: 'numeric' })
   .format(d).replaceAll('-', '.');
@@ -20,30 +23,31 @@ const fmt = (d) => new Intl.DateTimeFormat('nl-NL', { day: '2-digit', month: '2-
 const vandaag = new Date(); vandaag.setHours(0, 0, 0, 0);
 const dagen = Math.round((new Date(vertrek + 'T00:00:00') - vandaag) / 86400000);
 ---
-<Base titel="Verhalen" omschrijving="Alles wat er onderweg gebeurt, van de eerste doos tot de laatste steen.">
+<Base titel="Hier en nu" omschrijving="Korte berichten onderweg. Wat er tussendoor gebeurt.">
   <section class="paper sec" style="padding-top:clamp(9rem,16vw,13rem)">
     <div class="grain"></div>
     <div class="wrap">
-      <p class="eyebrow">Het archief</p>
-      <h1 class="h2" style="margin:.7rem 0 3rem">Verhalen</h1>
+      <p class="eyebrow">Even in het hier en nu</p>
+      <h1 class="h2" style="margin:.7rem 0 3rem">Korte berichten</h1>
 
-      {alle.length === 0 ? (
-        <div style="border-top:1px solid var(--lijn);padding-top:2.5rem;max-width:40ch">
-          <h2 class="h2" style="font-size:clamp(1.75rem,3.4vw,2.5rem)">Nog niks gesloopt hier.</h2>
-          <p style="color:rgba(20,20,18,.6);line-height:1.7;margin-top:1rem">Kom later nog eens terug.</p>
-        </div>
+      {berichten.length === 0 ? (
+        <p style="color:rgba(20,20,18,.6);line-height:1.7">Nog niks te melden.</p>
       ) : (
-        <div class="arch-lijst" data-lijst data-per={PER}>
-          {verhalen.map((v, i) => (
-            <a class="arch" href={`/verhalen/${v.id}/`} hidden={!paginering && i >= PER}>
-              <span class="arch-f" aria-hidden="true">
-                {v.data.foto && <Image src={v.data.foto} alt="" widths={[200, 400]} sizes="7.5rem" />}
-              </span>
-              <span class="arch-n">{fmt(v.data.datum)}</span>
-              <span class="arch-t">{v.data.titel}</span>
-              <span class="arch-d">{v.data.kort}</span>
-            </a>
-          ))}
+        <div class="kaarten" data-lijst data-per={PER}>
+          {berichten.map((b, i) => {
+            const Content = b.Content;
+            return (
+              <article class="kaart" hidden={!paginering && i >= PER}>
+                <p class="kaart-m mono">
+                  <span>{fmt(b.data.datum)}</span>
+                  {b.data.locatie && <><i>/</i><span>{b.data.locatie}</span></>}
+                  <i>/</i><span>Nr. {String(b.data.nummer).padStart(3, '0')}</span>
+                </p>
+                {b.data.titel && <h3>{b.data.titel}</h3>}
+                <Content />
+              </article>
+            );
+          })}
         </div>
       )}
 
@@ -56,7 +60,7 @@ const dagen = Math.round((new Date(vertrek + 'T00:00:00') - vandaag) / 86400000)
       {paginering && paginas > 1 && (
         <nav class="pagina" aria-label="Paginering">
           <span class="pagina-nu mono">Pagina 1 van {paginas}</span>
-          <a class="pagina-l mono" href="/verhalen/2/">Volgende</a>
+          <a class="pagina-l mono" href="/hierennu/2/">Volgende</a>
         </nav>
       )}
 

@@ -97,8 +97,3 @@ export const stappen = [
   { n: '03', titel: 'Bouwen', tekst: 'Van een Spaans huis iets maken wat echt van mij is.' }
 ];
 
-export const mowgli = {
-  rapport: 'Rapport · Spanje, 2025',
-  tekst:
-    "Eerste finca's al bekeken. Mo heeft vooral de kustlijn gekeurd, het gras beoordeeld en een paar keer vastgesteld dat alles van hem is. Zijn oordeel telt zwaarder dan dat van de makelaar."
-};

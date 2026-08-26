@@ -51,15 +51,25 @@ if ($methode === 'GET') {
     echo json_encode(['t' => $t, 'sig' => hash_hmac('sha256', (string)$t, $geheim)]);
     exit;
   }
+  $alle = array_reverse(lees($bestand));
+  $totaal = count($alle);
+  $offset = max(0, (int)($_GET['offset'] ?? 0));
+  $limiet = min(50, max(1, (int)($_GET['limiet'] ?? 10)));
+
   $uit = [];
-  foreach (array_slice(array_reverse(lees($bestand)), 0, 100) as $b) {
+  foreach (array_slice($alle, $offset, $limiet) as $b) {
     $uit[] = [
       'naam' => htmlspecialchars($b['naam'] ?? '', ENT_QUOTES),
       'bericht' => htmlspecialchars($b['bericht'] ?? '', ENT_QUOTES),
       'datum' => $b['datum'] ?? ''
     ];
   }
-  echo json_encode($uit);
+  echo json_encode([
+    'totaal' => $totaal,
+    'offset' => $offset,
+    'meer' => $offset + count($uit) < $totaal,
+    'berichten' => $uit
+  ]);
   exit;
 }
 
@@ -94,8 +104,8 @@ if ($naam === '' || $bericht === '') {
 if (mb_strlen($naam) > 40) {
   fout(400, 'Hou de naam onder de 40 tekens.');
 }
-if (mb_strlen($bericht) > 600) {
-  fout(400, 'Hou het bericht onder de 600 tekens.');
+if (mb_strlen($bericht) > 1200) {
+  fout(400, 'Hou het bericht onder de 1200 tekens.');
 }
 foreach (['http', 'https', 'www.'] as $verboden) {
   if (stripos($bericht, $verboden) !== false || stripos($naam, $verboden) !== false) {

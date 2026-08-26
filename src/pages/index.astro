@@ -3,7 +3,7 @@ import { Image, getImage } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Routelijn from '../components/Routelijn.astro';
-import { site, nu, route, stappen, mowgli, socials, vertrek, cijfers } from '../data/site.js';
+import { site, nu, route, stappen, socials, vertrek, cijfers } from '../data/site.js';
 import Gastenboek from '../components/Gastenboek.astro';
 
 import transporter from '../../public/fotos/transporter.webp';
@@ -12,7 +12,6 @@ import tekoop from '../../public/fotos/tekoop.webp';
 import moDozen from '../../public/fotos/mo-dozen.webp';
 import boBus from '../../public/fotos/bo_bus.webp';
 import boZwem from '../../public/fotos/bo_zwem.webp';
-import mo from '../../public/fotos/mowgli.webp';
 
 const berichten = await Promise.all(
   (await getCollection('hierennu', e => !e.data.concept))
@@ -107,7 +106,13 @@ const aftelStart = dagenTot > 0 ? `Nog ${dagenTot} dagen`
     </div>
   </section>
 
-  <!-- 4 · Story break -->
+  <!-- 4 · Gastenboek
+       Staat bewust hoog: tot 20 september is dit het meest urgente
+       blok van de site. Daarna verhuist het naar plek 9, tussen de
+       cijfers en Volg onderweg mee. -->
+  <Gastenboek />
+
+  <!-- 5 · Story break -->
   <section class="break">
     <Image src={landschap} alt="Spaans berglandschap met terrassen en amandelbomen"
       class="break-bg" widths={[900, 1400, 1900]} sizes="100vw" />
@@ -117,7 +122,7 @@ const aftelStart = dagenTot > 0 ? `Nog ${dagenTot} dagen`
     </div>
   </section>
 
-  <!-- 5 · De bus -->
+  <!-- 6 · De bus -->
   <section class="bus sec-ruim">
     <div class="grain"></div>
     <div class="wrap">
@@ -144,7 +149,60 @@ const aftelStart = dagenTot > 0 ? `Nog ${dagenTot} dagen`
     </div>
   </section>
 
-  <!-- 6 · De route -->
+  <!-- 7 · Onderweg -->
+  {(laatsteVerhalen.length > 0 || berichten.length > 0) && (
+    <section class="paper sec-krap" id="onderweg">
+      <div class="grain"></div>
+      <div class="wrap">
+        <div class="rv" style="margin-bottom:2.5rem">
+          <p class="eyebrow">Het archief</p>
+          <h2 class="h2" style="margin-top:.6rem">Onderweg</h2>
+        </div>
+
+        <div class="ow rv">
+          <div class="ow-verhalen">
+            <p class="ow-kop mono">Verhalen</p>
+            <div class="arch-lijst">
+              {laatsteVerhalen.map(v => (
+                <a class="arch" href={`/verhalen/${v.id}/`}>
+                  <span class="arch-f" aria-hidden="true">
+                    {v.data.foto && <Image src={v.data.foto} alt="" widths={[200, 400]} sizes="7.5rem" />}
+                  </span>
+                  <span class="arch-n">{fmt(v.data.datum)}</span>
+                  <span class="arch-t">{v.data.titel}</span>
+                  <span class="arch-d">{v.data.kort}</span>
+                </a>
+              ))}
+            </div>
+            <a class="ow-alle mono" href="/verhalen/">Alle verhalen</a>
+          </div>
+
+          <div class="ow-nu">
+            <p class="ow-kop mono">Hier en nu</p>
+            <div class="kaarten">
+              {berichten.map((b) => {
+                const Content = b.Content;
+                return (
+                  <article class="kaart">
+                    <p class="kaart-m mono">
+                      <span>{fmt(b.data.datum)}</span>
+                      {b.data.locatie && <><i>/</i><span>{b.data.locatie}</span></>}
+                      <i>/</i><span>Nr. {String(b.data.nummer).padStart(3, '0')}</span>
+                    </p>
+                    {b.data.titel && <h3>{b.data.titel}</h3>}
+                    <Content />
+                  </article>
+                );
+              })}
+            </div>
+            <a class="ow-alle mono" href="/hierennu/">Alle berichten</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- 8 · De route -->
   <section class="paper sec" id="route">
     <div class="grain"></div>
     <div class="wrap">
@@ -166,80 +224,7 @@ const aftelStart = dagenTot > 0 ? `Nog ${dagenTot} dagen`
     </div>
   </section>
 
-  <!-- 7 · Mowgli -->
-  <section class="mow sec">
-    <div class="grain"></div>
-    <div class="wrap">
-      <div class="grid2 g-mow rv">
-        <Image src={mo} alt="Mowgli op de rotsen aan de Spaanse kust" widths={[400, 800]} sizes="(max-width:760px) 90vw, 32vw" />
-        <div>
-          <p class="eyebrow">Mowgli's inspectierapport</p>
-          <h2 class="mow-h">De hond<br />heeft al gekeurd.</h2>
-          <div class="verdict">
-            <b>{mowgli.rapport}</b>
-            {mowgli.tekst}
-            <p class="sign">Mo</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 8 · Even in het hier en nu -->
-  {laatsteVerhalen.length > 0 && (
-    <section class="paper sec-krap" id="laatste-verhalen">
-      <div class="grain"></div>
-      <div class="wrap">
-        <div class="rv" style="margin-bottom:2.5rem">
-          <p class="eyebrow">Het archief</p>
-          <h2 class="h2" style="margin-top:.6rem">Laatste verhalen</h2>
-        </div>
-        <div class="arch-lijst rv">
-          {laatsteVerhalen.map(v => (
-            <a class="arch" href={`/verhalen/${v.id}/`}>
-              <span class="arch-f" aria-hidden="true">
-                {v.data.foto && <Image src={v.data.foto} alt="" widths={[200, 400]} sizes="7.5rem" />}
-              </span>
-              <span class="arch-n">{fmt(v.data.datum)}</span>
-              <span class="arch-t">{v.data.titel}</span>
-              <span class="arch-d">{v.data.kort}</span>
-            </a>
-          ))}
-        </div>
-        <a class="arch-alle rv" href="/verhalen/">Alle verhalen</a>
-      </div>
-    </section>
-  )}
-
-  {berichten.length > 0 && (
-    <section class="paper sec-krap" id="hierennu">
-      <div class="grain"></div>
-      <div class="wrap">
-        <div class="rv" style="margin-bottom:2.5rem">
-          <p class="eyebrow">Even in het hier en nu</p>
-          <h2 class="h2" style="margin-top:.6rem">Korte berichten<br />onderweg</h2>
-        </div>
-        <div class="kaarten rv">
-          {berichten.map((b) => {
-            const Content = b.Content;
-            return (
-              <article class="kaart">
-                <p class="kaart-m mono">
-                  <span>{fmt(b.data.datum)}</span>
-                  {b.data.locatie && <><i>/</i><span>{b.data.locatie}</span></>}
-                  <i>/</i><span>Nr. {String(b.data.nummer).padStart(3, '0')}</span>
-                </p>
-                {b.data.titel && <h3>{b.data.titel}</h3>}
-                <Content />
-              </article>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  )}
-
-  <!-- 8b · Cijfers -->
+  <!-- 9 · Cijfers -->
   <section class="cijfers sec-krap">
     <div class="grain"></div>
     <div class="wrap">
@@ -258,7 +243,7 @@ const aftelStart = dagenTot > 0 ? `Nog ${dagenTot} dagen`
     </div>
   </section>
 
-  <!-- 9 · Volg onderweg mee -->
+  <!-- 10 · Volg onderweg mee -->
   <section class="sec" id="volg">
     <div class="grain"></div>
     <div class="wrap">
@@ -279,8 +264,7 @@ const aftelStart = dagenTot > 0 ? `Nog ${dagenTot} dagen`
     </div>
   </section>
 
-  <!-- 10 · Gastenboek -->
-  <Gastenboek />
+
 </Base>
 
 <script>

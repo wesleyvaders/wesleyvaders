@@ -10,6 +10,8 @@ const suggesties = [
   'Een goede raad voor onderweg',
   'Iets wat ik in Spanje moet doen'
 ];
+
+const MAX = 1200;
 ---
 <section class="sec" id="gastenboek">
   <div class="grain"></div>
@@ -26,41 +28,77 @@ const suggesties = [
         </ul>
       </div>
 
-      <form class="gb-form" novalidate>
-        <label class="gb-veld">
-          <span class="mono">Naam</span>
-          <input type="text" name="naam" maxlength="40" required autocomplete="name" />
-        </label>
-        <label class="gb-veld">
-          <span class="mono">Bericht</span>
-          <textarea name="bericht" maxlength="600" rows="5" required></textarea>
-        </label>
-        <div class="gb-honing" aria-hidden="true">
-          <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+      <div class="gb-rechts">
+        <form class="gb-form" novalidate data-max={MAX}>
+          <label class="gb-veld">
+            <span class="mono">Naam</span>
+            <input type="text" name="naam" maxlength="40" required autocomplete="name" />
+          </label>
+          <label class="gb-veld">
+            <span class="mono">Bericht</span>
+            <textarea name="bericht" rows="5" required></textarea>
+            <span class="gb-teller mono" data-teller>0 / {MAX}</span>
+          </label>
+          <div class="gb-honing" aria-hidden="true">
+            <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+          </div>
+          <input type="hidden" name="t" />
+          <input type="hidden" name="sig" />
+          <button class="btn btn-f" type="submit">Achterlaten</button>
+          <p class="gb-melding mono" role="status"></p>
+        </form>
+
+        <div class="gb-dank" hidden>
+          <h3 class="gb-dank-h"></h3>
+          <p class="gb-dank-t">Ik lees alles, ook als ik niet meteen reageer. Hopelijk houden we contact, gewoon zoals we dat altijd deden of via de socials hieronder. Dan neem ik je mee.</p>
+          <div class="gb-dank-k">
+            <button type="button" class="gb-knopje mono" data-opnieuw>Nog een bericht</button>
+            <button type="button" class="gb-knopje mono" data-deel>Deel de site</button>
+          </div>
         </div>
-        <input type="hidden" name="t" />
-        <input type="hidden" name="sig" />
-        <button class="btn btn-f" type="submit">Achterlaten</button>
-        <p class="gb-melding mono" role="status"></p>
-      </form>
+      </div>
     </div>
 
+    <p class="gb-totaal mono rv" data-totaal hidden></p>
     <div class="gb-lijst rv"></div>
+    <div class="gb-meer-wrap rv">
+      <button type="button" class="gb-meer mono" data-meer hidden>Laat meer zien</button>
+    </div>
   </div>
 </section>
 
 <script>
   const api = '/api/gastenboek.php';
+  const PER = 10;
+
   const form = document.querySelector('.gb-form');
+  const MAX = Number(form.dataset.max);
   const lijst = document.querySelector('.gb-lijst');
   const melding = form.querySelector('.gb-melding');
   const knop = form.querySelector('button[type="submit"]');
   const tekstveld = form.elements.bericht;
+  const teller = document.querySelector('[data-teller]');
+  const dank = document.querySelector('.gb-dank');
+  const totaalEl = document.querySelector('[data-totaal]');
+  const meerKnop = document.querySelector('[data-meer]');
+
+  let geladen = 0;
 
   document.querySelectorAll('[data-sug]').forEach(b => b.addEventListener('click', () => {
     tekstveld.placeholder = b.dataset.sug;
     tekstveld.focus();
   }));
+
+  // teller onder het berichtveld
+  const telBij = () => {
+    const n = tekstveld.value.length;
+    teller.textContent = `${n} / ${MAX}`;
+    teller.classList.toggle('bijna', n >= 1000 && n <= MAX);
+    teller.classList.toggle('over', n > MAX);
+    knop.disabled = n > MAX;
+  };
+  tekstveld.addEventListener('input', telBij);
+  telBij();
 
   const fmt = (iso) => {
     const d = new Date(iso);
@@ -77,34 +115,55 @@ const suggesties = [
     } catch { /* zonder tijdstempel weigert de server, meer hoeft niet */ }
   }
 
-  async function haalBerichten() {
+  const kaartje = (b) => `
+    <article class="gb-item">
+      <p class="gb-kop"><span class="gb-naam">${b.naam}</span><span class="gb-datum mono">${fmt(b.datum)}</span></p>
+      <p class="gb-tekst">${b.bericht}</p>
+    </article>`;
+
+  async function haalBerichten(offset = 0) {
     try {
-      const r = await fetch(api);
-      const items = await r.json();
-      if (!Array.isArray(items) || items.length === 0) {
-        lijst.innerHTML = '<p class="gb-leeg">Nog niemand geweest.<br>Jij mag de eerste zijn.</p>';
-        return;
+      const r = await fetch(`${api}?offset=${offset}&limiet=${PER}`);
+      const d = await r.json();
+      const items = d.berichten || [];
+
+      if (offset === 0) {
+        geladen = 0;
+        if (items.length === 0) {
+          lijst.innerHTML = '<p class="gb-leeg">Nog niemand geweest.<br>Jij mag de eerste zijn.</p>';
+          totaalEl.hidden = true;
+          meerKnop.hidden = true;
+          return;
+        }
+        lijst.innerHTML = '';
       }
-      lijst.innerHTML = items.map(b => `
-        <article class="gb-item">
-          <p class="gb-kop"><span class="gb-naam">${b.naam}</span><span class="gb-datum mono">${fmt(b.datum)}</span></p>
-          <p class="gb-tekst">${b.bericht}</p>
-        </article>`).join('');
+
+      lijst.insertAdjacentHTML('beforeend', items.map(kaartje).join(''));
+      geladen += items.length;
+
+      totaalEl.hidden = false;
+      totaalEl.textContent = d.totaal === 1 ? '1 bericht' : `${d.totaal} berichten`;
+      meerKnop.hidden = !d.meer;
     } catch {
-      lijst.innerHTML = '<p class="gb-leeg">De berichten laden nu even niet mee.<br>Kom later nog eens terug.</p>';
+      if (offset === 0) {
+        lijst.innerHTML = '<p class="gb-leeg">De berichten laden nu even niet mee.<br>Kom later nog eens terug.</p>';
+      }
     }
   }
+
+  meerKnop.addEventListener('click', () => haalBerichten(geladen));
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     melding.textContent = '';
     knop.disabled = true;
+    const naam = form.elements.naam.value.trim();
     try {
       const r = await fetch(api, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          naam: form.elements.naam.value,
+          naam,
           bericht: form.elements.bericht.value,
           website: form.elements.website.value,
           t: Number(form.elements.t.value),
@@ -113,21 +172,45 @@ const suggesties = [
       });
       const d = await r.json();
       if (r.ok && d.ok) {
-        melding.textContent = 'Dank je. Je bericht staat erbij.';
+        dank.querySelector('.gb-dank-h').textContent =
+          naam ? `Wat lief, ${naam}. Dank je wel.` : 'Wat lief. Dank je wel.';
+        form.hidden = true;
+        dank.hidden = false;
         form.elements.naam.value = '';
         form.elements.bericht.value = '';
-        await haalBerichten();
+        telBij();
+        await haalBerichten(0);
       } else {
         melding.textContent = d.fout || 'Er ging iets mis. Probeer het later nog eens.';
       }
     } catch {
       melding.textContent = 'Er ging iets mis. Probeer het later nog eens.';
     } finally {
-      knop.disabled = false;
+      telBij();
       haalStart();
     }
   });
 
+  dank.querySelector('[data-opnieuw]').addEventListener('click', () => {
+    dank.hidden = true;
+    form.hidden = false;
+    form.elements.naam.focus();
+  });
+
+  dank.querySelector('[data-deel]').addEventListener('click', async (e) => {
+    const url = location.origin + '/gastenboek/';
+    const b = e.currentTarget;
+    if (navigator.share) {
+      try { await navigator.share({ title: 'Voordat ik ga', url }); return; } catch { /* afgebroken */ }
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      const was = b.textContent;
+      b.textContent = 'Gekopieerd';
+      setTimeout(() => { b.textContent = was; }, 1800);
+    } catch { /* zonder klembord doet de knop niks */ }
+  });
+
   haalStart();
-  haalBerichten();
+  haalBerichten(0);
 </script>

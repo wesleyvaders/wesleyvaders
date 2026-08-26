@@ -405,6 +405,36 @@ footer .brand .wm small{font-size:.5rem;letter-spacing:.24em;opacity:.8;margin-t
   color:var(--sand);opacity:.7}
 .chan:hover .chan-a{color:var(--gold);opacity:1}
 
+/* ---------- onderweg: verhalen naast korte berichten ---------- */
+.ow{display:grid;grid-template-columns:1.35fr .65fr;
+  gap:clamp(2rem,4vw,3.5rem);align-items:start}
+.ow-nu{border-left:1px solid var(--lijn);padding-left:clamp(1.5rem,3vw,2.5rem)}
+.ow-kop{font-size:.5625rem;color:rgba(20,20,18,.45);margin:0 0 1.25rem}
+.ow .arch-lijst{border-top:1px solid var(--lijn)}
+.ow .kaarten{display:grid;gap:1rem}
+.ow-alle{display:inline-flex;align-items:center;min-height:44px;margin-top:1.5rem;
+  font-size:.625rem;color:rgba(20,20,18,.55);
+  border-bottom:1px solid rgba(20,20,18,.28);transition:color .25s,border-color .25s}
+.ow-alle:hover{color:var(--ink);border-color:var(--ink)}
+@media(max-width:900px){
+  .ow{grid-template-columns:1fr;gap:2.5rem}
+  .ow-nu{border-left:0;padding-left:0;border-top:1px solid var(--lijn);padding-top:2rem}
+}
+
+/* ---------- laat meer zien en paginering ---------- */
+.meer-wrap{display:flex;justify-content:center;margin-top:2.5rem}
+.meer{display:inline-flex;align-items:center;min-height:44px;padding:.7rem 1.4rem;
+  font-size:.6875rem;letter-spacing:.14em;border:1px solid rgba(20,20,18,.28);
+  border-radius:2px;transition:border-color .25s,background .25s}
+.meer:hover{border-color:var(--ink);background:rgba(20,20,18,.05)}
+.pagina{display:flex;align-items:center;gap:1.5rem;justify-content:center;
+  margin-top:2.5rem;flex-wrap:wrap}
+.pagina-nu{font-size:.5625rem;color:rgba(20,20,18,.45)}
+.pagina-l{display:inline-flex;align-items:center;min-height:44px;padding:.7rem 1.1rem;
+  font-size:.6875rem;letter-spacing:.14em;border:1px solid rgba(20,20,18,.28);
+  border-radius:2px;transition:border-color .25s,background .25s}
+.pagina-l:hover{border-color:var(--ink);background:rgba(20,20,18,.05)}
+
 /* ---------- oproep naar het gastenboek ---------- */
 .gb-oproep{margin-top:clamp(2.5rem,5vw,3.5rem);padding-top:1.6rem;
   border-top:1px solid var(--lijn);display:flex;gap:1.5rem;
@@ -447,7 +477,30 @@ footer .brand .wm small{font-size:.5rem;letter-spacing:.24em;opacity:.8;margin-t
 .gb-honing{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .gb-form button[disabled]{opacity:.55;cursor:default}
 .gb-melding{display:block;margin-top:1rem;font-size:.6875rem;color:var(--sand);min-height:1.2em}
-.gb-lijst{margin-top:clamp(3rem,6vw,4.5rem)}
+.gb-teller{display:block;text-align:right;margin-top:.45rem;font-size:11px;
+  letter-spacing:.1em;color:rgba(217,198,165,.5)}
+.gb-teller.bijna{color:var(--terra)}
+.gb-teller.over{color:#E2533A;font-weight:500}
+
+.gb-dank{border:1px solid rgba(245,241,232,.16);border-radius:2px;
+  padding:clamp(1.5rem,3.5vw,2.5rem)}
+.gb-dank-h{font-family:var(--serif);font-weight:400;font-size:clamp(1.5rem,2.6vw,2rem);
+  line-height:1.15;margin:0 0 1rem}
+.gb-dank-t{font-size:1rem;line-height:1.7;color:rgba(245,241,232,.74);margin:0 0 1.75rem}
+.gb-dank-k{display:flex;gap:.6rem;flex-wrap:wrap}
+.gb-knopje{display:inline-flex;align-items:center;min-height:44px;padding:.7rem 1.1rem;
+  font-size:.6875rem;letter-spacing:.14em;border:1px solid rgba(245,241,232,.28);
+  border-radius:2px;transition:border-color .25s,background .25s}
+.gb-knopje:hover{border-color:var(--sand);background:rgba(217,198,165,.1)}
+
+.gb-totaal{margin:clamp(3rem,6vw,4.5rem) 0 1.25rem;font-size:.5625rem;
+  color:rgba(217,198,165,.55)}
+.gb-lijst{margin-top:0}
+.gb-meer-wrap{display:flex;justify-content:center;margin-top:2rem}
+.gb-meer{display:inline-flex;align-items:center;min-height:44px;padding:.7rem 1.4rem;
+  font-size:.6875rem;letter-spacing:.14em;border:1px solid rgba(245,241,232,.28);
+  border-radius:2px;transition:border-color .25s,background .25s}
+.gb-meer:hover{border-color:var(--sand);background:rgba(217,198,165,.1)}
 .gb-leeg{border-top:1px solid rgba(245,241,232,.16);border-bottom:1px solid rgba(245,241,232,.16);
   padding:2.5rem 0;margin:0;text-align:center;font-family:var(--serif);
   font-size:1.5rem;line-height:1.35;color:rgba(245,241,232,.8)}
