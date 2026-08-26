@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Routelijn from '../components/Routelijn.astro';
@@ -29,6 +29,9 @@ const fmt = (d) =>
   new Intl.DateTimeFormat('nl-NL', { day: '2-digit', month: '2-digit', year: 'numeric' })
     .format(d).replaceAll('-', '.');
 
+// dezelfde varianten als de hero-Image, voor de preload in de head
+const heroPreload = await getImage({ src: transporter, widths: [900, 1400], sizes: '100vw', quality: 58 });
+
 // beginwaarde van de aftelling; de browser rekent hem daarna zelf bij
 const vandaag = new Date(); vandaag.setHours(0, 0, 0, 0);
 const dagenTot = Math.round((new Date(vertrek + 'T00:00:00') - vandaag) / 86400000);
@@ -36,11 +39,11 @@ const aftelStart = dagenTot > 0 ? `Nog ${dagenTot} dagen`
   : dagenTot === 0 ? 'Vandaag' : `${-dagenTot} dagen in Spanje`;
 ---
 
-<Base navDonker={true}>
+<Base navDonker={true} preloadBeeld={heroPreload}>
   <!-- 1 · Hero -->
   <header class="hero">
     <Image src={transporter} alt="De zwarte VW Transporter langs de weg bij de bergen in Spanje"
-      class="hero-bg" widths={[900, 1400, 1900]} sizes="100vw" loading="eager" fetchpriority="high" />
+      class="hero-bg" widths={[900, 1400]} sizes="100vw" quality={58} loading="eager" fetchpriority="high" />
     <div class="hero-veil"></div>
     <div class="grain"></div>
     <div class="wrap">
@@ -129,11 +132,11 @@ const aftelStart = dagenTot > 0 ? `Nog ${dagenTot} dagen`
         </div>
         <div class="busimgs">
           <figure>
-            <Image src={boBus} alt="Bo, witte labrador, in de bus onderweg" widths={[500, 900]} sizes="(max-width:880px) 90vw, 45vw" />
+            <Image src={boBus} alt="Bo, witte labrador, in de bus onderweg" widths={[500, 900]} sizes="(max-width:880px) 90vw, 45vw" loading="eager" />
             <figcaption class="figcap mono"><span>Lieve Bo</span><span>Onderweg naar het zuiden</span></figcaption>
           </figure>
           <figure>
-            <Image src={boZwem} alt="Wesley in het zwembad met Bo aan de rand" widths={[400, 800]} sizes="30vw" />
+            <Image src={boZwem} alt="Wesley in het zwembad met Bo aan de rand" widths={[400, 800]} sizes="30vw" loading="eager" />
             <figcaption class="figcap mono"><span>Alfaz del Pi</span></figcaption>
           </figure>
         </div>
