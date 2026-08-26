@@ -15,7 +15,9 @@ OG = WORTEL / "public" / "og"
 DOEL = (1200, 630)
 
 # vaste plaatjes: de standaard en de kandidaten voor losse pagina's
-VAST = ["transporter", "hero", "mo-dozen", "gastenboek"]
+VAST = ["transporter", "hero", "mo-dozen"]
+# gastenboek.jpg is met de hand gemaakt en staat al in public/og/.
+# Niet in VAST zetten, anders overschrijft dit script hem.
 
 
 def verhaalfotos():
