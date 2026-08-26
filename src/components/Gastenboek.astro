@@ -4,33 +4,46 @@ import { vertrek } from '../data/site.js';
 const msPerDag = 86400000;
 const vandaag = new Date(); vandaag.setHours(0, 0, 0, 0);
 const dagen = Math.round((new Date(vertrek + 'T00:00:00') - vandaag) / msPerDag);
+
+const suggesties = [
+  'Een herinnering',
+  'Een goede raad voor onderweg',
+  'Iets wat ik in Spanje moet doen'
+];
 ---
-<section class="paper sec-krap" id="gastenboek">
+<section class="sec" id="gastenboek">
   <div class="grain"></div>
   <div class="wrap">
-    <div class="rv" style="margin-bottom:2.75rem;max-width:44ch">
-      <p class="eyebrow">Laat iets achter</p>
-      <h2 class="h2" style="margin-top:.6rem">Voordat ik ga</h2>
-      <p class="gb-intro">Nog <span data-dagen-kort>{dagen}</span> dagen. Als je iets kwijt wil voordat ik vertrek, dan kan dat hier. Ik lees alles.</p>
-    </div>
-
-    <form class="gb-form rv" novalidate>
-      <label class="gb-veld">
-        <span class="mono">Naam</span>
-        <input type="text" name="naam" maxlength="40" required autocomplete="name" />
-      </label>
-      <label class="gb-veld">
-        <span class="mono">Bericht</span>
-        <textarea name="bericht" maxlength="600" rows="4" required></textarea>
-      </label>
-      <div class="gb-honing" aria-hidden="true">
-        <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+    <div class="grid2 g-gb rv">
+      <div class="gb-links">
+        <p class="eyebrow">Laat iets achter</p>
+        <h2 class="gb-h">Voordat ik ga</h2>
+        <p class="gb-intro">Nog <span data-dagen-kort>{dagen}</span> dagen. Als je iets kwijt wil voordat ik vertrek, dan kan dat hier. Ik lees alles.</p>
+        <ul class="gb-sug">
+          {suggesties.map(s => (
+            <li><button type="button" class="mono" data-sug={s}>{s}</button></li>
+          ))}
+        </ul>
       </div>
-      <input type="hidden" name="t" />
-      <input type="hidden" name="sig" />
-      <button class="btn btn-f" type="submit">Achterlaten</button>
-      <p class="gb-melding mono" role="status"></p>
-    </form>
+
+      <form class="gb-form" novalidate>
+        <label class="gb-veld">
+          <span class="mono">Naam</span>
+          <input type="text" name="naam" maxlength="40" required autocomplete="name" />
+        </label>
+        <label class="gb-veld">
+          <span class="mono">Bericht</span>
+          <textarea name="bericht" maxlength="600" rows="5" required></textarea>
+        </label>
+        <div class="gb-honing" aria-hidden="true">
+          <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+        </div>
+        <input type="hidden" name="t" />
+        <input type="hidden" name="sig" />
+        <button class="btn btn-f" type="submit">Achterlaten</button>
+        <p class="gb-melding mono" role="status"></p>
+      </form>
+    </div>
 
     <div class="gb-lijst rv"></div>
   </div>
@@ -42,6 +55,12 @@ const dagen = Math.round((new Date(vertrek + 'T00:00:00') - vandaag) / msPerDag)
   const lijst = document.querySelector('.gb-lijst');
   const melding = form.querySelector('.gb-melding');
   const knop = form.querySelector('button[type="submit"]');
+  const tekstveld = form.elements.bericht;
+
+  document.querySelectorAll('[data-sug]').forEach(b => b.addEventListener('click', () => {
+    tekstveld.placeholder = b.dataset.sug;
+    tekstveld.focus();
+  }));
 
   const fmt = (iso) => {
     const d = new Date(iso);
@@ -63,7 +82,7 @@ const dagen = Math.round((new Date(vertrek + 'T00:00:00') - vandaag) / msPerDag)
       const r = await fetch(api);
       const items = await r.json();
       if (!Array.isArray(items) || items.length === 0) {
-        lijst.innerHTML = '<p class="gb-leeg">Nog geen berichten. Jij mag de eerste zijn.</p>';
+        lijst.innerHTML = '<p class="gb-leeg">Nog niemand geweest.<br>Jij mag de eerste zijn.</p>';
         return;
       }
       lijst.innerHTML = items.map(b => `
@@ -72,7 +91,7 @@ const dagen = Math.round((new Date(vertrek + 'T00:00:00') - vandaag) / msPerDag)
           <p class="gb-tekst">${b.bericht}</p>
         </article>`).join('');
     } catch {
-      lijst.innerHTML = '<p class="gb-leeg">De berichten laden nu even niet mee. Kom later nog eens terug.</p>';
+      lijst.innerHTML = '<p class="gb-leeg">De berichten laden nu even niet mee.<br>Kom later nog eens terug.</p>';
     }
   }
 

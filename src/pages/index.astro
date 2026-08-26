@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Routelijn from '../components/Routelijn.astro';
-import { site, nu, route, stappen, mowgli, socials, vertrek } from '../data/site.js';
+import { site, nu, route, stappen, mowgli, socials, vertrek, cijfers } from '../data/site.js';
 import Gastenboek from '../components/Gastenboek.astro';
 
 import transporter from '../../public/fotos/transporter.webp';
@@ -236,6 +236,25 @@ const aftelStart = dagenTot > 0 ? `Nog ${dagenTot} dagen`
     </section>
   )}
 
+  <!-- 8b · Cijfers -->
+  <section class="cijfers sec-krap">
+    <div class="grain"></div>
+    <div class="wrap">
+      <div class="cijfers-grid rv">
+        <div class="cijfer-blok">
+          <p class="cijfer-w" data-dagen-cijfer>{dagenTot}</p>
+          <p class="cijfer-l mono">Dagen tot vertrek</p>
+        </div>
+        {cijfers.map(c => (
+          <div class="cijfer-blok">
+            <p class="cijfer-w">{c.waarde}</p>
+            <p class="cijfer-l mono">{c.label}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <!-- 9 · Volg onderweg mee -->
   <section class="sec" id="volg">
     <div class="grain"></div>
@@ -271,5 +290,7 @@ const aftelStart = dagenTot > 0 ? `Nog ${dagenTot} dagen`
     el.textContent = d > 0 ? `Nog ${d} dagen` : d === 0 ? 'Vandaag' : `${-d} dagen in Spanje`;
     const kort = document.querySelector('[data-dagen-kort]');
     if (kort && d > 0) kort.textContent = d;
+    const cijfer = document.querySelector('[data-dagen-cijfer]');
+    if (cijfer && d > 0) cijfer.textContent = d;
   }
 </script>

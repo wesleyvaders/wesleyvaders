@@ -38,6 +38,7 @@ const persoon = {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script is:inline>document.documentElement.classList.add('js');</script>
   <title>{volledigeTitel}</title>
   <meta name="description" content={omschrijving} />
   <link rel="canonical" href={url} />
@@ -82,7 +83,7 @@ const persoon = {
   <script>
     const io = new IntersectionObserver(
       (entries) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }),
-      { threshold: 0.1 }
+      { threshold: 0, rootMargin: '0px 0px -5% 0px' }
     );
     document.querySelectorAll('.rv').forEach(el => io.observe(el));
 

@@ -59,6 +59,13 @@ export const socials = [
 // van het huis, die is op 17 september.
 export const vertrek = '2026-09-20';
 
+// De cijferstrook op de homepage. Het eerste cijfer (dagen tot
+// vertrek) rekent de site zelf uit; deze twee zijn met de hand.
+export const cijfers = [
+  { waarde: '53', label: 'Verdiepingen op één dag' },
+  { waarde: '1900', label: 'Kilometer naar Alfaz del Pi' }
+];
+
 // Het NU-blok. Dit is het enige dat je echt vaak aanpast.
 export const nu = {
   label: 'Nu · 22 augustus 2026',
