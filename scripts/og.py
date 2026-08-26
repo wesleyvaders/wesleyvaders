@@ -15,7 +15,7 @@ OG = WORTEL / "public" / "og"
 DOEL = (1200, 630)
 
 # vaste plaatjes: de standaard en de kandidaten voor losse pagina's
-VAST = ["transporter", "hero", "mo-dozen"]
+VAST = ["transporter", "hero", "mo-dozen", "gastenboek"]
 
 
 def verhaalfotos():

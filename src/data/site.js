@@ -38,7 +38,8 @@ export const navAlles = [
   { titel: 'Het avontuur', href: '/#route', klaar: true },
   { titel: 'Afleveringen', href: '/afleveringen/', klaar: false },
   { titel: 'Verhalen', href: '/verhalen/', klaar: true },
-  { titel: 'Spanje', href: '/spanje/', klaar: false }
+  { titel: 'Spanje', href: '/spanje/', klaar: false },
+  { titel: 'Gastenboek', href: '/gastenboek/', klaar: true }
 ];
 export const nav = navAlles.filter(i => i.klaar);
 

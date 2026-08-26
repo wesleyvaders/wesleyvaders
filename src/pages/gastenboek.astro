@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro';
+import Gastenboek from '../components/Gastenboek.astro';
+import { vertrek } from '../data/site.js';
+
+const vandaag = new Date(); vandaag.setHours(0, 0, 0, 0);
+const dagen = Math.round((new Date(vertrek + 'T00:00:00') - vandaag) / 86400000);
+---
+
+<Base
+  titel="Gastenboek"
+  omschrijving="Laat iets achter voordat ik naar Spanje vertrek. Een herinnering, een goede raad, of iets wat ik daar moet doen."
+  og="/og/gastenboek.jpg"
+  ogAlt="Het gastenboek van wesleyvaders.nl"
+>
+  <header class="paper" style="padding:clamp(9rem,16vw,13rem) 0 clamp(1rem,2vw,2rem)">
+    <div class="grain"></div>
+    <div class="wrap">
+      <p class="eyebrow">Nog {dagen} dagen</p>
+      <h1 class="h2" style="margin-top:.7rem">Gastenboek</h1>
+    </div>
+  </header>
+
+  <Gastenboek />
+</Base>

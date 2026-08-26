@@ -66,10 +66,11 @@ const persoon = {
       imagesrcset={preloadBeeld.srcSet.attribute} imagesizes="100vw" />
   )}
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
+  <!-- alleen wat boven de vouw staat; de rest komt via de CSS mee -->
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="/fonts/instrument-serif-latin.woff2" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="/fonts/instrument-sans-latin.woff2" />
 
   <script type="application/ld+json" set:html={JSON.stringify(persoon)} />
   {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}

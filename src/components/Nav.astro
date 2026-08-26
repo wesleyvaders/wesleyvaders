@@ -1,6 +1,6 @@
 ---
 import Merkteken from './Merkteken.astro';
-import { site, nav, socials, nu } from '../data/site.js';
+import { site, nav, socials, nu, vertrek } from '../data/site.js';
 
 const { donker = false } = Astro.props;
 
@@ -8,6 +8,10 @@ const menuItems = [{ titel: 'Home', href: '/' }, ...nav];
 const pad = Astro.url.pathname;
 const isHuidig = (href) =>
   href === pad || (href !== '/' && !href.includes('#') && pad.startsWith(href));
+
+// het gastenboek is tijdelijk het belangrijkste; dat mag je zien
+const vandaag = new Date(); vandaag.setHours(0, 0, 0, 0);
+const dagen = Math.round((new Date(vertrek + 'T00:00:00') - vandaag) / 86400000);
 ---
 <nav class:list={['nav', donker ? 'nav-donker' : 'nav-licht']} aria-label="Hoofdnavigatie">
   <div class="wrap">
@@ -32,9 +36,15 @@ const isHuidig = (href) =>
   <nav class="menu-nav" aria-label="Menu">
     {menuItems.map((i, n) => (
       <a href={i.href} data-item style={`--i:${n + 1}`}
+        class:list={{ 'm-accent': i.href === '/gastenboek/' }}
         aria-current={isHuidig(i.href) ? 'page' : undefined}>
         <span class="m-num mono">{String(n + 1).padStart(2, '0')}</span>
-        <span class="m-titel">{i.titel}</span>
+        <span class="m-titel">
+          {i.titel}
+          {i.href === '/gastenboek/' && dagen > 0 && (
+            <span class="m-bij mono">Nog {dagen} dagen</span>
+          )}
+        </span>
       </a>
     ))}
   </nav>
