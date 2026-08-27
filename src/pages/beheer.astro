@@ -25,10 +25,10 @@ import Base from '../layouts/Base.astro';
       <div data-paneel hidden>
         <p class="bh-bar mono">
           <span data-aantal></span>
-          <span class="bh-map" data-map></span>
           <button type="button" class="bh-uit" data-vergeet>Token vergeten</button>
         </p>
         <div class="bh-lijst" data-lijst></div>
+        <p class="bh-voet mono">Berichten staan in <span data-map></span></p>
       </div>
     </div>
   </section>
@@ -118,7 +118,9 @@ import Base from '../layouts/Base.astro';
     if (e.target.matches('[data-bewerk]')) {
       const naam = item.querySelector('.bh-naam').textContent;
       const tekst = item.querySelector('.bh-tekst').textContent;
+      // origineel weg, anders staat dezelfde tekst er twee keer
       item.querySelector('.bh-knoppen').hidden = true;
+      item.querySelector('.bh-tekst').hidden = true;
       item.insertAdjacentHTML('beforeend', `
         <div class="bh-bewerk">
           <input type="text" value="${esc(naam)}" maxlength="40" data-veld-naam />
