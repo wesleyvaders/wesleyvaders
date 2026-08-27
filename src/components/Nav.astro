@@ -42,7 +42,7 @@ const dagen = Math.round((new Date(vertrek + 'T00:00:00') - vandaag) / 86400000)
         <span class="m-titel">
           {i.titel}
           {i.href === '/gastenboek/' && dagen > 0 && (
-            <span class="m-bij mono">Nog {dagen} dagen</span>
+            <span class="m-bij mono" data-tot-vertrek>Nog <span data-dagen>{dagen}</span> dagen</span>
           )}
         </span>
       </a>

@@ -4,7 +4,7 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import Analytics from '../components/Analytics.astro';
 import Cookiebanner from '../components/Cookiebanner.astro';
-import { site } from '../data/site.js';
+import { site, vertrek } from '../data/site.js';
 
 const {
   titel,
@@ -35,7 +35,7 @@ const persoon = {
 };
 ---
 <!doctype html>
-<html lang="nl">
+<html lang="nl" data-vertrek={vertrek}>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -93,6 +93,24 @@ const persoon = {
       { threshold: 0, rootMargin: '0px 0px -5% 0px' }
     );
     document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+    // De aftelling staat op meerdere pagina's en wordt bij de build
+    // berekend. Zonder deze regels blijft hij staan op de dag van de
+    // laatste deploy. Daarom rekent de browser hem overal zelf bij.
+    const doel = new Date(document.documentElement.dataset.vertrek + 'T00:00:00');
+    const vandaag0 = new Date(); vandaag0.setHours(0, 0, 0, 0);
+    const dagenOver = Math.round((doel - vandaag0) / 86400000);
+
+    document.querySelectorAll('[data-dagen]').forEach(el => {
+      el.textContent = String(Math.max(0, dagenOver));
+    });
+    document.querySelectorAll('[data-aftel]').forEach(el => {
+      el.textContent = dagenOver > 0 ? `Nog ${dagenOver} dagen`
+        : dagenOver === 0 ? 'Vandaag' : `${-dagenOver} dagen in Spanje`;
+    });
+    if (dagenOver <= 0) {
+      document.querySelectorAll('[data-tot-vertrek]').forEach(el => { el.hidden = true; });
+    }
 
     // sticky nav: achtergrond na 40px, en op donkere hero's pas omslaan
     // naar inkt zodra de hero uit beeld is

@@ -16,7 +16,7 @@ const dagen = Math.round((new Date(vertrek + 'T00:00:00') - vandaag) / 86400000)
   <header class="paper" style="padding:clamp(9rem,16vw,13rem) 0 clamp(1rem,2vw,2rem)">
     <div class="grain"></div>
     <div class="wrap">
-      <p class="eyebrow">Nog {dagen} dagen</p>
+      <p class="eyebrow">Nog <span data-dagen>{dagen}</span> dagen</p>
       <h1 class="h2" style="margin-top:.7rem">Gastenboek</h1>
     </div>
   </header>

@@ -69,8 +69,8 @@ const schema = {
           </div>
 
           {dagen > 0 && (
-            <div class="gb-oproep">
-              <p>Nog {dagen} dagen tot ik vertrek. Laat iets achter voordat ik ga.</p>
+            <div class="gb-oproep" data-tot-vertrek>
+              <p>Nog <span data-dagen>{dagen}</span> dagen tot ik vertrek. Laat iets achter voordat ik ga.</p>
               <a class="btn btn-f" href="/gastenboek/">Naar het gastenboek</a>
             </div>
           )}

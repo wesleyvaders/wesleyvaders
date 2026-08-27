@@ -230,7 +230,7 @@ const aftelStart = dagenTot > 0 ? `Nog ${dagenTot} dagen`
     <div class="wrap">
       <div class="cijfers-grid rv">
         <div class="cijfer-blok">
-          <p class="cijfer-w" data-dagen-cijfer>{dagenTot}</p>
+          <p class="cijfer-w" data-dagen>{dagenTot}</p>
           <p class="cijfer-l mono">Dagen tot vertrek</p>
         </div>
         {cijfers.map(c => (
@@ -267,17 +267,3 @@ const aftelStart = dagenTot > 0 ? `Nog ${dagenTot} dagen`
 
 </Base>
 
-<script>
-  // aftelling naar de sleuteldatum, in de browser bijgerekend
-  const el = document.querySelector('[data-aftel]');
-  if (el) {
-    const doel = new Date(el.dataset.vertrek + 'T00:00:00');
-    const nu0 = new Date(); nu0.setHours(0, 0, 0, 0);
-    const d = Math.round((doel - nu0) / 86400000);
-    el.textContent = d > 0 ? `Nog ${d} dagen` : d === 0 ? 'Vandaag' : `${-d} dagen in Spanje`;
-    const kort = document.querySelector('[data-dagen-kort]');
-    if (kort && d > 0) kort.textContent = d;
-    const cijfer = document.querySelector('[data-dagen-cijfer]');
-    if (cijfer && d > 0) cijfer.textContent = d;
-  }
-</script>
