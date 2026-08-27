@@ -1,0 +1,151 @@
+---
+// Beheerpagina voor het gastenboek. Staat niet in de navigatie en niet
+// in de sitemap, en vraagt de zoekmachines om hem te negeren. De
+// beveiliging zit in het token op de server, niet in de onvindbaarheid
+// van deze pagina: zonder geldig token doet het eindpunt niets.
+import Base from '../layouts/Base.astro';
+---
+<Base titel="Beheer" omschrijving="Gastenboek beheren." noindex={true}>
+  <section class="paper sec" style="padding-top:clamp(9rem,16vw,13rem)">
+    <div class="grain"></div>
+    <div class="wrap">
+      <p class="eyebrow">Alleen voor jou</p>
+      <h1 class="h2" style="margin:.7rem 0 2.5rem">Gastenboek beheren</h1>
+
+      <form class="bh-slot" data-slot>
+        <label class="gb-veld" style="max-width:34ch">
+          <span class="mono">Token</span>
+          <input type="password" name="token" autocomplete="current-password" required />
+        </label>
+        <button class="btn btn-f" type="submit">Openen</button>
+        <p class="bh-fout mono" role="status"></p>
+        <p class="bh-hint">Het token staat in <code>gastenboek-data/token.txt</code> naast de map <code>public_html</code>. Je mag daar zelf een zin van maken.</p>
+      </form>
+
+      <div data-paneel hidden>
+        <p class="bh-bar mono">
+          <span data-aantal></span>
+          <button type="button" class="bh-uit" data-vergeet>Token vergeten</button>
+        </p>
+        <div class="bh-lijst" data-lijst></div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+
+<script>
+  const api = '/api/gastenboek-beheer.php';
+  const slot = document.querySelector('[data-slot]');
+  const paneel = document.querySelector('[data-paneel]');
+  const lijst = document.querySelector('[data-lijst]');
+  const fout = slot.querySelector('.bh-fout');
+  const aantal = document.querySelector('[data-aantal]');
+  const SLEUTEL = 'wv-beheertoken';
+
+  let token = '';
+
+  const fmt = (iso) => {
+    const d = new Date(iso);
+    return isNaN(d) ? '' : new Intl.DateTimeFormat('nl-NL',
+      { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }).format(d);
+  };
+
+  const esc = (t) => String(t).replace(/[&<>"']/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  async function vraag(body) {
+    const r = await fetch(api, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, ...body })
+    });
+    return { ok: r.ok, data: await r.json() };
+  }
+
+  function toon(berichten) {
+    aantal.textContent = berichten.length === 1 ? '1 bericht' : `${berichten.length} berichten`;
+    lijst.innerHTML = [...berichten].reverse().map(b => `
+      <article class="bh-item" data-id="${esc(b.id)}">
+        <p class="bh-kop"><span class="bh-naam">${esc(b.naam)}</span><span class="bh-datum">${fmt(b.datum)}</span></p>
+        <p class="bh-tekst">${esc(b.bericht)}</p>
+        <div class="bh-knoppen">
+          <button type="button" class="bh-knop" data-bewerk>Aanpassen</button>
+          <button type="button" class="bh-knop weg" data-weg>Weggooien</button>
+        </div>
+      </article>`).join('');
+  }
+
+  async function laden() {
+    const { ok, data } = await vraag({});
+    if (!ok) { throw new Error(data.fout || 'Er ging iets mis.'); }
+    toon(data);
+  }
+
+  slot.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    fout.textContent = '';
+    token = slot.elements.token.value.trim();
+    try {
+      await laden();
+      localStorage.setItem(SLEUTEL, token);
+      slot.hidden = true;
+      paneel.hidden = false;
+    } catch (err) {
+      fout.textContent = err.message;
+    }
+  });
+
+  document.querySelector('[data-vergeet]').addEventListener('click', () => {
+    localStorage.removeItem(SLEUTEL);
+    location.reload();
+  });
+
+  lijst.addEventListener('click', async (e) => {
+    const item = e.target.closest('.bh-item');
+    if (!item) return;
+    const id = item.dataset.id;
+
+    if (e.target.matches('[data-weg]')) {
+      if (!confirm('Dit bericht weggooien? Dat kan niet ongedaan gemaakt worden.')) return;
+      const { ok, data } = await vraag({ id });
+      if (ok) laden(); else alert(data.fout || 'Er ging iets mis.');
+      return;
+    }
+
+    if (e.target.matches('[data-bewerk]')) {
+      const naam = item.querySelector('.bh-naam').textContent;
+      const tekst = item.querySelector('.bh-tekst').textContent;
+      item.querySelector('.bh-knoppen').hidden = true;
+      item.insertAdjacentHTML('beforeend', `
+        <div class="bh-bewerk">
+          <input type="text" value="${esc(naam)}" maxlength="40" data-veld-naam />
+          <textarea rows="4" maxlength="1200" data-veld-tekst>${esc(tekst)}</textarea>
+          <div class="bh-knoppen">
+            <button type="button" class="bh-knop" data-bewaar>Bewaren</button>
+            <button type="button" class="bh-knop" data-terug>Laat maar</button>
+          </div>
+        </div>`);
+      return;
+    }
+
+    if (e.target.matches('[data-terug]')) { laden(); return; }
+
+    if (e.target.matches('[data-bewaar]')) {
+      const { ok, data } = await vraag({
+        id,
+        naam: item.querySelector('[data-veld-naam]').value,
+        bericht: item.querySelector('[data-veld-tekst]').value
+      });
+      if (ok) laden(); else alert(data.fout || 'Er ging iets mis.');
+    }
+  });
+
+  // token onthouden, zodat je niet elke keer hoeft te plakken
+  const bewaard = localStorage.getItem(SLEUTEL);
+  if (bewaard) {
+    token = bewaard;
+    laden().then(() => { slot.hidden = true; paneel.hidden = false; })
+      .catch(() => { localStorage.removeItem(SLEUTEL); });
+  }
+</script>

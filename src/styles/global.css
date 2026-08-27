@@ -85,6 +85,9 @@
 }
 
 *{box-sizing:border-box}
+/* hidden verliest het van elke display-regel; dit zet dat recht.
+   Zonder deze regel blijven verborgen knoppen en rijen gewoon staan. */
+[hidden]{display:none !important}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--sans);
   -webkit-font-smoothing:antialiased}
@@ -420,6 +423,32 @@ footer .brand .wm small{font-size:.5rem;letter-spacing:.24em;opacity:.8;margin-t
   .ow{grid-template-columns:1fr;gap:2.5rem}
   .ow-nu{border-left:0;padding-left:0;border-top:1px solid var(--lijn);padding-top:2rem}
 }
+
+/* ---------- beheerpagina van het gastenboek ---------- */
+.bh-hint { font-size: .875rem; color: rgba(20,20,18,.55); margin-top: 1.25rem; max-width: 46ch; line-height: 1.6; }
+  .bh-hint code { font-family: var(--mono); font-size: .8em; }
+  .bh-fout { color: var(--terra); min-height: 1.2em; margin: 1rem 0 0; font-size: .6875rem; }
+  .bh-bar { display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+    border-bottom: 1px solid var(--lijn); padding-bottom: 1rem; margin: 0 0 2rem;
+    font-size: .5625rem; color: rgba(20,20,18,.5); }
+  .bh-uit { font-family: var(--mono); font-size: .5625rem; letter-spacing: .15em;
+    text-transform: uppercase; color: rgba(20,20,18,.5); border-bottom: 1px solid rgba(20,20,18,.28); }
+  .bh-item { border-bottom: 1px solid var(--lijn); padding: 1.5rem 0; }
+  .bh-kop { display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; margin: 0 0 .75rem; }
+  .bh-naam { font-family: var(--serif); font-size: 1.375rem; line-height: 1.1; }
+  .bh-datum { font-family: var(--mono); font-size: .625rem; color: rgba(20,20,18,.42); }
+  .bh-tekst { margin: 0 0 1rem; font-size: .9375rem; line-height: 1.7; color: rgba(20,20,18,.75);
+    white-space: pre-line; overflow-wrap: anywhere; }
+  .bh-knoppen { display: flex; gap: .5rem; flex-wrap: wrap; }
+  .bh-knop { display: inline-flex; align-items: center; min-height: 44px; padding: .6rem 1rem;
+    font-family: var(--mono); font-size: .625rem; letter-spacing: .14em; text-transform: uppercase;
+    border: 1px solid rgba(20,20,18,.28); border-radius: 2px; transition: border-color .25s, background .25s; }
+  .bh-knop:hover { border-color: var(--ink); background: rgba(20,20,18,.05); }
+  .bh-knop.weg:hover { border-color: var(--terra); color: var(--terra); }
+  .bh-bewerk { display: grid; gap: .75rem; max-width: 52ch; margin-bottom: 1rem; }
+  .bh-bewerk input, .bh-bewerk textarea { width: 100%; font: inherit; font-size: 1rem; line-height: 1.6;
+    color: var(--ink); background: transparent; border: 1px solid rgba(20,20,18,.28);
+    border-radius: 2px; padding: .7rem .85rem; resize: vertical; }
 
 /* ---------- laat meer zien en paginering ---------- */
 .meer-wrap{display:flex;justify-content:center;margin-top:2.5rem}

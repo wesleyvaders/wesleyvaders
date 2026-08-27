@@ -14,7 +14,8 @@ const {
   type = 'website',
   schema = null,
   navDonker = false,
-  preloadBeeld = null
+  preloadBeeld = null,
+  noindex = false
 } = Astro.props;
 
 const volledigeTitel = titel ? `${titel} · ${site.naam}` : `${site.naam} · ${site.serie}`;
@@ -43,6 +44,7 @@ const persoon = {
   <title>{volledigeTitel}</title>
   <meta name="description" content={omschrijving} />
   <link rel="canonical" href={url} />
+  {noindex && <meta name="robots" content="noindex, nofollow" />}
   <link rel="sitemap" href="/sitemap-index.xml" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

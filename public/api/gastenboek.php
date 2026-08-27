@@ -5,11 +5,13 @@
   GET ?start=1         een ondertekend tijdstempel voor het formulier
   POST                 een nieuw bericht plaatsen
 
-  De data staat BUITEN public_html, want de FTP-deploy gooit alles
-  weg wat niet in dist/ zit. GB_DATA is er alleen voor lokaal testen.
+  De data staat buiten public_html, want de FTP-deploy gooit alles weg
+  wat niet in dist/ zit. Waar precies staat in gastenboek-pad.php.
 */
 
-$datamap = getenv('GB_DATA') ?: '/home/cm32678/gastenboek-data';
+require __DIR__ . '/gastenboek-pad.php';
+
+$datamap = gastenboek_datamap();
 $bestand = $datamap . '/berichten.json';
 $geheimBestand = $datamap . '/geheim.txt';
 $ipBestand = $datamap . '/ips.json';

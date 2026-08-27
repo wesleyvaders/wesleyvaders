@@ -1,8 +1,11 @@
 <?php
 /*
-  Bericht uit het gastenboek verwijderen, op basis van het token in
-  /home/cm32678/gastenboek-data/token.txt (wordt aangemaakt als het
-  nog niet bestaat; lees het daar uit).
+  Beheer van het gastenboek: lezen, wijzigen en verwijderen.
+  Beveiligd met het token uit token.txt in de datamap (zie
+  gastenboek-pad.php). Bestaat dat bestand nog niet, dan wordt er een
+  willekeurig token aangemaakt; je mag er zelf ook een zin in zetten.
+
+  De beheerpagina op /beheer/ praat met dit eindpunt.
 
   POST met JSON:
     { "token": "..." }                       de volledige lijst met id's
@@ -14,7 +17,9 @@
   en niet verwijderd.
 */
 
-$datamap = getenv('GB_DATA') ?: '/home/cm32678/gastenboek-data';
+require __DIR__ . '/gastenboek-pad.php';
+
+$datamap = gastenboek_datamap();
 $bestand = $datamap . '/berichten.json';
 $tokenBestand = $datamap . '/token.txt';
 
