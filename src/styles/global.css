@@ -431,6 +431,8 @@ footer .brand .wm small{font-size:.5rem;letter-spacing:.24em;opacity:.8;margin-t
   .bh-bar { display: flex; justify-content: space-between; align-items: center; gap: 1rem;
     border-bottom: 1px solid var(--lijn); padding-bottom: 1rem; margin: 0 0 2rem;
     font-size: .5625rem; color: rgba(20,20,18,.5); }
+  .bh-map { color: rgba(20,20,18,.35); text-transform: none; letter-spacing: .05em;
+    overflow-wrap: anywhere; }
   .bh-uit { font-family: var(--mono); font-size: .5625rem; letter-spacing: .15em;
     text-transform: uppercase; color: rgba(20,20,18,.5); border-bottom: 1px solid rgba(20,20,18,.28); }
   .bh-item { border-bottom: 1px solid var(--lijn); padding: 1.5rem 0; }

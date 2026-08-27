@@ -25,6 +25,7 @@ import Base from '../layouts/Base.astro';
       <div data-paneel hidden>
         <p class="bh-bar mono">
           <span data-aantal></span>
+          <span class="bh-map" data-map></span>
           <button type="button" class="bh-uit" data-vergeet>Token vergeten</button>
         </p>
         <div class="bh-lijst" data-lijst></div>
@@ -79,7 +80,8 @@ import Base from '../layouts/Base.astro';
   async function laden() {
     const { ok, data } = await vraag({});
     if (!ok) { throw new Error(data.fout || 'Er ging iets mis.'); }
-    toon(data);
+    document.querySelector('[data-map]').textContent = data.map || '';
+    toon(data.berichten || []);
   }
 
   slot.addEventListener('submit', async (e) => {

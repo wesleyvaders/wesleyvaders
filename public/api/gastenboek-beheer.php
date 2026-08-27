@@ -50,7 +50,10 @@ $berichten = file_exists($bestand)
 
 $id = (string)($in['id'] ?? '');
 if ($id === '') {
-  echo json_encode($berichten); exit;
+  // de map staat erbij, zodat je op de beheerpagina kunt zien
+  // welke map er echt gebruikt wordt
+  echo json_encode(['map' => $datamap, 'berichten' => $berichten]);
+  exit;
 }
 
 // wijzigen: alleen de velden die zijn meegestuurd
