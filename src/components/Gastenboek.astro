@@ -130,6 +130,20 @@ const fmtNL = (iso) => {
       .format(d).replaceAll('-', '.');
   };
 
+  // Het aantal staat op drie plekken: in de hero, onder het uitgelichte
+  // bericht en boven de lijst. De waarde uit de build blijft staan tot
+  // een van de verzoeken hieronder een nieuw totaal meebrengt; komt dat
+  // er niet, dan verandert er niets.
+  function zetAantal(totaal) {
+    if (!Number.isFinite(totaal) || totaal < 1) return;
+    document.querySelectorAll('[data-hero-aantal],[data-uit-aantal]')
+      .forEach(el => { el.textContent = totaal; });
+    const woord = totaal === 1 ? 'bericht' : 'berichten';
+    document.querySelectorAll('[data-hero-aantal]').forEach(el => {
+      if (el.nextSibling) el.nextSibling.textContent = ` ${woord}`;
+    });
+  }
+
   async function haalStart() {
     try {
       const r = await fetch(api + '?start=1');
@@ -168,6 +182,7 @@ const fmtNL = (iso) => {
       totaalEl.hidden = false;
       totaalEl.textContent = d.totaal === 1 ? '1 bericht' : `${d.totaal} berichten`;
       meerKnop.hidden = !d.meer;
+      zetAantal(d.totaal);
     } catch {
       if (offset === 0) {
         lijst.innerHTML = '<p class="gb-leeg">De berichten laden nu even niet mee.<br>Kom later nog eens terug.</p>';
@@ -251,8 +266,7 @@ const fmtNL = (iso) => {
       blok.querySelector('[data-uit-tekst]').innerHTML = b.bericht;
       blok.querySelector('[data-uit-naam]').innerHTML = b.naam;
       blok.querySelector('[data-uit-datum]').textContent = fmt(b.datum);
-      const aantal = blok.querySelector('[data-uit-aantal]');
-      if (aantal && d.totaal) aantal.textContent = d.totaal;
+      zetAantal(d.totaal);
     } catch { /* dan blijft het bericht van de build staan */ }
   }
 

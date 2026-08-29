@@ -52,7 +52,7 @@ const gastenboek = await haalGastenboek();
     <div class="grain"></div>
     <div class="wrap">
       <p class="hrow mono"><span>Hoofdstuk 00</span><i>/</i><span>Den Haag</span><i>/</i><span data-aftel data-vertrek={vertrek}>{aftelStart}</span>{gastenboek && gastenboek.totaal > 0 && (
-        <><i>/</i><a class="hrow-gb" href="/gastenboek/">{gastenboek.totaal} berichten</a></>
+        <><i>/</i><a class="hrow-gb" href="/gastenboek/"><span data-hero-aantal>{gastenboek.totaal}</span> {gastenboek.totaal === 1 ? 'bericht' : 'berichten'}</a></>
       )}</p>
       <h1 class="htitle">De Spaanse<span class="l2">droom</span></h1>
       <div class="hbot">
