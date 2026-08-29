@@ -1,5 +1,6 @@
 ---
 import { vertrek } from '../data/site.js';
+import { haalGastenboek } from '../lib/gastenboek.js';
 
 const msPerDag = 86400000;
 const vandaag = new Date(); vandaag.setHours(0, 0, 0, 0);
@@ -12,6 +13,18 @@ const suggesties = [
 ];
 
 const MAX = 1200;
+
+// één bericht uitgelicht. Bij de build kiezen we er alvast een, zodat er
+// meteen iets staat; de browser wisselt hem daarna bij elke weergave.
+const gastenboek = await haalGastenboek();
+const uitgelicht = gastenboek?.berichten?.length
+  ? gastenboek.berichten[Math.floor(Math.random() * gastenboek.berichten.length)]
+  : null;
+const fmtNL = (iso) => {
+  const d = new Date(iso);
+  return isNaN(d) ? '' : new Intl.DateTimeFormat('nl-NL',
+    { day: '2-digit', month: '2-digit', year: 'numeric' }).format(d).replaceAll('-', '.');
+};
 ---
 <section class="sec" id="gastenboek">
   <div class="grain"></div>
@@ -29,6 +42,17 @@ const MAX = 1200;
       </div>
 
       <div class="gb-rechts">
+        {uitgelicht && (
+          <figure class="gb-uit" data-uitgelicht data-totaal-start={gastenboek.totaal}>
+            <blockquote class="gb-uit-t" data-uit-tekst set:html={uitgelicht.bericht} />
+            <figcaption class="gb-uit-b">
+              <span class="gb-uit-n" data-uit-naam set:html={uitgelicht.naam} />
+              <span class="gb-uit-d mono" data-uit-datum>{fmtNL(uitgelicht.datum)}</span>
+            </figcaption>
+            <a class="gb-uit-a mono" href="/gastenboek/">Lees alle <span data-uit-aantal>{gastenboek.totaal}</span> berichten</a>
+          </figure>
+        )}
+
         <form class="gb-form" novalidate data-max={MAX}>
           <label class="gb-veld">
             <span class="mono">Naam</span>
@@ -211,6 +235,28 @@ const MAX = 1200;
     } catch { /* zonder klembord doet de knop niks */ }
   });
 
+  // het uitgelichte bericht wisselt bij elke weergave: één klein
+  // verzoek met een willekeurige plek uit de hele stapel
+  async function wisselUitgelicht() {
+    const blok = document.querySelector('[data-uitgelicht]');
+    if (!blok) return;
+    const totaal = Number(blok.dataset.totaalStart) || 0;
+    if (totaal < 2) return;
+    try {
+      const plek = Math.floor(Math.random() * totaal);
+      const r = await fetch(`${api}?offset=${plek}&limiet=1`);
+      const d = await r.json();
+      const b = d.berichten?.[0];
+      if (!b) return;
+      blok.querySelector('[data-uit-tekst]').innerHTML = b.bericht;
+      blok.querySelector('[data-uit-naam]').innerHTML = b.naam;
+      blok.querySelector('[data-uit-datum]').textContent = fmt(b.datum);
+      const aantal = blok.querySelector('[data-uit-aantal]');
+      if (aantal && d.totaal) aantal.textContent = d.totaal;
+    } catch { /* dan blijft het bericht van de build staan */ }
+  }
+
   haalStart();
   haalBerichten(0);
+  wisselUitgelicht();
 </script>

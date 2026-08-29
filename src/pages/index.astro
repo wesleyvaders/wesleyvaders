@@ -5,6 +5,7 @@ import Base from '../layouts/Base.astro';
 import Routelijn from '../components/Routelijn.astro';
 import { site, nu, route, stappen, socials, vertrek, cijfers } from '../data/site.js';
 import Gastenboek from '../components/Gastenboek.astro';
+import { haalGastenboek } from '../lib/gastenboek.js';
 
 import transporter from '../../public/fotos/transporter.webp';
 import landschap from '../../public/fotos/hero.webp';
@@ -36,6 +37,10 @@ const vandaag = new Date(); vandaag.setHours(0, 0, 0, 0);
 const dagenTot = Math.round((new Date(vertrek + 'T00:00:00') - vandaag) / 86400000);
 const aftelStart = dagenTot > 0 ? `Nog ${dagenTot} dagen`
   : dagenTot === 0 ? 'Vandaag' : `${-dagenTot} dagen in Spanje`;
+
+// aantal gastenboekberichten voor in de hero; is de API niet bereikbaar,
+// dan laten we dat item gewoon weg
+const gastenboek = await haalGastenboek();
 ---
 
 <Base navDonker={true} preloadBeeld={heroPreload}>
@@ -46,7 +51,9 @@ const aftelStart = dagenTot > 0 ? `Nog ${dagenTot} dagen`
     <div class="hero-veil"></div>
     <div class="grain"></div>
     <div class="wrap">
-      <p class="hrow mono"><span>Hoofdstuk 00</span><i>/</i><span>Den Haag</span><i>/</i><span data-aftel data-vertrek={vertrek}>{aftelStart}</span></p>
+      <p class="hrow mono"><span>Hoofdstuk 00</span><i>/</i><span>Den Haag</span><i>/</i><span data-aftel data-vertrek={vertrek}>{aftelStart}</span>{gastenboek && gastenboek.totaal > 0 && (
+        <><i>/</i><a class="hrow-gb" href="/gastenboek/">{gastenboek.totaal} berichten</a></>
+      )}</p>
       <h1 class="htitle">De Spaanse<span class="l2">droom</span></h1>
       <div class="hbot">
         <p class="hsub">{site.omschrijving}</p>

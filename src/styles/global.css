@@ -498,6 +498,26 @@ footer .brand .wm small{font-size:.5rem;letter-spacing:.24em;opacity:.8;margin-t
 }
 
 /* ---------- gastenboek, op het bosgroen ---------- */
+/* het uitgelichte bericht boven het formulier */
+.gb-uit{margin:0 0 2rem;padding:0 0 1.75rem;
+  border-bottom:1px solid rgba(245,241,232,.16)}
+.gb-uit-t{margin:0;font-family:var(--serif);font-style:italic;font-size:1.25rem;
+  line-height:1.45;color:rgba(245,241,232,.92);white-space:pre-line;
+  overflow-wrap:anywhere}
+.gb-uit-b{display:block;margin-top:1.1rem}
+.gb-uit-n{display:block;font-family:var(--serif);font-size:1.125rem;line-height:1.2}
+.gb-uit-d{display:block;margin-top:.25rem;font-size:.5625rem;color:rgba(217,198,165,.55)}
+/* inline-block, niet inline-flex: flexbox gooit de spaties tussen de
+   losse woorden en het aantal weg */
+.gb-uit-a{display:inline-block;padding-block:.75rem;margin-top:.5rem;
+  font-size:.625rem;color:rgba(217,198,165,.75);
+  border-bottom:1px solid rgba(217,198,165,.35);transition:color .25s,border-color .25s}
+.gb-uit-a:hover{color:var(--sand);border-color:var(--sand)}
+
+/* het aantal berichten in de hero */
+.hrow-gb{border-bottom:1px solid rgba(217,198,165,.4);transition:border-color .25s,color .25s}
+.hrow-gb:hover{color:var(--gold);border-color:var(--gold)}
+
 #gastenboek{background:var(--forest);color:var(--paper);position:relative;overflow:hidden}
 .g-gb{grid-template-columns:.95fr 1.05fr;align-items:start}
 .gb-h{font-family:var(--serif);font-size:clamp(2rem,4.4vw,3.5rem);line-height:1.02;margin:.6rem 0 1.4rem}
