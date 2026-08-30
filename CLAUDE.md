@@ -2,7 +2,7 @@
 
 Persoonlijke site en archief van Wesley Vaders, die zijn huis in Den Haag verkocht en naar Spanje vertrekt om daar een finca te kopen en te verbouwen. De site is de thuisbasis van het verhaal. YouTube, Instagram, TikTok en Facebook zijn distributie.
 
-Astro 5, statisch, geen database, geen CMS. Bouwt naar `dist/`, gaat via GitHub naar de Git Deploy plugin van CloudMonsters.
+Astro 5, statisch, geen database, geen CMS. Bouwt naar `dist/` en gaat bij elke push naar `main` vanzelf via GitHub Actions naar de server. Alleen het gastenboek draait op een klein PHP-eindpunt.
 
 ## Commando's
 
@@ -16,15 +16,23 @@ npm run preview  # dist/ lokaal bekijken
 
 | Pad | Wat |
 |---|---|
-| `src/data/site.js` | Alle terugkerende content: NU-blok, route, stappen, socials, Mowgli. Dit bestand pas je het vaakst aan. |
+| `src/data/site.js` | Alle terugkerende content: NU-blok, route, stappen, cijfers, socials, navigatie, vertrekdatum. Dit bestand pas je het vaakst aan. |
+| `src/data/route.js` | De zeven etappes naar Alfaz del Pi: coördinaten, kilometers, status en foto. Voedt de kaart, de lijst en de tips. |
 | `src/content/verhalen/` | Losse verhalen. Eén markdown per verhaal. |
-| `src/content/hierennu/` | Korte berichten. Verschijnen op de homepage. |
+| `src/content/hierennu/` | Korte berichten. Verschijnen op de homepage en op `/hierennu/`. |
 | `src/content.config.js` | De velden die een verhaal of bericht mag hebben. |
-| `src/styles/global.css` | Alle styling en alle merktokens. |
-| `src/components/` | Nav, Footer, Merkteken, Routelijn. |
+| `src/styles/global.css` | Alle styling en alle merktokens. Ook de stijlen van dingen die JavaScript aanmaakt, want scoped CSS pakt die niet. |
+| `src/components/` | Nav, Footer, Merkteken, Routelijn, Routekaart, Etappes, Gastenboek, Analytics, Cookiebanner. |
+| `src/lib/gastenboek.js` | Haalt bij de build het aantal berichten op voor de hero. Faalt dat, dan blijft dat stukje leeg. |
 | `public/fotos/` | Gegradeerde foto's. |
-| `public/.htaccess` | 58 redirects van de oude site naar de homepage van burovaders.nl, plus caching en headers. |
+| `public/og/` | Deelplaatjes, 1200x630. |
+| `public/fonts/` | De vier woff2-bestanden. Zelf gehost, latin-subset. |
+| `public/api/` | Het gastenboek: `gastenboek.php` (lezen en plaatsen), `gastenboek-beheer.php` (wijzigen en weggooien), `gastenboek-pad.php` (waar de data staat). |
+| `public/.htaccess` | 58 redirects van de oude site naar burovaders.nl, plus eigen URL's die veranderd zijn, caching en headers. |
 | `scripts/grade.py` | Fotogrades. Draaien vóór upload, niet tijdens de build. |
+| `scripts/og.py` | Deelplaatjes van de hoofdfoto's. Handmatig draaien. |
+| `scripts/og-gastenboek.py` | Het deelplaatje van het gastenboek. Loopt mee bij elke build, zodat de aftelling klopt. |
+| `scripts/gastenboek-pdf.py` | De berichten als A5-boekje. Voor Wesley zelf, schrijft niet naar de site. |
 
 ## Een verhaal toevoegen
 
@@ -47,6 +55,8 @@ De tekst.
 ```
 
 `concept: true` houdt hem uit de build. Datum, locatie, hoofdstuk en categorie sturen automatisch de route, de tijdlijn en de filters. Nooit dezelfde informatie op twee plekken invoeren.
+
+Wil je een ander deelplaatje dan dat van de hoofdfoto, zet dan `deelplaatje: route.jpg` erbij (een bestandsnaam uit `public/og/`), eventueel met `deelplaatjeAlt`.
 
 Optionele velden die nu al bestaan en later gebruikt worden: `coordinaten` ([lat, lng] voor de kaart), `aflevering`, `onderdeel` (De Finca), `budget`, `voorNa`, `galerij`, `tags`. **Vul `coordinaten` altijd in.** Later terugkomen op vijftig verhalen om er coördinaten bij te zoeken is een middag werk, nu is het tien seconden.
 
@@ -75,7 +85,7 @@ Tekst blijft altijd binnen **13,5% marge boven en onder**. Dan blijft een vierka
 
 **Typografie.** Instrument Serif voor koppen, regelafstand onder 1, altijd zinsvorm en nooit kapitalen. Instrument Sans voor lopende tekst, regelafstand 1.7, maximaal 44ch breed. JetBrains Mono voor alle data en labels, altijd kapitalen, `letter-spacing: .15em`, nooit groter dan 12px. Cursief is alleen voor quotes.
 
-**Vorm.** Hoekradius 0 tot 4px, niets pil-vormig. Randen zijn haarlijnen, schaduwen bestaan niet. Geen enkele sectie krijgt twee even brede kolommen: gebruik de bestaande `.g-intro`, `.g-nu`, `.g-bus`, `.g-mow` verhoudingen of maak een nieuwe ongelijke. Wissel het verticale ritme af met `.sec`, `.sec-ruim` en `.sec-krap`. Diepte komt van fotografie, achtergrondtinten en witruimte, nooit van een verloop.
+**Vorm.** Hoekradius 0 tot 4px, niets pil-vormig. Randen zijn haarlijnen, schaduwen bestaan niet. Geen enkele sectie krijgt twee even brede kolommen: gebruik de bestaande `.g-intro`, `.g-nu`, `.g-bus`, `.g-gb` verhoudingen of maak een nieuwe ongelijke. Wissel het verticale ritme af met `.sec`, `.sec-ruim` en `.sec-krap`. Diepte komt van fotografie, achtergrondtinten en witruimte, nooit van een verloop.
 
 **Toon.** Nederlands, Haags, nuchter, droog. Woorden mogen wegvallen, het mag plat. Me en mijn wisselen af: terloops "me vader", op zware momenten "mijn vader". Niet gladstrijken en niet corrigeren.
 
@@ -88,6 +98,16 @@ Wesley woont in Monster maar is een Hagenees, en zo communiceert hij ook. Den Ha
 **Geen verzonnen content.** Nooit volgersaantallen, kosten, aantallen bekeken finca's, testimonials of data verzinnen. Bestaat het nog niet, bouw het dan niet. Lege modules maken deze site kapot.
 
 **Mowgli** heet Mowgli in koppen en Mo in bijschriften.
+
+## Gastenboek en tips
+
+Het enige dynamische deel van de site. De berichten staan **niet** in de repo maar op de server, in `domains/wesleyvaders.nl/gastenboek-data/` naast `public_html`. Dat pad wordt afgeleid van het eindpunt zelf, dus er staat nergens een accountnaam in. Buiten `public_html`, want de FTP-deploy gooit alles weg wat niet in `dist/` zit.
+
+Drie bestanden horen daar: `berichten.json`, `token.txt` (jouw wachtwoord voor `/beheer/`, mag een zin zijn die je onthoudt) en `geheim.txt` (ondertekent het tijdstempel van het formulier).
+
+Elk bericht heeft een **bron**: `gastenboek`, of `route:03-dune-du-pilat` voor een tip bij een etappe. Berichten zonder bron tellen als gastenboek. De filters zijn voor beide gelijk: honeypot, minstens vier seconden tussen laden en versturen, geen links, maximaal 1200 tekens. De rem per IP verschilt: drie gastenboekberichten per uur, tien tips.
+
+Beheren gaat via **`/beheer/`**: inloggen met het token, dan lezen, aanpassen en weggooien, met een filter per bron. Nooit handmatig in `berichten.json` rommelen als het via die pagina kan.
 
 ## Analytics
 
@@ -103,12 +123,14 @@ Stap je ooit over naar `cloudflare`, `plausible` of `umami`, dan verdwijnt de ba
 
 `src/data/site.js` heeft `navAlles` met een `klaar`-vlag per item. Alleen items met `klaar: true` verschijnen in de navigatie en de footer. **Bouw je een nieuwe pagina, zet dan pas daarna de vlag om.** Zo staan er nooit links naar pagina's die nog niet bestaan.
 
-Nu klaar: Het avontuur, Mijn verhaal, Verhalen, Privacy, Cookies, Contact.
+Nu klaar: Mijn verhaal, De route, Het avontuur, Verhalen, Gastenboek, Privacy, Cookies, Contact.
 Nog niet: Afleveringen, Spanje.
+
+`/hierennu/` en `/beheer/` staan bewust niet in de navigatie. De eerste is bereikbaar via het Onderweg-blok op de homepage, de tweede is alleen voor Wesley en staat op noindex.
 
 ## Juridische pagina's
 
-`privacy-policy.astro` en `cookies.astro` zijn geschreven op de huidige situatie: GA4 met Consent Mode, hosting bij CloudMonsters, Bunny CDN, Google Fonts, geen formulieren en geen embeds. **Verandert een van die dingen, dan moeten deze pagina's mee.** Vooral bij het insluiten van YouTube of TikTok, want dan komen er cookies van derden bij en moet de cookietabel worden aangevuld.
+`privacy-policy.astro` en `cookies.astro` zijn geschreven op de huidige situatie: GA4 met Consent Mode, hosting bij CloudMonsters, Bunny CDN, zelf gehoste lettertypen, geen embeds, en twee formulieren die naam en bericht openbaar op de site zetten (het gastenboek en de tips per etappe). **Verandert een van die dingen, dan moeten deze pagina's mee.** Vooral bij het insluiten van YouTube of TikTok, want dan komen er cookies van derden bij en moet de cookietabel worden aangevuld.
 
 Het e-mailadres staat in `site.js` onder `contact.email`.
 
