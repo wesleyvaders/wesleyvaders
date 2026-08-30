@@ -61,6 +61,14 @@ Dat is opzet: het merk warmt op naarmate het verhaal naar het zuiden gaat. Nooit
 
 Astro maakt zelf de responsive varianten. Gebruik altijd `<Image>` uit `astro:assets`, nooit een kale `<img>` voor content.
 
+## Deelplaatjes
+
+Posts voor Instagram, WhatsApp en Facebook zijn **altijd 1080x1350**. Nooit liggend: Instagram snijdt dan de zijkanten weg en de tekst valt eraf.
+
+De enige uitzondering is de **og:image**, het plaatje dat automatisch bij een gedeelde link verschijnt. Die is 1200x630. `scripts/og.py` maakt ze van de hoofdfoto van een verhaal; `scripts/og-gastenboek.py` maakt die van het gastenboek bij elke build opnieuw, zodat de aftelling erop klopt.
+
+Tekst blijft altijd binnen **13,5% marge boven en onder**. Dan blijft een vierkante uitsnede ook leesbaar.
+
 ## Regels die niet gebroken worden
 
 **Kleur.** Inkt `#141412`, papier `#F5F1E8`, terracotta `#B0573A`, bos `#2C4739`, zand `#D9C6A5`, goud `#DFAF4A`. Ongeveer 60% papier, 25% inkt, 8% terracotta, 5% zand, 2% goud. **Goud is uitsluitend het NU-punt.** Zie je het vaker dan één keer per scherm, dan is het fout.
