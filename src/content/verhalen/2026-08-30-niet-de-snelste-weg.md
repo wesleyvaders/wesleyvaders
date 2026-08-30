@@ -9,6 +9,8 @@ klimaat: ES
 kort: Zeven etappes van Monster naar Alfaz del Pi. Duizend kilometer om, en dat is precies de bedoeling.
 foto: ../../../public/fotos/transporter.webp
 fotoAlt: De Transporter langs de weg bij de bergen in Spanje
+deelplaatje: route.jpg
+deelplaatjeAlt: Kaart van de route van Monster naar Alfaz del Pi met de zeven etappes
 concept: false
 ---
 

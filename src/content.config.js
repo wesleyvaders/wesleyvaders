@@ -37,6 +37,11 @@ const verhalen = defineCollection({
 
     foto: image().optional(),
     fotoAlt: z.string().optional(),
+    // standaard maakt scripts/og.py een deelplaatje van de hoofdfoto.
+    // Wil je er een eigen bij, zet dan de bestandsnaam uit public/og/
+    // hier neer, bijvoorbeeld: deelplaatje: route.jpg
+    deelplaatje: z.string().optional(),
+    deelplaatjeAlt: z.string().optional(),
     klimaat: z.enum(['NL', 'ES']).default('NL'),
     galerij: z.array(z.object({ src: image(), alt: z.string() })).default([]),
 

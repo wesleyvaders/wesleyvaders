@@ -14,8 +14,11 @@ const { Content } = await render(v);
 const d = v.data;
 const fmt = new Intl.DateTimeFormat('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' }).format(d.datum);
 
-// deelplaatje van de hoofdfoto, gemaakt door scripts/og.py
+// deelplaatje: standaard dat van de hoofdfoto (scripts/og.py), tenzij
+// het verhaal er zelf een meekrijgt in de frontmatter
 const ogNaam = d.foto ? d.foto.src.split('/').pop().split('.')[0] : null;
+const ogPad = d.deelplaatje ? `/og/${d.deelplaatje}` : ogNaam ? `/og/${ogNaam}.jpg` : undefined;
+const ogTekst = d.deelplaatjeAlt ?? (ogNaam ? (d.fotoAlt ?? d.titel) : undefined);
 
 const vandaag = new Date(); vandaag.setHours(0, 0, 0, 0);
 const dagen = Math.round((new Date(vertrek + 'T00:00:00') - vandaag) / 86400000);
@@ -35,8 +38,7 @@ const schema = {
 };
 ---
 <Base titel={d.titel} omschrijving={d.kort} type="article" schema={schema}
-  og={ogNaam ? `/og/${ogNaam}.jpg` : undefined}
-  ogAlt={ogNaam ? (d.fotoAlt ?? d.titel) : undefined}>
+  og={ogPad} ogAlt={ogTekst}>
   <article>
     <header class="paper" style="padding:clamp(9rem,16vw,13rem) 0 clamp(2.5rem,5vw,4rem)">
       <div class="wrap" style="max-width:52rem">
