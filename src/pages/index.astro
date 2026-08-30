@@ -6,6 +6,7 @@ import Routelijn from '../components/Routelijn.astro';
 import { site, nu, route, stappen, socials, vertrek, cijfers } from '../data/site.js';
 import Gastenboek from '../components/Gastenboek.astro';
 import { haalGastenboek } from '../lib/gastenboek.js';
+import { dagenTot as dagenTotDatum, wekenZin, wekenKort } from '../lib/tijd.js';
 
 import transporter from '../../public/fotos/transporter.webp';
 import landschap from '../../public/fotos/hero.webp';
@@ -32,11 +33,14 @@ const fmt = (d) =>
 // dezelfde varianten als de hero-Image, voor de preload in de head
 const heroPreload = await getImage({ src: transporter, widths: [900, 1400], sizes: '100vw', quality: 58 });
 
-// beginwaarde van de aftelling; de browser rekent hem daarna zelf bij
-const vandaag = new Date(); vandaag.setHours(0, 0, 0, 0);
-const dagenTot = Math.round((new Date(vertrek + 'T00:00:00') - vandaag) / 86400000);
+// beginwaarden; de browser rekent ze daarna zelf bij
+const dagenTot = dagenTotDatum(vertrek);
 const aftelStart = dagenTot > 0 ? `Nog ${dagenTot} dagen`
   : dagenTot === 0 ? 'Vandaag' : `${-dagenTot} dagen in Spanje`;
+
+// het NU-blok noemt een aantal weken; dat wordt nergens ingetypt
+const weken = wekenZin(dagenTot);
+const nuTekst = nu.tekst.split('{weken}');
 
 // aantal gastenboekberichten voor in de hero; is de API niet bereikbaar,
 // dan laten we dat item gewoon weg
@@ -97,15 +101,17 @@ const gastenboek = await haalGastenboek();
         <div class="nuphotos">
           <Image src={tekoop} alt="Het te-koop-bord van de makelaar aan de gevel" widths={[500, 900]} sizes="(max-width:880px) 90vw, 45vw" />
           <Image src={moDozen} class="nu-b" alt="Mowgli slaapt op de bank tussen de verhuisdozen" widths={[400, 700]} sizes="30vw" />
-          <p class="nucap mono">Augustus 2026 · Den Haag</p>
+          <p class="nucap mono">Augustus 2026 · Monster</p>
         </div>
         <div>
           <p class="eyebrow" style="color:var(--gold)">{nu.label}</p>
           <h2 class="nu-h">{nu.kop}</h2>
-          <p class="nu-p">{nu.tekst}</p>
+          <p class="nu-p">{nuTekst[0]}<span data-weken data-kort>{wekenKort(dagenTot)}</span>{nuTekst[1]}</p>
           <dl class="log">
             {nu.logboek.map(([k, v]) => (
-              <div class="logrow"><dt>{k}</dt><dd>{v}</dd></div>
+              <div class="logrow"><dt>{k}</dt><dd>
+                {v === '{weken}' ? <span data-weken>{weken}</span> : v}
+              </dd></div>
             ))}
           </dl>
         </div>
@@ -210,12 +216,12 @@ const gastenboek = await haalGastenboek();
   )}
 
   <!-- 8 · De route -->
-  <section class="paper sec" id="route">
+  <section class="paper sec" id="avontuur">
     <div class="grain"></div>
     <div class="wrap">
       <div class="rt-head rv">
-        <h2 class="h2">De route<br />tot nu toe</h2>
-        <p class="rt-sub">Van Den Haag naar waar we uitkomen. Deze lijn groeit mee.</p>
+        <h2 class="h2">Het avontuur<br />tot nu toe</h2>
+        <p class="rt-sub">Van Monster naar waar we uitkomen. Deze lijn groeit mee.</p>
       </div>
       <div class="rail rv">
         <div class="stops">

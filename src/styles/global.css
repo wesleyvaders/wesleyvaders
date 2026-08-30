@@ -281,6 +281,18 @@ footer .brand .wm small{font-size:.5rem;letter-spacing:.24em;opacity:.8;margin-t
 .step.now .step-n{color:var(--terra)}
 .step.now .step-n::after{content:" ●";font-size:.6em;vertical-align:.2em;color:var(--gold)}
 
+/* ---------- vastgezet bovenaan het archief ---------- */
+.vast{display:block;border:1px solid rgba(20,20,18,.28);border-radius:2px;
+  padding:clamp(1.4rem,3vw,2rem);margin-bottom:clamp(2.5rem,5vw,3.5rem);
+  max-width:46rem;transition:border-color .25s,background .25s}
+.vast:hover{border-color:var(--ink);background:rgba(20,20,18,.03)}
+.vast-l{display:block;font-size:.5625rem;color:var(--terra)}
+.vast-l i{font-style:normal;opacity:.5;margin:0 .35em}
+.vast-t{display:block;font-family:var(--serif);font-size:clamp(1.75rem,3.4vw,2.5rem);
+  line-height:1.05;margin:.6rem 0 .5rem}
+.vast-d{display:block;font-size:.9375rem;line-height:1.65;color:rgba(20,20,18,.66);
+  max-width:44ch}
+
 /* ---------- verhalenrijen met thumbnail ---------- */
 .arch-lijst{border-top:1px solid var(--lijn)}
 .arch{display:grid;grid-template-columns:7.5rem 6.5rem 1fr 1.1fr;

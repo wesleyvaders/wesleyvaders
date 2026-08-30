@@ -4,6 +4,23 @@ Persoonlijke site en archief van Wesley Vaders, die zijn huis in Den Haag verkoc
 
 Astro 5, statisch, geen database, geen CMS. Bouwt naar `dist/` en gaat bij elke push naar `main` vanzelf via GitHub Actions naar de server. Alleen het gastenboek draait op een klein PHP-eindpunt.
 
+## Voor je iets aanpast
+
+Deze site praat over een vertrek dat steeds dichterbij komt. Daardoor
+veroudert inhoud snel en spreken twee plekken elkaar zomaar tegen. Loop bij
+elke inhoudelijke wijziging deze vier na:
+
+1. **Het NU-blok** in `site.js`: klopt de kop nog met hoe het huis erbij staat, en het logboek met wat er af is?
+2. **De tijdlijn** op de homepage (`route` in `site.js`): staat `nu` nog op de goede halte, of is die al `gehad`?
+3. **De cijferstrook**: spreekt geen enkel cijfer een andere pagina tegen.
+4. **De aftelling**: hero, gastenboek, menu en route horen hetzelfde te zeggen.
+
+**Nooit een datum of een aantal intypen dat vanzelf verandert.** Alles wat
+met de tijd meeloopt komt uit `vertrek` in `site.js` via `src/lib/tijd.js`,
+en wordt in de browser bijgewerkt via `data-dagen`, `data-weken` en
+`data-aftel` in `Base.astro`. Zo verjaart het niet tussen twee deploys.
+Schrijf dus `{weken}` in de tekst, geen "drie weken".
+
 ## Commando's
 
 ```bash

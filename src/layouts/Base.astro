@@ -110,6 +110,24 @@ const persoon = {
       el.textContent = dagenOver > 0 ? `Nog ${dagenOver} dagen`
         : dagenOver === 0 ? 'Vandaag' : `${-dagenOver} dagen in Spanje`;
     });
+
+    // hetzelfde voor de plekken die een aantal weken noemen
+    const WOORD = ['nul', 'één', 'twee', 'drie', 'vier', 'vijf', 'zes', 'zeven',
+      'acht', 'negen', 'tien', 'elf', 'twaalf', 'dertien', 'veertien'];
+    const wekenZin = (d) => {
+      if (d < 0) return 'Onderweg';
+      if (d === 0) return 'Vandaag';
+      if (d === 1) return 'Nog één dag';
+      if (d < 14) return `Nog ${WOORD[d] ?? d} dagen`;
+      const w = Math.round(d / 7);
+      const woord = WOORD[w] ?? String(w);
+      return `${woord.charAt(0).toUpperCase()}${woord.slice(1)} weken`;
+    };
+    document.querySelectorAll('[data-weken]').forEach(el => {
+      const zin = wekenZin(dagenOver);
+      el.textContent = el.hasAttribute('data-kort')
+        ? zin.charAt(0).toLowerCase() + zin.slice(1) : zin;
+    });
     if (dagenOver <= 0) {
       document.querySelectorAll('[data-tot-vertrek]').forEach(el => { el.hidden = true; });
     }

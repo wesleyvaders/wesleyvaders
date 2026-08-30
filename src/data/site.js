@@ -33,10 +33,12 @@ export const cookiebanner = {
 
 // klaar: false = de pagina bestaat nog niet en wordt niet getoond.
 // Zet op true zodra je hem gebouwd hebt. Zo geen kapotte links in de nav.
+//
+// /route/, /hierennu/ en /beheer/ staan hier bewust niet in. De route
+// staat vastgezet bovenaan de verhalenpagina, hier en nu hangt aan het
+// Onderweg-blok, en beheer is alleen voor Wesley.
 export const navAlles = [
   { titel: 'Mijn verhaal', href: '/mijn-verhaal/', klaar: true },
-  { titel: 'De route', href: '/route/', klaar: true },
-  { titel: 'Het avontuur', href: '/#route', klaar: true },
   { titel: 'Afleveringen', href: '/afleveringen/', klaar: false },
   { titel: 'Verhalen', href: '/verhalen/', klaar: true },
   { titel: 'Spanje', href: '/spanje/', klaar: false },
@@ -65,30 +67,31 @@ export const vertrek = '2026-09-20';
 // vertrek) rekent de site zelf uit; deze twee zijn met de hand.
 export const cijfers = [
   { waarde: '53', label: 'Verdiepingen op één dag' },
-  { waarde: '1900', label: 'Kilometer naar Alfaz del Pi' }
+  { waarde: '2.750', label: 'Kilometer via de mooie weg' }
 ];
 
 // Het NU-blok. Dit is het enige dat je echt vaak aanpast.
+// {weken} wordt berekend uit vertrek, niet ingetypt. Zie src/lib/tijd.js.
 export const nu = {
-  label: 'Nu · 22 augustus 2026',
-  kop: 'Hier zit ik dan, half tussen de dozen.',
+  label: 'Nu · 30 augustus 2026',
+  kop: 'Het huis is bijna leeg.',
   tekst:
-    'Nog een kleine vier weken en ik ben dakloos. Een deel gaat de opslag in, de rest gaat mee als prio 1. Zoveel te regelen. Wat een drama. Maar alles komt goed.',
+    'Drie kamers helemaal leeg, de rest bijna. Het bed is weg, de meeste spullen ook. Nog {weken} en dan rijd ik naar het zuiden.',
   logboek: [
     ['Huis', 'Verkocht, sleutel weg 17.09.2026'],
-    ['Nog', 'Kleine vier weken'],
+    ['Nog', '{weken}'],
     ['Eerste stop', 'Bij een vriend in Spanje'],
     ['Mee', 'Mo, en zo min mogelijk spullen'],
-    ['Plan', 'Grotendeels nog niet af']
+    ['Plan', 'De route staat. De finca nog niet.']
   ]
 };
 
 // De route. Nieuwe halte toevoegen? Regel erbij en klaar.
 // status: 'nu' geeft het gouden punt, 'komt' is een open cirkel, 'gehad' is gevuld.
 export const route = [
-  { wanneer: 'Nu · Den Haag', titel: 'Inpakken', tekst: 'Marktplaats, opslag en weggooien. Vooral weggooien.', status: 'nu' },
-  { wanneer: 'September', titel: 'Prio 1', tekst: 'De eerste lading mee naar beneden. Alleen wat echt mee moet.', status: 'komt' },
-  { wanneer: 'Oktober', titel: 'Prio 2', tekst: 'Even terug naar Nederland. Ik word oom. Daarna de tweede lading.', status: 'komt' },
+  { wanneer: 'Monster', titel: 'Inpakken', tekst: 'Kasten gesloopt, drie ritten naar de stort, de rest weggegeven.', status: 'gehad' },
+  { wanneer: 'September', titel: 'Prio 1', tekst: 'De eerste lading mee naar beneden.', status: 'nu' },
+  { wanneer: 'Oktober', titel: 'Prio 2', tekst: 'Even terug naar Nederland. Ik word oom.', status: 'komt' },
   { wanneer: '?', titel: 'De finca', tekst: 'Bestaat nog niet. Staat er wel ergens.', status: 'komt' }
 ];
 

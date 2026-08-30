@@ -25,7 +25,13 @@ const dagen = Math.round((new Date(vertrek + 'T00:00:00') - vandaag) / 86400000)
     <div class="grain"></div>
     <div class="wrap">
       <p class="eyebrow">Het archief</p>
-      <h1 class="h2" style="margin:.7rem 0 3rem">Verhalen</h1>
+      <h1 class="h2" style="margin:.7rem 0 2.5rem">Verhalen</h1>
+
+      <a class="vast" href="/route/">
+        <span class="vast-l mono">De route <i>&middot;</i> vastgezet</span>
+        <span class="vast-t">Niet de snelste weg</span>
+        <span class="vast-d">Zeven etappes van Monster naar Alfaz del Pi. Ken je een van die plekken? Laat het weten.</span>
+      </a>
 
       {alle.length === 0 ? (
         <div style="border-top:1px solid var(--lijn);padding-top:2.5rem;max-width:40ch">
