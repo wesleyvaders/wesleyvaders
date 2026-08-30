@@ -2,9 +2,13 @@
 // Eén bron voor de kaart, de lijst en de tips. Coördinaten zijn echt,
 // de kaart rekent ze zelf om. Geen aantal dagen: hoe lang ik erover doe
 // staat niet vast.
+// gehad: false zolang ik er nog niet ben geweest. Zodra er een foto bij
+// komt, zet je die erbij en verdwijnt het statuslabel vanzelf.
 export const etappes = [
   {
     nr: '01',
+    gehad: false,
+    foto: null,
     van: 'Monster',
     naar: 'Mont-Saint-Michel',
     km: 730,
@@ -13,6 +17,8 @@ export const etappes = [
   },
   {
     nr: '02',
+    gehad: false,
+    foto: null,
     van: 'Mont-Saint-Michel',
     naar: 'Saumur',
     km: 330,
@@ -21,6 +27,8 @@ export const etappes = [
   },
   {
     nr: '03',
+    gehad: false,
+    foto: null,
     van: 'Saumur',
     naar: 'Dune du Pilat',
     km: 450,
@@ -29,6 +37,8 @@ export const etappes = [
   },
   {
     nr: '04',
+    gehad: false,
+    foto: null,
     van: 'Dune du Pilat',
     naar: 'San Sebastián',
     km: 280,
@@ -37,6 +47,8 @@ export const etappes = [
   },
   {
     nr: '05',
+    gehad: false,
+    foto: null,
     van: 'San Sebastián',
     naar: 'Bardenas Reales',
     km: 280,
@@ -45,6 +57,8 @@ export const etappes = [
   },
   {
     nr: '06',
+    gehad: false,
+    foto: null,
     van: 'Bardenas Reales',
     naar: 'Albarracín',
     km: 380,
@@ -53,6 +67,8 @@ export const etappes = [
   },
   {
     nr: '07',
+    gehad: false,
+    foto: null,
     van: 'Albarracín',
     naar: 'Alfaz del Pi',
     km: 320,

@@ -3,6 +3,7 @@
 // een knop om er zelf een achter te laten. Eén formulier voor de hele
 // lijst; bij het openen schuift het onder de juiste etappe en krijgt het
 // die bron mee.
+import { Image } from 'astro:assets';
 import { etappes, bronVan } from '../data/route.js';
 const MAX = 1200;
 ---
@@ -25,9 +26,9 @@ const MAX = 1200;
           <button type="button" class="et-knop mono" data-open>Ken je deze plek?</button>
         </div>
 
-        <div class="et-foto" aria-hidden="true">
-          <span class="mono">Foto volgt</span>
-        </div>
+        {e.foto
+          ? <figure class="et-foto"><Image src={e.foto} alt={e.fotoAlt ?? `${e.van} naar ${e.naar}`} widths={[300, 600]} sizes="15rem" /></figure>
+          : <p class="et-status mono">{e.gehad ? 'Geweest' : 'Nog niet geweest'}</p>}
       </li>
     ))}
   </ol>

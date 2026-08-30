@@ -8,12 +8,22 @@ import Etappes from '../components/Etappes.astro';
   omschrijving="Zeven etappes van Monster naar Alfaz del Pi. Niet de snelste weg. Ken je een van deze plekken? Laat het weten."
   og="/og/route.jpg"
   ogAlt="Kaart van de route van Monster naar Alfaz del Pi met de zeven etappes"
+  navDonker={true}
 >
-  <header class="paper" style="padding:clamp(9rem,16vw,13rem) 0 clamp(1rem,2vw,2rem)">
+  <!-- de kaart is de opening: titel en tekst links, de route rechts,
+       zodat het eerste scherm meteen compleet is -->
+  <header class="rt-opening">
     <div class="grain"></div>
-    <div class="wrap">
-      <p class="eyebrow">Onderweg naar Spanje</p>
-      <h1 class="h2" style="margin:.7rem 0 0">Niet de snelste weg</h1>
+    <div class="wrap rt-grid">
+      <div class="rt-kop">
+        <p class="eyebrow" style="color:var(--gold)">Onderweg naar Spanje</p>
+        <h1 class="rt-titel">Niet de<br /><span>snelste weg.</span></h1>
+        <div class="rt-lead">
+          <p>Van Monster naar Alfaz del Pi is ongeveer tweeduizend kilometer. Dat kun je in twee dagen doen. Snelweg, tolpoort, een hotel langs de afrit, en de volgende ochtend weer verder.</p>
+          <p>Dat ga ik dus niet doen.</p>
+        </div>
+      </div>
+      <Routekaart />
     </div>
   </header>
 
@@ -21,18 +31,15 @@ import Etappes from '../components/Etappes.astro';
     <div class="grain"></div>
     <div class="wrap">
       <div class="rt-in artikel">
-        <p>Van Monster naar Alfaz del Pi is ongeveer tweeduizend kilometer. Dat kun je in twee dagen doen. Snelweg, tolpoort, een hotel langs de afrit, en de volgende ochtend weer verder.</p>
-        <p>Dat ga ik dus niet doen.</p>
         <p>Ik heb geen haast. Het huis is leeg, de sleutel gaat er 17 september uit en daarna hoef ik nergens meer op tijd te zijn. Het worden zeven etappes en ruim 2.750 kilometer. Hoe lang ik erover doe weet ik niet. Misschien blijf ik ergens twee nachten hangen omdat het bevalt. Dat mag.</p>
       </div>
 
-      <Routekaart />
       <Etappes />
 
       <div class="rt-in artikel">
         <h2>Waarom zo</h2>
         <p>Ik wil niet van hotel naar hotel rijden. De etappes zijn zo gekozen dat er tijd is om ergens een paar uur rond te lopen, met Mo de benen te strekken, en af en toe bewust een korte rijdag te hebben. De eerste is de langste, daarna wordt het rustiger.</p>
-        <p>Albarracín loop ik pas in als de dagjesmensen weg zijn. Met de bus rijd ik daar sowieso niet het centrum in. Google zegt dan wel dat je rechtsaf moet, maar dat straatje is twee meter breed en van 1400.</p>
+        <p>Albarracín loop ik pas in als de dagjesmensen weg zijn. Met de bus rijd ik daar sowieso niet het centrum in. Wat Google een straat noemt, is daar niet altijd een straat waar een Transporter door past.</p>
 
         <h2>Wat er nog onzeker is</h2>
         <p>De Bardenas Reales is deels onverhard. Met droog weer kan de bus prima over de aangewezen routes, maar na dagen regen ga ik geen held lopen uithangen met een volgeladen Transporter. Dan kijk ik ernaar vanaf de verharde punten en rijd ik door.</p>

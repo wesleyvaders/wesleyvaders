@@ -11,8 +11,8 @@ import { etappes, start } from '../data/route.js';
 // staat links, de namen staan er rechts naast.
 const B = 400, H = 700, LINKS = 58, MARGE_Y = 62;
 
-const punten = [{ naam: start.naam, lat: start.lat, lng: start.lng, nr: null }, ...etappes.map(e => ({
-  naam: e.naar, lat: e.lat, lng: e.lng, nr: e.nr, km: e.km
+const punten = [{ naam: start.naam, lat: start.lat, lng: start.lng, nr: null, gehad: true }, ...etappes.map(e => ({
+  naam: e.naar, lat: e.lat, lng: e.lng, nr: e.nr, km: e.km, gehad: e.gehad
 }))];
 
 // Mercator wil beide assen in radialen; met graden op de x-as wordt
@@ -39,7 +39,7 @@ const lijn = pos.map((p, i) => `${i ? 'L' : 'M'}${p.x} ${p.y}`).join(' ');
     {pos.map((p, i) => {
       const punt = punten[i];
       return (
-        <g class="rt-punt" data-gehad="false">
+        <g class="rt-punt" data-gehad={String(!!punt.gehad)}>
           <circle cx={p.x} cy={p.y} r={punt.nr ? 10 : 6} />
           {punt.nr && <text class="rt-nr" x={p.x} y={p.y + 3.8} text-anchor="middle">{punt.nr}</text>}
           <text class="rt-naam" x={p.x + 18} y={punt.km ? p.y - 2 : p.y + 5}>{punt.naam}</text>
@@ -48,7 +48,7 @@ const lijn = pos.map((p, i) => `${i ? 'L' : 'M'}${p.x} ${p.y}`).join(' ');
       );
     })}
   </svg>
-  <figcaption class="rt-bij mono">Zeven etappes <i>/</i> ruim 2.750 kilometer</figcaption>
+  <figcaption class="rt-bij">Zeven etappes, <span>ruim 2.750 kilometer</span></figcaption>
 </figure>
 
 <script>
