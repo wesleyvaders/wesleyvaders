@@ -27,6 +27,7 @@ import Base from '../layouts/Base.astro';
           <span data-aantal></span>
           <button type="button" class="bh-uit" data-vergeet>Token vergeten</button>
         </p>
+        <div class="bh-bronnen mono" data-bronnen></div>
         <div class="bh-lijst" data-lijst></div>
         <p class="bh-voet mono">Berichten staan in <span data-map></span></p>
       </div>
@@ -45,6 +46,8 @@ import Base from '../layouts/Base.astro';
   const SLEUTEL = 'wv-beheertoken';
 
   let token = '';
+  let alles = [];
+  let filter = 'alles';
 
   const fmt = (iso) => {
     const d = new Date(iso);
@@ -64,11 +67,25 @@ import Base from '../layouts/Base.astro';
     return { ok: r.ok, data: await r.json() };
   }
 
+  // waar een bericht vandaan komt, leesbaar
+  const bronNaam = (b) => b === 'gastenboek' ? 'Gastenboek'
+    : b.startsWith('route:') ? 'Route ' + b.slice(6).replace(/-/g, ' ') : b;
+
+  function toonBronnen() {
+    const doos = document.querySelector('[data-bronnen]');
+    const tel = new Map();
+    alles.forEach(b => tel.set(b.bron, (tel.get(b.bron) || 0) + 1));
+    const knoppen = [['alles', `Alles (${alles.length})`],
+      ...[...tel.entries()].sort().map(([b, n]) => [b, `${bronNaam(b)} (${n})`])];
+    doos.innerHTML = knoppen.map(([w, l]) =>
+      `<button type="button" class="bh-bron${w === filter ? ' aan' : ''}" data-bron="${esc(w)}">${esc(l)}</button>`).join('');
+  }
+
   function toon(berichten) {
     aantal.textContent = berichten.length === 1 ? '1 bericht' : `${berichten.length} berichten`;
     lijst.innerHTML = [...berichten].reverse().map(b => `
       <article class="bh-item" data-id="${esc(b.id)}">
-        <p class="bh-kop"><span class="bh-naam">${esc(b.naam)}</span><span class="bh-datum">${fmt(b.datum)}</span></p>
+        <p class="bh-kop"><span class="bh-naam">${esc(b.naam)}</span><span class="bh-datum">${fmt(b.datum)} <i>/</i> ${esc(bronNaam(b.bron))}</span></p>
         <p class="bh-tekst">${esc(b.bericht)}</p>
         <div class="bh-knoppen">
           <button type="button" class="bh-knop" data-bewerk>Aanpassen</button>
@@ -81,7 +98,9 @@ import Base from '../layouts/Base.astro';
     const { ok, data } = await vraag({});
     if (!ok) { throw new Error(data.fout || 'Er ging iets mis.'); }
     document.querySelector('[data-map]').textContent = data.map || '';
-    toon(data.berichten || []);
+    alles = (data.berichten || []).map(b => ({ ...b, bron: b.bron || 'gastenboek' }));
+    toonBronnen();
+    toon(filter === 'alles' ? alles : alles.filter(b => b.bron === filter));
   }
 
   slot.addEventListener('submit', async (e) => {
@@ -101,6 +120,14 @@ import Base from '../layouts/Base.astro';
   document.querySelector('[data-vergeet]').addEventListener('click', () => {
     localStorage.removeItem(SLEUTEL);
     location.reload();
+  });
+
+  document.querySelector('[data-bronnen]').addEventListener('click', (e) => {
+    const k = e.target.closest('[data-bron]');
+    if (!k) return;
+    filter = k.dataset.bron;
+    toonBronnen();
+    toon(filter === 'alles' ? alles : alles.filter(b => b.bron === filter));
   });
 
   lijst.addEventListener('click', async (e) => {

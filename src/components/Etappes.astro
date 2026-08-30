@@ -1,0 +1,167 @@
+---
+// De etappes met per stuk een lege fotoplek, de tips die er al staan en
+// een knop om er zelf een achter te laten. Eén formulier voor de hele
+// lijst; bij het openen schuift het onder de juiste etappe en krijgt het
+// die bron mee.
+import { etappes, bronVan } from '../data/route.js';
+const MAX = 1200;
+---
+<section class="et-blok">
+  <div class="et-vraag rv">
+    <h2 class="h2">Ben je hier geweest?</h2>
+    <p>Ik hoor graag wat ik niet mag missen, en waar ik juist moet doorrijden.</p>
+  </div>
+
+  <ol class="etappes rv">
+    {etappes.map(e => (
+      <li class="et" data-bron={bronVan(e)}>
+        <div class="et-tekst">
+          <p class="et-n mono">{e.nr} <i>/</i> ± {e.km} km</p>
+          <h3 class="et-t">{e.van} naar {e.naar}</h3>
+          <p class="et-d">{e.tekst}</p>
+
+          <div class="et-tips" data-tips hidden></div>
+
+          <button type="button" class="et-knop mono" data-open>Ken je deze plek?</button>
+        </div>
+
+        <div class="et-foto" aria-hidden="true">
+          <span class="mono">Foto volgt</span>
+        </div>
+      </li>
+    ))}
+  </ol>
+
+  <form class="et-form" data-form hidden novalidate data-max={MAX}>
+    <p class="et-form-k mono" data-waar></p>
+    <label class="gb-veld">
+      <span class="mono">Naam</span>
+      <input type="text" name="naam" maxlength="40" required autocomplete="name" />
+    </label>
+    <label class="gb-veld">
+      <span class="mono">Jouw tip</span>
+      <textarea name="bericht" rows="4" required placeholder="Wat moet ik daar zien, of juist niet?"></textarea>
+      <span class="gb-teller mono" data-teller>0 / {MAX}</span>
+    </label>
+    <div class="gb-honing" aria-hidden="true">
+      <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+    </div>
+    <input type="hidden" name="bron" />
+    <input type="hidden" name="t" />
+    <input type="hidden" name="sig" />
+    <div class="et-form-k2">
+      <button class="btn btn-f" type="submit">Tip achterlaten</button>
+      <button type="button" class="et-knop mono" data-sluit>Laat maar</button>
+    </div>
+    <p class="et-melding mono" role="status"></p>
+  </form>
+</section>
+
+<script>
+  const api = '/api/gastenboek.php';
+  const form = document.querySelector('[data-form]');
+  const MAX = Number(form.dataset.max);
+  const teller = form.querySelector('[data-teller]');
+  const tekstveld = form.elements.bericht;
+  const melding = form.querySelector('.et-melding');
+  const knop = form.querySelector('button[type="submit"]');
+
+  const fmt = (iso) => {
+    const d = new Date(iso);
+    return isNaN(d) ? '' : new Intl.DateTimeFormat('nl-NL',
+      { day: '2-digit', month: '2-digit', year: 'numeric' }).format(d).replaceAll('-', '.');
+  };
+
+  const telBij = () => {
+    const n = tekstveld.value.length;
+    teller.textContent = `${n} / ${MAX}`;
+    teller.classList.toggle('bijna', n >= 1000 && n <= MAX);
+    teller.classList.toggle('over', n > MAX);
+    knop.disabled = n > MAX;
+  };
+  tekstveld.addEventListener('input', telBij);
+  telBij();
+
+  async function haalStart() {
+    try {
+      const r = await fetch(api + '?start=1');
+      const d = await r.json();
+      form.elements.t.value = d.t;
+      form.elements.sig.value = d.sig;
+    } catch { /* zonder tijdstempel weigert de server */ }
+  }
+
+  // de tips die er al staan, per etappe
+  async function laadTips(li) {
+    const doos = li.querySelector('[data-tips]');
+    try {
+      const r = await fetch(`${api}?bron=${encodeURIComponent(li.dataset.bron)}&limiet=50`);
+      const d = await r.json();
+      const items = d.berichten || [];
+      if (!items.length) { doos.hidden = true; return; }
+      doos.innerHTML = items.map(b => `
+        <article class="et-tip">
+          <p class="et-tip-t">${b.bericht}</p>
+          <p class="et-tip-b mono">${b.naam} <i>/</i> ${fmt(b.datum)}</p>
+        </article>`).join('');
+      doos.hidden = false;
+    } catch { doos.hidden = true; }
+  }
+
+  const lijst = [...document.querySelectorAll('.et')];
+  lijst.forEach(laadTips);
+
+  // het formulier verhuist naar de etappe waar je op klikt
+  lijst.forEach(li => {
+    li.querySelector('[data-open]').addEventListener('click', () => {
+      li.querySelector('.et-tekst').appendChild(form);
+      form.hidden = false;
+      form.elements.bron.value = li.dataset.bron;
+      form.querySelector('[data-waar]').textContent =
+        `Tip voor etappe ${li.querySelector('.et-n').textContent.split('/')[0].trim()}: ${li.querySelector('.et-t').textContent}`;
+      melding.textContent = '';
+      form.elements.naam.focus();
+      haalStart();
+    });
+  });
+
+  form.querySelector('[data-sluit]').addEventListener('click', () => { form.hidden = true; });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    melding.textContent = '';
+    knop.disabled = true;
+    const li = form.closest('.et');
+    try {
+      const r = await fetch(api, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          bron: form.elements.bron.value,
+          naam: form.elements.naam.value.trim(),
+          bericht: form.elements.bericht.value,
+          website: form.elements.website.value,
+          t: Number(form.elements.t.value),
+          sig: form.elements.sig.value
+        })
+      });
+      const d = await r.json();
+      if (r.ok && d.ok) {
+        form.hidden = true;
+        form.elements.naam.value = '';
+        form.elements.bericht.value = '';
+        telBij();
+        if (li) await laadTips(li);
+      } else {
+        melding.textContent = d.fout || 'Er ging iets mis. Probeer het later nog eens.';
+      }
+    } catch {
+      melding.textContent = 'Er ging iets mis. Probeer het later nog eens.';
+    } finally {
+      telBij();
+      haalStart();
+    }
+  });
+
+  haalStart();
+</script>

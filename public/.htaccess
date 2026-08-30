@@ -82,6 +82,7 @@
 
   # Eigen verhalen die van URL zijn veranderd
   Redirect 301 /verhalen/2026-08-26-mijn-bed-gaat-naar-rijswijk/ https://wesleyvaders.nl/verhalen/2026-08-25-mijn-bed-gaat-naar-rijswijk/
+  Redirect 301 /verhalen/2026-08-30-niet-de-snelste-weg/ https://wesleyvaders.nl/route/
 </IfModule>
 
 # ---------- 2 · Compressie ----------

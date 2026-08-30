@@ -1,9 +1,14 @@
 <?php
 /*
   Gastenboek van wesleyvaders.nl.
-  GET                  de laatste 100 berichten, nieuwste eerst
+  GET                  berichten, nieuwste eerst
+  GET ?bron=...        alleen die van een bepaalde bron
   GET ?start=1         een ondertekend tijdstempel voor het formulier
   POST                 een nieuw bericht plaatsen
+
+  Een bericht hoort bij een bron. Standaard is dat 'gastenboek'.
+  Tips bij een etappe krijgen route:03-dune-du-pilat. Berichten van
+  voor deze wijziging hebben geen bron en tellen als gastenboek.
 
   De data staat buiten public_html, want de FTP-deploy gooit alles weg
   wat niet in dist/ zit. Waar precies staat in gastenboek-pad.php.
@@ -35,6 +40,13 @@ function fout(int $code, string $melding): void {
   exit;
 }
 
+/** 'gastenboek' of route:03-dune-du-pilat; anders null */
+function geldige_bron($waarde): ?string {
+  $b = trim((string)$waarde);
+  if ($b === '' || $b === 'gastenboek') return 'gastenboek';
+  return preg_match('~^route:[a-z0-9-]{3,60}$~', $b) ? $b : null;
+}
+
 function lees(string $pad): array {
   if (!file_exists($pad)) return [];
   $data = json_decode((string)file_get_contents($pad), true);
@@ -53,7 +65,11 @@ if ($methode === 'GET') {
     echo json_encode(['t' => $t, 'sig' => hash_hmac('sha256', (string)$t, $geheim)]);
     exit;
   }
-  $alle = array_reverse(lees($bestand));
+  $bron = geldige_bron($_GET['bron'] ?? 'gastenboek');
+  if ($bron === null) fout(400, 'Onbekende bron.');
+
+  $alle = array_values(array_filter(array_reverse(lees($bestand)),
+    fn($b) => ($b['bron'] ?? 'gastenboek') === $bron));
   $totaal = count($alle);
   $offset = max(0, (int)($_GET['offset'] ?? 0));
   $limiet = min(50, max(1, (int)($_GET['limiet'] ?? 10)));
@@ -67,6 +83,7 @@ if ($methode === 'GET') {
     ];
   }
   echo json_encode([
+    'bron' => $bron,
     'totaal' => $totaal,
     'offset' => $offset,
     'meer' => $offset + count($uit) < $totaal,
@@ -95,6 +112,11 @@ if ($t <= 0 || !hash_equals(hash_hmac('sha256', (string)$t, $geheim), $sig)) {
 }
 if (time() - $t < 4) {
   fout(400, 'Dat ging wel heel snel. Probeer het nog eens.');
+}
+
+$bron = geldige_bron($in['bron'] ?? 'gastenboek');
+if ($bron === null) {
+  fout(400, 'Onbekende bron.');
 }
 
 $naam = trim(strip_tags((string)($in['naam'] ?? '')));
@@ -132,6 +154,7 @@ bewaar($ipBestand, $ips);
 $berichten = lees($bestand);
 $berichten[] = [
   'id' => bin2hex(random_bytes(8)),
+  'bron' => $bron,
   'naam' => $naam,
   'bericht' => $bericht,
   'datum' => date('c')

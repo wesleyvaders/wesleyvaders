@@ -52,6 +52,8 @@ $id = (string)($in['id'] ?? '');
 if ($id === '') {
   // de map staat erbij, zodat je op de beheerpagina kunt zien
   // welke map er echt gebruikt wordt
+  foreach ($berichten as &$b) { $b['bron'] = $b['bron'] ?? 'gastenboek'; }
+  unset($b);
   echo json_encode(['map' => $datamap, 'berichten' => $berichten]);
   exit;
 }

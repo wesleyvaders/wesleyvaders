@@ -1,0 +1,69 @@
+---
+// De route op echte coördinaten. Mercator, want anders staat Spanje
+// scheef ten opzichte van Nederland. De punten staan op data-gehad
+// zodat ze later omgezet kunnen worden naar gereden.
+//
+// Heb je een eigen getekende kaart? Vervang dan het pad en de punten
+// hieronder; de rest van de opmaak blijft werken.
+import { etappes, start } from '../data/route.js';
+
+// De route loopt vooral noord-zuid, dus de kaart is smal en hoog. Hij
+// staat links, de namen staan er rechts naast.
+const B = 400, H = 700, LINKS = 58, MARGE_Y = 62;
+
+const punten = [{ naam: start.naam, lat: start.lat, lng: start.lng, nr: null }, ...etappes.map(e => ({
+  naam: e.naar, lat: e.lat, lng: e.lng, nr: e.nr, km: e.km
+}))];
+
+// Mercator wil beide assen in radialen; met graden op de x-as wordt
+// de kaart platgedrukt tot een streep.
+const rad = (g) => g * Math.PI / 180;
+const merc = (lat) => Math.log(Math.tan(Math.PI / 4 + rad(lat) / 2));
+const xs = punten.map(p => rad(p.lng)), ys = punten.map(p => merc(p.lat));
+const [x0, x1] = [Math.min(...xs), Math.max(...xs)];
+const [y0, y1] = [Math.min(...ys), Math.max(...ys)];
+const schaal = (H - 2 * MARGE_Y) / (y1 - y0);
+
+const plek = (p) => ({
+  x: +((rad(p.lng) - x0) * schaal + LINKS).toFixed(1),
+  y: +((y1 - merc(p.lat)) * schaal + MARGE_Y).toFixed(1)
+});
+const pos = punten.map(plek);
+const lijn = pos.map((p, i) => `${i ? 'L' : 'M'}${p.x} ${p.y}`).join(' ');
+---
+<figure class="rt-kaart rv">
+  <svg viewBox={`0 0 ${B} ${H}`} role="img"
+    aria-label="Kaart van de route van Monster naar Alfaz del Pi met zeven etappes">
+    <path class="rt-lijn" d={lijn} fill="none" pathLength="2600" />
+
+    {pos.map((p, i) => {
+      const punt = punten[i];
+      return (
+        <g class="rt-punt" data-gehad="false">
+          <circle cx={p.x} cy={p.y} r={punt.nr ? 10 : 6} />
+          {punt.nr && <text class="rt-nr" x={p.x} y={p.y + 3.8} text-anchor="middle">{punt.nr}</text>}
+          <text class="rt-naam" x={p.x + 18} y={punt.km ? p.y - 2 : p.y + 5}>{punt.naam}</text>
+          {punt.km && <text class="rt-km" x={p.x + 18} y={p.y + 13}>± {punt.km} km</text>}
+        </g>
+      );
+    })}
+  </svg>
+  <figcaption class="rt-bij mono">Zeven etappes <i>/</i> ruim 2.750 kilometer</figcaption>
+</figure>
+
+<script>
+  // de lijn tekent zichzelf zodra de kaart in beeld komt
+  const kaart = document.querySelector('.rt-kaart');
+  if (kaart) {
+    const rustig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (rustig) {
+      kaart.classList.add('getekend');
+    } else {
+      new IntersectionObserver(([e], io) => {
+        if (!e.isIntersecting) return;
+        kaart.classList.add('getekend');
+        io.disconnect();
+      }, { threshold: 0.2 }).observe(kaart);
+    }
+  }
+</script>
