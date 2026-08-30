@@ -35,6 +35,7 @@ export const cookiebanner = {
 // Zet op true zodra je hem gebouwd hebt. Zo geen kapotte links in de nav.
 export const navAlles = [
   { titel: 'Mijn verhaal', href: '/mijn-verhaal/', klaar: true },
+  { titel: 'De route', href: '/route/', klaar: true },
   { titel: 'Het avontuur', href: '/#route', klaar: true },
   { titel: 'Afleveringen', href: '/afleveringen/', klaar: false },
   { titel: 'Verhalen', href: '/verhalen/', klaar: true },

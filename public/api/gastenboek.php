@@ -137,15 +137,19 @@ foreach (['http', 'https', 'www.'] as $verboden) {
   }
 }
 
-// maximaal 3 berichten per uur per IP; alleen een hash van het IP bewaren
-$ipHash = hash('sha256', ($_SERVER['REMOTE_ADDR'] ?? '') . $geheim);
+// Rem per IP, alleen een hash bewaren. Gastenboek en route-tips hebben
+// een eigen teller: drie berichten per uur, en tien tips, want iemand
+// die de route kent heeft vaak over meerdere plekken iets te melden.
+$soort = $bron === 'gastenboek' ? 'gastenboek' : 'route';
+$rem = $soort === 'gastenboek' ? 3 : 10;
+$ipHash = $soort . ':' . hash('sha256', ($_SERVER['REMOTE_ADDR'] ?? '') . $geheim);
 $grens = time() - 3600;
 $ips = lees($ipBestand);
 foreach ($ips as $hash => $tijden) {
   $ips[$hash] = array_values(array_filter($tijden, fn($x) => $x > $grens));
   if (!$ips[$hash]) unset($ips[$hash]);
 }
-if (count($ips[$ipHash] ?? []) >= 3) {
+if (count($ips[$ipHash] ?? []) >= $rem) {
   fout(429, 'Rustig aan. Probeer het over een uurtje nog eens.');
 }
 $ips[$ipHash][] = time();
