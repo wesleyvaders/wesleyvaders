@@ -424,6 +424,25 @@ footer .brand .wm small{font-size:.5rem;letter-spacing:.24em;opacity:.8;margin-t
   .ow-nu{border-left:0;padding-left:0;border-top:1px solid var(--lijn);padding-top:2rem}
 }
 
+/* ---------- etappes in een verhaal ----------
+   Dezelfde routelijn als in de hero, maar dan verticaal. */
+.etappes{list-style:none;margin:clamp(2.5rem,5vw,3.5rem) 0;padding:0 0 0 1.75rem;
+  position:relative}
+.etappes::before{content:"";position:absolute;left:3px;top:.55rem;bottom:.55rem;width:1px;
+  background:linear-gradient(180deg,var(--terra),rgba(20,20,18,.18))}
+.etappes li{position:relative;padding-bottom:clamp(1.75rem,3vw,2.5rem)}
+.etappes li:last-child{padding-bottom:0}
+.etappes li::before{content:"";position:absolute;left:-1.75rem;top:.5rem;
+  width:7px;height:7px;border-radius:50%;background:var(--ink)}
+.etappes li:first-child::before{background:var(--terra)}
+.etappes li:last-child::before{background:var(--gold);
+  box-shadow:0 0 0 5px rgba(223,175,74,.2)}
+.et-n{margin:0;font-size:.5625rem;color:rgba(20,20,18,.45)}
+.et-n i{font-style:normal;opacity:.45;margin:0 .35em}
+.et-t{font-family:var(--serif);font-weight:400;font-size:1.5rem;line-height:1.15;
+  margin:.45rem 0 .5rem}
+.et-d{margin:0;font-size:.9375rem;line-height:1.7;color:rgba(20,20,18,.7)}
+
 /* ---------- beheerpagina van het gastenboek ---------- */
 .bh-slot{max-width:34ch}
 .bh-hint{font-size:.875rem;color:rgba(20,20,18,.55);margin-top:1.25rem;max-width:46ch;line-height:1.6}
