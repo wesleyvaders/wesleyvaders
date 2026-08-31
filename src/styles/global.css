@@ -196,6 +196,15 @@ footer .brand .wm small{font-size:.5rem;letter-spacing:.24em;opacity:.8;margin-t
 .m-bij{display:block;margin-top:.3rem;font-size:.5625rem;
   color:rgba(217,198,165,.6)}
 
+/* pagina's die niet in de hoofdnavigatie staan */
+.menu-ook{margin-top:2rem;padding-top:1.5rem;
+  border-top:1px solid rgba(245,241,232,.14)}
+.menu-ook-k{font-size:.5625rem;color:rgba(217,198,165,.5);margin:0 0 .9rem}
+.menu-ook a{display:block;padding:.55rem 0;min-height:44px;
+  font-family:var(--serif);font-size:1.25rem;line-height:1.3;
+  color:rgba(245,241,232,.85);transition:color .25s,padding-left .3s}
+.menu-ook a:hover{color:var(--paper);padding-left:.5rem}
+
 .menu-nu{display:flex;gap:1rem;align-items:flex-start;margin-top:auto;padding-top:2.5rem}
 .m-punt{width:7px;height:7px;border-radius:50%;background:var(--gold);flex:none;
   margin-top:.35rem;box-shadow:0 0 0 5px rgba(223,175,74,.16);
@@ -369,8 +378,6 @@ footer .brand .wm small{font-size:.5rem;letter-spacing:.24em;opacity:.8;margin-t
 .rail{position:relative;padding-top:2.4rem}
 .rail::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:rgba(20,20,18,.18)}
 .stops{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
-@media(max-width:900px){.stops{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:540px){.stops{grid-template-columns:1fr}}
 .stop{position:relative;padding-top:1.7rem}
 .stop::before{content:"";position:absolute;top:-2.4rem;left:0;width:7px;height:7px;
   border-radius:50%;background:var(--ink);transform:translateY(-3px)}
@@ -381,6 +388,24 @@ footer .brand .wm small{font-size:.5rem;letter-spacing:.24em;opacity:.8;margin-t
 .stop-t{font-family:var(--serif);font-size:1.625rem;line-height:1.1;margin:.45rem 0 .35rem}
 .stop-x{font-size:.875rem;line-height:1.55;color:rgba(20,20,18,.6)}
 .stop[data-status="komt"] .stop-t,.stop[data-status="komt"] .stop-x{opacity:.5}
+
+/* Onder de 900px staan de haltes onder elkaar. De lijn kantelt dan mee
+   en wordt verticaal, met het bolletje naast de eigen halte in plaats
+   van erboven. Anders hangt elk bolletje bij de vorige tekst. */
+@media(max-width:900px){
+  .rail{padding-top:0;padding-left:1.75rem}
+  .rail::before{top:1.55rem;bottom:0;left:3px;right:auto;width:1px;height:auto;
+    background:linear-gradient(180deg,rgba(20,20,18,.18) 82%,transparent)}
+  .stops{grid-template-columns:1fr;gap:0}
+  .stop{padding:1.25rem 0}
+  .stop::before{top:calc(1.25rem + 3px);left:-1.75rem;transform:none}
+  .stop[data-status="nu"]::before{box-shadow:0 0 0 4px rgba(223,175,74,.22)}
+}
+/* een halte met een eigen pagina wordt een link */
+a.stop{display:block;transition:padding-left .3s cubic-bezier(.16,1,.3,1)}
+a.stop:hover{padding-left:.6rem}
+.stop-l{margin:.9rem 0 0;font-size:.5625rem;color:var(--terra)}
+a.stop:hover .stop-l{color:var(--terra-dk)}
 
 /* ---------- mowgli ---------- */
 .mow{background:var(--sand);color:var(--ink)}

@@ -1,6 +1,6 @@
 ---
 import Merkteken from './Merkteken.astro';
-import { site, nav, socials, nu, vertrek } from '../data/site.js';
+import { site, nav, navExtra, socials, nu, vertrek } from '../data/site.js';
 
 const { donker = false } = Astro.props;
 
@@ -49,12 +49,17 @@ const dagen = Math.round((new Date(vertrek + 'T00:00:00') - vandaag) / 86400000)
     ))}
   </nav>
 
-  <div class="menu-nu" data-item style={`--i:${menuItems.length + 1}`}>
+  <div class="menu-ook" data-item style={`--i:${menuItems.length + 1}`}>
+    <p class="menu-ook-k mono">Ook op de site</p>
+    {navExtra.map(i => <a href={i.href}>{i.titel}</a>)}
+  </div>
+
+  <div class="menu-nu" data-item style={`--i:${menuItems.length + 2}`}>
     <span class="m-punt" aria-hidden="true"></span>
     <p>{nu.label}<br /><span>{nu.kop}</span></p>
   </div>
 
-  <div class="menu-soc" data-item style={`--i:${menuItems.length + 2}`}>
+  <div class="menu-soc" data-item style={`--i:${menuItems.length + 3}`}>
     {socials.map(s => (
       <a href={s.href} rel="noopener">
         <span class="m-soc-n">{s.naam}</span>

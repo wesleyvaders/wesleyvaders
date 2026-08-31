@@ -225,13 +225,17 @@ const gastenboek = await haalGastenboek();
       </div>
       <div class="rail rv">
         <div class="stops">
-          {route.map(r => (
-            <div class="stop" data-status={r.status}>
-              <p class="stop-d">{r.wanneer}</p>
-              <h3 class="stop-t">{r.titel}</h3>
-              <p class="stop-x">{r.tekst}</p>
-            </div>
-          ))}
+          {route.map(r => {
+            const Halte = r.href ? 'a' : 'div';
+            return (
+              <Halte class="stop" data-status={r.status} href={r.href}>
+                <p class="stop-d">{r.wanneer}</p>
+                <h3 class="stop-t">{r.titel}</h3>
+                <p class="stop-x">{r.tekst}</p>
+                {r.href && <p class="stop-l mono">{r.link ?? 'Lees verder'} &rarr;</p>}
+              </Halte>
+            );
+          })}
         </div>
       </div>
     </div>

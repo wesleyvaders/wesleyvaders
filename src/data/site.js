@@ -46,6 +46,14 @@ export const navAlles = [
 ];
 export const nav = navAlles.filter(i => i.klaar);
 
+// Pagina's die er wel zijn maar niet in de hoofdnavigatie horen. Ze
+// staan onderaan het mobiele menu en in de footer, zodat ze niet
+// alleen via een link in de tekst te vinden zijn.
+export const navExtra = [
+  { titel: 'De route', href: '/route/' },
+  { titel: 'Even in het hier en nu', href: '/hierennu/' }
+];
+
 export const contact = {
   email: 'info@wesleyvaders.nl',
   plaats: 'Den Haag'
@@ -88,9 +96,10 @@ export const nu = {
 
 // De route. Nieuwe halte toevoegen? Regel erbij en klaar.
 // status: 'nu' geeft het gouden punt, 'komt' is een open cirkel, 'gehad' is gevuld.
+// href is optioneel: staat er een pagina over die halte, dan wordt hij klikbaar.
 export const route = [
   { wanneer: 'Monster', titel: 'Inpakken', tekst: 'Kasten gesloopt, drie ritten naar de stort, de rest weggegeven.', status: 'gehad' },
-  { wanneer: 'September', titel: 'Prio 1', tekst: 'De eerste lading mee naar beneden.', status: 'nu' },
+  { wanneer: 'September', titel: 'Prio 1', tekst: 'De eerste lading mee naar beneden.', status: 'nu', href: '/route/', link: 'Bekijk de route' },
   { wanneer: 'Oktober', titel: 'Prio 2', tekst: 'Even terug naar Nederland. Ik word oom.', status: 'komt' },
   { wanneer: '?', titel: 'De finca', tekst: 'Bestaat nog niet. Staat er wel ergens.', status: 'komt' }
 ];

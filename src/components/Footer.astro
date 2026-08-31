@@ -1,6 +1,6 @@
 ---
 import Merkteken from './Merkteken.astro';
-import { site, nav, socials } from '../data/site.js';
+import { site, nav, navExtra, socials } from '../data/site.js';
 ---
 <footer>
   <svg class="ridge" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
@@ -21,6 +21,7 @@ import { site, nav, socials } from '../data/site.js';
       <div class="fcol">
         <h4>De reis</h4>
         {nav.map(i => <a href={i.href}>{i.titel}</a>)}
+        {navExtra.map(i => <a href={i.href}>{i.titel}</a>)}
       </div>
       <div class="fcol">
         <h4>Onderweg</h4>
