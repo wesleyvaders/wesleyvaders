@@ -32,8 +32,6 @@ De laatste keer barbecueën bij Joost. Het laatste etentje met Ed en Chantal. De
 
 ![De tafel bij Joost na afloop van de barbecue](../../../public/fotos/bbq-joost.webp)
 
-![Het laatste etentje met Ed en Chantal](../../../public/fotos/etentje-ed-chantal.webp)
-
 ![De groenbakken aan de straat](../../../public/fotos/groenbakken.webp)
 
 De laatste keer het vogeltje mijn vogelhuisje in zien vliegen.
