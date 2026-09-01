@@ -16,7 +16,7 @@ Het begon een tijdje terug, tijdens een ochtendrondje met Mo. Langs de begraafpl
 
 ![Het trottoir van het ochtendrondje, langs de heg en de bomen](../../../public/fotos/rondje-trottoir.webp)
 
-Vanaf dat moment ben ik ze gaan zien.
+Vanaf dat moment ben ik overal laatste keren gaan zien.
 
 ![Mo aan de lijn bij de vijver](../../../public/fotos/wandeling-mo.webp)
 
@@ -28,19 +28,19 @@ Toen ik die vriendin terugbelde zei ze: ja, ik dacht, misschien kom ik vandaag b
 
 En dat is precies de fase waar ik nu in zit.
 
-![Het laatste etentje met Ed en Chantal](../../../public/fotos/etentje-ed-chantal.webp)
-
-De laatste keer barbecueën bij Joost. De laatste keer dat rondje met Mo. De laatste keer lopen naar de supermarkt. De laatste keer eten bij Ron en Cynt. De laatste keer het vogeltje mijn vogelhuisje in zien vliegen.
+De laatste keer barbecueën bij Joost. Het laatste etentje met Ed en Chantal. De laatste keer eten bij Ron en Cynt. De laatste keer dat rondje met Mo. De laatste keer lopen naar de supermarkt. De laatste keer de groenbak buiten zetten.
 
 ![De tafel bij Joost na afloop van de barbecue](../../../public/fotos/bbq-joost.webp)
 
-![Een koolmees bij het vogelhuisje in de klimop](../../../public/fotos/vogelhuisje.webp)
-
-De laatste keer de groenbak buiten zetten.
+![Het laatste etentje met Ed en Chantal](../../../public/fotos/etentje-ed-chantal.webp)
 
 ![De groenbakken aan de straat](../../../public/fotos/groenbakken.webp)
 
-Sommige daarvan komen terug. Ik ga nog vaak genoeg naar Nederland en die etentjes komen er heus wel weer. Maar die groenbak is echt de laatste keer, en dat is een raar ding om over na te denken terwijl je hem op straat zet.
+De laatste keer het vogeltje mijn vogelhuisje in zien vliegen.
+
+![Een koolmees bij het vogelhuisje in de klimop](../../../public/fotos/vogelhuisje.webp)
+
+Sommige daarvan komen terug. Ik ga nog vaak genoeg naar Nederland en die etentjes komen er heus wel weer. Maar dat vogeltje ga ik niet meer zien, en daar kan ik niks aan doen.
 
 Als vrienden vragen hoe het gaat, zeg ik eigenlijk best goed. Het huis is bijna leeg, ik heb overzicht, en dat geeft rust.
 
