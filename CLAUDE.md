@@ -15,11 +15,15 @@ elke inhoudelijke wijziging deze vier na:
 3. **De cijferstrook**: spreekt geen enkel cijfer een andere pagina tegen.
 4. **De aftelling**: hero, gastenboek, menu en route horen hetzelfde te zeggen.
 
-**Nooit een datum of een aantal intypen dat vanzelf verandert.** Alles wat
-met de tijd meeloopt komt uit `vertrek` in `site.js` via `src/lib/tijd.js`,
-en wordt in de browser bijgewerkt via `data-dagen`, `data-weken` en
-`data-aftel` in `Base.astro`. Zo verjaart het niet tussen twee deploys.
-Schrijf dus `{weken}` in de tekst, geen "drie weken".
+**Alles wat de huidige stand beschrijft moet berekend zijn en niet
+ingetypt:** de aftelling, het NU-blok, de cijferstrook, de tijdlijn. Dat
+komt uit `vertrek` in `site.js` via `src/lib/tijd.js` en wordt in de
+browser bijgewerkt via `data-dagen`, `data-weken` en `data-aftel` in
+`Base.astro`. Schrijf dus `{weken}` in de tekst, geen "drie weken".
+
+**Verhalen en korte berichten zijn momentopnamen en bevriezen.** Daarin mag
+"nog 22 dagen" blijven staan, ook als dat er inmiddels 18 zijn. Dat was wat
+er op die datum gold en het hoort bij het bericht.
 
 ## Commando's
 

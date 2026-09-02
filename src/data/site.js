@@ -81,10 +81,10 @@ export const cijfers = [
 // Het NU-blok. Dit is het enige dat je echt vaak aanpast.
 // {weken} wordt berekend uit vertrek, niet ingetypt. Zie src/lib/tijd.js.
 export const nu = {
-  label: 'Nu · 1 september 2026',
+  label: 'Nu · 2 september 2026',
   kop: 'Het huis is bijna leeg.',
   tekst:
-    'Drie kamers helemaal leeg, de rest bijna. Het bed is weg, de meeste spullen ook. Nog {weken} en dan rijd ik naar het zuiden.',
+    'Drie kamers helemaal leeg, de rest bijna. De lampen gaan van het plafond. Nog {weken} en dan rijd ik naar het zuiden.',
   logboek: [
     ['Huis', 'Verkocht, sleutel weg 17.09.2026'],
     ['Nog', '{weken}'],
