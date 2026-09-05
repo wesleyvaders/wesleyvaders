@@ -43,8 +43,8 @@ npm run preview  # dist/ lokaal bekijken
 | `src/content/hierennu/` | Korte berichten. Verschijnen op de homepage en op `/hierennu/`. |
 | `src/content.config.js` | De velden die een verhaal of bericht mag hebben. |
 | `src/styles/global.css` | Alle styling en alle merktokens. Ook de stijlen van dingen die JavaScript aanmaakt, want scoped CSS pakt die niet. |
-| `src/components/` | Nav, Footer, Merkteken, Routelijn, Routekaart, Etappes, Gastenboek, Analytics, Cookiebanner. |
-| `src/lib/gastenboek.js` | Haalt bij de build het aantal berichten op voor de hero. Faalt dat, dan blijft dat stukje leeg. |
+| `src/components/` | Nav, Footer, Merkteken, Routelijn, Routekaart, Etappes, Gastenboek, Reacties, Analytics, Cookiebanner. |
+| `src/lib/gastenboek.js` | Haalt bij de build het aantal berichten op voor de hero, en het aantal per bron voor de verhalenpagina. Faalt dat, dan blijven die stukjes leeg. |
 | `public/fotos/` | Gegradeerde foto's. |
 | `public/og/` | Deelplaatjes, 1200x630. |
 | `public/fonts/` | De vier woff2-bestanden. Zelf gehost, latin-subset. |
@@ -126,7 +126,9 @@ Het enige dynamische deel van de site. De berichten staan **niet** in de repo ma
 
 Drie bestanden horen daar: `berichten.json`, `token.txt` (jouw wachtwoord voor `/beheer/`, mag een zin zijn die je onthoudt) en `geheim.txt` (ondertekent het tijdstempel van het formulier).
 
-Elk bericht heeft een **bron**: `gastenboek`, of `route:03-dune-du-pilat` voor een tip bij een etappe. Berichten zonder bron tellen als gastenboek. De filters zijn voor beide gelijk: honeypot, minstens vier seconden tussen laden en versturen, geen links, maximaal 1200 tekens. De rem per IP verschilt: drie gastenboekberichten per uur, tien tips.
+Elk bericht heeft een **bron**: `gastenboek`, `route:03-dune-du-pilat` voor een tip bij een etappe, of `verhaal:2026-09-05-de-laatste-zaterdagnacht` voor een reactie onder een verhaal. Berichten zonder bron tellen als gastenboek. De filters zijn voor alle drie gelijk: honeypot, minstens vier seconden tussen laden en versturen, geen links, maximaal 1200 tekens. De rem per IP verschilt en elk soort heeft een eigen teller: drie gastenboekberichten per uur, tien tips en tien reacties. Zo eet een reactie onder een verhaal je tips voor de route niet op.
+
+`?tellen=1` op het eindpunt geeft het aantal per bron. Dat gebruikt de verhalenpagina bij de build om bij elk verhaal het aantal reacties te tonen. Lukt dat niet, dan komt er simpelweg geen teller.
 
 Beheren gaat via **`/beheer/`**: inloggen met het token, dan lezen, aanpassen en weggooien, met een filter per bron. Nooit handmatig in `berichten.json` rommelen als het via die pagina kan.
 
@@ -151,7 +153,7 @@ Nog niet: Afleveringen, Spanje.
 
 ## Juridische pagina's
 
-`privacy-policy.astro` en `cookies.astro` zijn geschreven op de huidige situatie: GA4 met Consent Mode, hosting bij CloudMonsters, Bunny CDN, zelf gehoste lettertypen, geen embeds, en twee formulieren die naam en bericht openbaar op de site zetten (het gastenboek en de tips per etappe). **Verandert een van die dingen, dan moeten deze pagina's mee.** Vooral bij het insluiten van YouTube of TikTok, want dan komen er cookies van derden bij en moet de cookietabel worden aangevuld.
+`privacy-policy.astro` en `cookies.astro` zijn geschreven op de huidige situatie: GA4 met Consent Mode, hosting bij CloudMonsters, Bunny CDN, zelf gehoste lettertypen, geen embeds, en drie formulieren die naam en bericht openbaar op de site zetten (het gastenboek, de tips per etappe en de reacties onder een verhaal). **Verandert een van die dingen, dan moeten deze pagina's mee.** Vooral bij het insluiten van YouTube of TikTok, want dan komen er cookies van derden bij en moet de cookietabel worden aangevuld.
 
 Het e-mailadres staat in `site.js` onder `contact.email`.
 

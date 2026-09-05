@@ -2,14 +2,28 @@
 import { getCollection, render } from 'astro:content';
 import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
+import Reacties from '../../components/Reacties.astro';
 import { site, vertrek } from '../../data/site.js';
 
 export async function getStaticPaths() {
-  const verhalen = await getCollection('verhalen', e => !e.data.concept);
-  return verhalen.map(v => ({ params: { slug: v.id }, props: { v } }));
+  const verhalen = (await getCollection('verhalen', e => !e.data.concept))
+    .sort((a, b) => a.data.datum - b.data.datum);
+
+  return verhalen.map((v, i) => {
+    // het vorige en het volgende verhaal. Ontbreekt er een, dan schuiven
+    // we op naar de andere kant, zodat het blok nooit half leeg staat.
+    const vorige = verhalen[i - 1];
+    const volgende = verhalen[i + 1];
+    let leesOok;
+    if (vorige && volgende) leesOok = [vorige, volgende];
+    else if (volgende) leesOok = [volgende, verhalen[i + 2]];
+    else leesOok = [verhalen[i - 2], vorige];
+    leesOok = leesOok.filter(Boolean);
+    return { params: { slug: v.id }, props: { v, leesOok } };
+  });
 }
 
-const { v } = Astro.props;
+const { v, leesOok } = Astro.props;
 const { Content } = await render(v);
 const d = v.data;
 const fmt = new Intl.DateTimeFormat('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' }).format(d.datum);
@@ -22,6 +36,9 @@ const ogTekst = d.deelplaatjeAlt ?? (ogNaam ? (d.fotoAlt ?? d.titel) : undefined
 
 const vandaag = new Date(); vandaag.setHours(0, 0, 0, 0);
 const dagen = Math.round((new Date(vertrek + 'T00:00:00') - vandaag) / 86400000);
+
+const fmtKort = (d) => new Intl.DateTimeFormat('nl-NL',
+  { day: '2-digit', month: '2-digit', year: 'numeric' }).format(d).replaceAll('-', '.');
 
 const deelUrl = new URL(Astro.url.pathname, site.domein).href;
 const waHref = `https://wa.me/?text=${encodeURIComponent(`${d.titel} ${deelUrl}`)}`;
@@ -59,7 +76,29 @@ const schema = {
     <div class="paper sec">
       <div class="wrap">
         <div class="artikel">
-          <Content />
+          <div data-artikel>
+            <Content />
+          </div>
+
+          <Reacties bron={`verhaal:${v.id}`} />
+
+          {leesOok.length > 0 && (
+            <section class="ook">
+              <h2 class="ook-h">Lees ook</h2>
+              <div class="ook-lijst">
+                {leesOok.map(a => (
+                  <a class="ook-item" href={`/verhalen/${a.id}/`}>
+                    <span class="ook-f" aria-hidden="true">
+                      {a.data.foto && <Image src={a.data.foto} alt="" widths={[300, 600]} sizes="(max-width:700px) 90vw, 22rem" />}
+                    </span>
+                    <span class="ook-d mono">{fmtKort(a.data.datum)}</span>
+                    <span class="ook-t">{a.data.titel}</span>
+                    {a.data.kort && <span class="ook-k">{a.data.kort}</span>}
+                  </a>
+                ))}
+              </div>
+            </section>
+          )}
 
           <div class="deel">
             <p class="deel-l mono">Delen</p>

@@ -26,3 +26,27 @@ export async function haalGastenboek() {
   }
   return inGeheugen;
 }
+
+// Het aantal berichten per bron, voor het aantal reacties bij elk verhaal
+// in het archief. Eén verzoek voor de hele lijst. Kent de server ?tellen=1
+// nog niet, dan komt er een leeg object terug en tonen we simpelweg niets.
+let tellingen;
+
+export async function haalAantallen() {
+  if (tellingen !== undefined) return tellingen;
+
+  const bron = process.env.GB_API ?? `${site.domein}/api/gastenboek.php`;
+  try {
+    const r = await fetch(`${bron}?tellen=1`, { signal: AbortSignal.timeout(5000) });
+    if (!r.ok) throw new Error(`status ${r.status}`);
+    const d = await r.json();
+    if (!d || typeof d.aantallen !== 'object' || d.aantallen === null) {
+      throw new Error('server kent tellen=1 nog niet');
+    }
+    tellingen = d.aantallen;
+  } catch (e) {
+    console.warn(`  Aantallen niet opgehaald (${e.message}); er komt geen teller bij de verhalen.`);
+    tellingen = {};
+  }
+  return tellingen;
+}

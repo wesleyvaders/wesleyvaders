@@ -1,0 +1,151 @@
+---
+// Reacties onder een verhaal. Draait op hetzelfde eindpunt als het
+// gastenboek en de route-tips, met bron verhaal:[slug]. Dezelfde filters,
+// dezelfde opslag, dezelfde beheerpagina.
+//
+// Het formulier staat ingeklapt tot iemand op Reageer klikt. Zo blijft
+// het einde van een verhaal rustig.
+const { bron } = Astro.props;
+const MAX = 1200;
+---
+<section class="rea" data-rea data-bron={bron} data-max={MAX}>
+  <h2 class="rea-h">Wat vind jij?</h2>
+  <p class="rea-sub">Reageren kan hieronder. Ik lees alles.</p>
+
+  <div class="rea-lijst" data-lijst></div>
+
+  <button type="button" class="rea-open mono" data-reageer>Reageer</button>
+
+  <form class="rea-form" data-form hidden novalidate>
+    <label class="gb-veld">
+      <span class="mono">Naam</span>
+      <input type="text" name="naam" maxlength="40" required autocomplete="name" />
+    </label>
+    <label class="gb-veld">
+      <span class="mono">Jouw reactie</span>
+      <textarea name="bericht" rows="4" required></textarea>
+      <span class="gb-teller mono" data-teller>0 / {MAX}</span>
+    </label>
+    <div class="gb-honing" aria-hidden="true">
+      <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+    </div>
+    <input type="hidden" name="t" />
+    <input type="hidden" name="sig" />
+    <div class="rea-knoppen">
+      <button class="btn btn-f" type="submit">Plaatsen</button>
+      <button type="button" class="rea-open mono" data-annuleer>Laat maar</button>
+    </div>
+    <p class="rea-melding mono" role="status"></p>
+  </form>
+</section>
+
+<script>
+  const api = '/api/gastenboek.php';
+  const blok = document.querySelector('[data-rea]');
+
+  if (blok) {
+    const bron = blok.dataset.bron;
+    const MAX = Number(blok.dataset.max);
+    const lijst = blok.querySelector('[data-lijst]');
+    const form = blok.querySelector('[data-form]');
+    const openKnop = blok.querySelector('[data-reageer]');
+    const melding = blok.querySelector('.rea-melding');
+    const verzend = form.querySelector('button[type="submit"]');
+    const tekstveld = form.elements.bericht;
+    const teller = blok.querySelector('[data-teller]');
+
+    // Niet nog eens escapen: gastenboek.php doet dat al bij het uitlezen,
+    // net als bij het gastenboek en de route-tips.
+    const fmt = (iso) => {
+      const d = new Date(iso);
+      return isNaN(d) ? '' : new Intl.DateTimeFormat('nl-NL',
+        { day: '2-digit', month: '2-digit', year: 'numeric' }).format(d).replaceAll('-', '.');
+    };
+
+    const telBij = () => {
+      const n = tekstveld.value.length;
+      teller.textContent = `${n} / ${MAX}`;
+      teller.classList.toggle('bijna', n >= 1000 && n <= MAX);
+      teller.classList.toggle('over', n > MAX);
+      verzend.disabled = n > MAX;
+    };
+    tekstveld.addEventListener('input', telBij);
+    telBij();
+
+    async function haalStart() {
+      try {
+        const r = await fetch(api + '?start=1');
+        const d = await r.json();
+        form.elements.t.value = d.t;
+        form.elements.sig.value = d.sig;
+      } catch { /* zonder tijdstempel weigert de server, meer hoeft niet */ }
+    }
+
+    async function laden() {
+      try {
+        const r = await fetch(`${api}?bron=${encodeURIComponent(bron)}&limiet=50`);
+        const d = await r.json();
+        const items = d.berichten || [];
+        lijst.innerHTML = items.length
+          ? items.map(b => `
+              <article class="rea-item">
+                <p class="rea-kop"><span class="rea-naam">${b.naam}</span><span class="rea-datum mono">${fmt(b.datum)}</span></p>
+                <p class="rea-tekst">${b.bericht}</p>
+              </article>`).join('')
+          : '<p class="rea-leeg">Nog geen reacties. Jij mag de eerste zijn.</p>';
+      } catch {
+        lijst.innerHTML = '<p class="rea-leeg">De reacties laden nu even niet mee.</p>';
+      }
+    }
+
+    openKnop.addEventListener('click', () => {
+      form.hidden = false;
+      openKnop.hidden = true;
+      melding.textContent = '';
+      form.elements.naam.focus();
+      haalStart();
+    });
+
+    form.querySelector('[data-annuleer]').addEventListener('click', () => {
+      form.hidden = true;
+      openKnop.hidden = false;
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      melding.textContent = '';
+      verzend.disabled = true;
+      try {
+        const r = await fetch(api, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            bron,
+            naam: form.elements.naam.value.trim(),
+            bericht: form.elements.bericht.value,
+            website: form.elements.website.value,
+            t: Number(form.elements.t.value),
+            sig: form.elements.sig.value
+          })
+        });
+        const d = await r.json();
+        if (r.ok && d.ok) {
+          form.hidden = true;
+          openKnop.hidden = false;
+          form.elements.naam.value = '';
+          form.elements.bericht.value = '';
+          await laden();
+        } else {
+          melding.textContent = d.fout || 'Er ging iets mis. Probeer het later nog eens.';
+        }
+      } catch {
+        melding.textContent = 'Er ging iets mis. Probeer het later nog eens.';
+      } finally {
+        telBij();
+        haalStart();
+      }
+    });
+
+    laden();
+  }
+</script>

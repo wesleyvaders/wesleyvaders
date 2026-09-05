@@ -40,11 +40,19 @@ function fout(int $code, string $melding): void {
   exit;
 }
 
-/** 'gastenboek' of route:03-dune-du-pilat; anders null */
+/** 'gastenboek', route:03-dune-du-pilat of verhaal:2026-09-05-de-titel; anders null */
 function geldige_bron($waarde): ?string {
   $b = trim((string)$waarde);
   if ($b === '' || $b === 'gastenboek') return 'gastenboek';
-  return preg_match('~^route:[a-z0-9-]{3,60}$~', $b) ? $b : null;
+  if (preg_match('~^route:[a-z0-9-]{3,60}$~', $b)) return $b;
+  // verhaalslugs beginnen met een datum en zijn daardoor langer
+  return preg_match('~^verhaal:[a-z0-9-]{3,90}$~', $b) ? $b : null;
+}
+
+/** het soort bepaalt welke rem geldt en welke teller meeloopt */
+function soort_van(string $bron): string {
+  if ($bron === 'gastenboek') return 'gastenboek';
+  return str_starts_with($bron, 'route:') ? 'route' : 'verhaal';
 }
 
 function lees(string $pad): array {
@@ -65,6 +73,18 @@ if ($methode === 'GET') {
     echo json_encode(['t' => $t, 'sig' => hash_hmac('sha256', (string)$t, $geheim)]);
     exit;
   }
+  // ?tellen=1 geeft alleen het aantal per bron. De verhalenpagina heeft
+  // dat bij de build nodig en hoeft de teksten zelf niet te hebben.
+  if (isset($_GET['tellen'])) {
+    $per = [];
+    foreach (lees($bestand) as $b) {
+      $bron = $b['bron'] ?? 'gastenboek';
+      $per[$bron] = ($per[$bron] ?? 0) + 1;
+    }
+    echo json_encode(['aantallen' => (object)$per]);
+    exit;
+  }
+
   $bron = geldige_bron($_GET['bron'] ?? 'gastenboek');
   if ($bron === null) fout(400, 'Onbekende bron.');
 
@@ -133,14 +153,16 @@ if (mb_strlen($bericht) > 1200) {
 }
 foreach (['http', 'https', 'www.'] as $verboden) {
   if (stripos($bericht, $verboden) !== false || stripos($naam, $verboden) !== false) {
-    fout(400, 'Links zijn niet toegestaan in het gastenboek.');
+    fout(400, 'Links zijn hier niet toegestaan.');
   }
 }
 
-// Rem per IP, alleen een hash bewaren. Gastenboek en route-tips hebben
-// een eigen teller: drie berichten per uur, en tien tips, want iemand
-// die de route kent heeft vaak over meerdere plekken iets te melden.
-$soort = $bron === 'gastenboek' ? 'gastenboek' : 'route';
+// Rem per IP, alleen een hash bewaren. Elk soort heeft een eigen teller,
+// zodat een reactie onder een verhaal je tips voor de route niet opeet:
+// drie gastenboekberichten per uur, tien tips en tien reacties, want wie
+// de route kent of alles leest heeft vaak over meerdere dingen iets te
+// melden.
+$soort = soort_van($bron);
 $rem = $soort === 'gastenboek' ? 3 : 10;
 $ipHash = $soort . ':' . hash('sha256', ($_SERVER['REMOTE_ADDR'] ?? '') . $geheim);
 $grens = time() - 3600;

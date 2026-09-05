@@ -138,11 +138,27 @@ const persoon = {
     const voortgang = document.querySelector('.voortgang');
     const hero = document.querySelector('.hero, .opening');
 
+    // Op een verhaalpagina rekent de balk alleen over het artikel, van de
+    // eerste alinea tot het einde van de tekst. Anders staat hij al op
+    // driekwart terwijl je nog middenin het verhaal zit, want reacties,
+    // Lees ook en de footer tellen dan mee.
+    const artikel = document.querySelector('[data-artikel]');
+
     const opScroll = () => {
       nav.dataset.vast = String(scrollY > 40);
       const h = document.documentElement;
-      const p = h.scrollTop / (h.scrollHeight - h.clientHeight || 1);
-      voortgang.style.width = (p * 100) + '%';
+      let p;
+      if (artikel) {
+        // via de rect, niet via offsetTop: dat laatste rekent vanaf de
+        // dichtstbijzijnde gepositioneerde ouder en .sec staat op relative
+        const rect = artikel.getBoundingClientRect();
+        const start = rect.top + h.scrollTop;
+        const eind = start + rect.height - h.clientHeight;
+        p = (h.scrollTop - start) / Math.max(1, eind - start);
+      } else {
+        p = h.scrollTop / (h.scrollHeight - h.clientHeight || 1);
+      }
+      voortgang.style.width = (Math.min(1, Math.max(0, p)) * 100) + '%';
     };
     addEventListener('scroll', opScroll, { passive: true });
     opScroll();

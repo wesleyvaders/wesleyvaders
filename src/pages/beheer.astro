@@ -69,7 +69,9 @@ import Base from '../layouts/Base.astro';
 
   // waar een bericht vandaan komt, leesbaar
   const bronNaam = (b) => b === 'gastenboek' ? 'Gastenboek'
-    : b.startsWith('route:') ? 'Route ' + b.slice(6).replace(/-/g, ' ') : b;
+    : b.startsWith('route:') ? 'Route ' + b.slice(6).replace(/-/g, ' ')
+    : b.startsWith('verhaal:') ? 'Verhaal ' + b.slice(8).replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/-/g, ' ')
+    : b;
 
   function toonBronnen() {
     const doos = document.querySelector('[data-bronnen]');

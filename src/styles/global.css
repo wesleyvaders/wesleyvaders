@@ -305,7 +305,7 @@ footer .brand .wm small{font-size:.5rem;letter-spacing:.24em;opacity:.8;margin-t
 /* ---------- verhalenrijen met thumbnail ---------- */
 .arch-lijst{border-top:1px solid var(--lijn)}
 .arch{display:grid;grid-template-columns:7.5rem 6.5rem 1fr 1.1fr;
-  gap:clamp(1rem,3.5vw,2.75rem);align-items:center;
+  gap:.4rem clamp(1rem,3.5vw,2.75rem);align-items:center;
   padding:clamp(1.4rem,2.8vw,2rem) 0;border-bottom:1px solid var(--lijn);
   transition:background .35s,padding-left .35s}
 .arch:hover{background:rgba(217,198,165,.24);padding-left:1rem}
@@ -322,9 +322,9 @@ footer .brand .wm small{font-size:.5rem;letter-spacing:.24em;opacity:.8;margin-t
 @media(max-width:760px){
   .arch{grid-template-columns:5.5rem 1fr;gap:1rem 1.25rem;align-items:start;padding-block:1.4rem}
   .arch:hover{padding-left:0}
-  .arch-f{grid-row:1/4}
+  .arch-f{grid-row:1/-1}
   .arch-f img{aspect-ratio:1/1}
-  .arch-n,.arch-t,.arch-d{grid-column:2}
+  .arch-n,.arch-t,.arch-d,.arch-r{grid-column:2}
   .arch-t{font-size:1.5rem}
 }
 
@@ -742,6 +742,64 @@ footer{background:var(--forest);color:var(--paper);position:relative;overflow:hi
   font-size:.6875rem;letter-spacing:.14em;border:1px solid rgba(20,20,18,.28);
   border-radius:2px;color:var(--ink);transition:border-color .25s,background .25s}
 .deel-knop:hover{border-color:var(--ink);background:rgba(20,20,18,.05)}
+
+/* ---------- reacties onder een verhaal ----------
+   Zelfde eindpunt als het gastenboek, maar op papier in plaats van op
+   inkt. De veldstijlen komen van .gb-veld en worden hier omgezet naar
+   donkere tekst, net als bij het tipformulier op de routepagina. */
+.rea{margin-top:clamp(3rem,6vw,4.5rem);padding-top:1.8rem;border-top:1px solid var(--lijn)}
+.rea-h{font-family:var(--serif);font-weight:400;font-size:clamp(1.75rem,3.4vw,2.25rem);
+  line-height:1.05;margin:0}
+.rea-sub{margin:.6rem 0 0;font-size:.9375rem;line-height:1.6;color:rgba(20,20,18,.55)}
+.rea-lijst{margin-top:2rem}
+.rea-lijst:empty{margin-top:0}
+.rea-item{padding:1.4rem 0;border-top:1px solid var(--lijn)}
+.rea-item:first-child{border-top:0;padding-top:0}
+.rea-kop{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin:0 0 .5rem}
+.rea-naam{font-family:var(--serif);font-size:1.25rem;line-height:1}
+.rea-datum{font-size:.5625rem;color:rgba(20,20,18,.4);flex:none}
+.rea-tekst{margin:0;font-size:1rem;line-height:1.7;color:rgba(20,20,18,.8);
+  white-space:pre-wrap;overflow-wrap:anywhere}
+.rea-leeg{margin:0;padding:1.4rem 0;font-size:1rem;line-height:1.7;color:rgba(20,20,18,.5)}
+.rea-open{display:inline-flex;align-items:center;min-height:44px;padding:.7rem 1.1rem;
+  margin-top:1.6rem;font-size:.6875rem;letter-spacing:.14em;
+  border:1px solid rgba(20,20,18,.28);border-radius:2px;color:var(--ink);
+  transition:border-color .25s,background .25s}
+.rea-open:hover{border-color:var(--ink);background:rgba(20,20,18,.05)}
+.rea-form{margin-top:1.6rem;border:1px solid var(--lijn);border-radius:2px;padding:1.25rem}
+.rea-form .gb-veld .mono{color:rgba(20,20,18,.5)}
+.rea-form .gb-veld input,.rea-form .gb-veld textarea{color:var(--ink);
+  border-color:rgba(20,20,18,.28)}
+.rea-form .gb-teller{color:rgba(20,20,18,.4)}
+.rea-form button[disabled]{opacity:.55;cursor:default}
+.rea-knoppen{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+.rea-knoppen .rea-open{margin-top:0}
+.rea-melding{margin:.9rem 0 0;font-size:.6875rem;color:var(--terra);min-height:1.2em}
+
+/* ---------- lees ook ----------
+   Twee verhalen naast elkaar, gestapeld op mobiel. */
+.ook{margin-top:clamp(3rem,6vw,4.5rem);padding-top:1.8rem;border-top:1px solid var(--lijn)}
+.ook-h{font-family:var(--serif);font-weight:400;font-size:clamp(1.75rem,3.4vw,2.25rem);
+  line-height:1.05;margin:0 0 1.8rem}
+.ook-lijst{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.ook-item{display:block}
+.ook-f{display:block;overflow:hidden;border-radius:2px}
+.ook-f img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;
+  transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.ook-item:hover .ook-f img{transform:scale(1.04)}
+.ook-d{display:block;margin-top:.9rem;font-size:.5625rem;color:rgba(20,20,18,.42)}
+.ook-t{display:block;margin-top:.4rem;font-family:var(--serif);font-size:1.5rem;line-height:1.1}
+.ook-k{display:block;margin-top:.5rem;font-size:.9375rem;line-height:1.6;
+  color:rgba(20,20,18,.6)}
+.ook-item:hover .ook-t{color:var(--terra)}
+
+/* het aantal reacties in het archief, alleen als er reacties zijn */
+.arch-r{grid-column:2;font-family:var(--mono);font-size:.5625rem;letter-spacing:.15em;
+  text-transform:uppercase;color:rgba(20,20,18,.38);align-self:start}
+
+@media(max-width:700px){
+  .ook-lijst{grid-template-columns:1fr;gap:2.5rem}
+}
 
 @media(prefers-reduced-motion:reduce){
   *,*::after,*::before{animation:none !important;transition:none !important}
