@@ -9,6 +9,8 @@ klimaat: NL
 kort: Vannacht slaap ik hier voor de laatste keer op een zaterdag. En mijn buren gaan morgen op vakantie, dus die zie ik ook niet meer.
 foto: ../../../public/fotos/gang-mo.webp
 fotoAlt: De gang vol dozen, met Mo achterin in het licht bij de voordeur
+deelplaatje: og-zaterdagnacht.jpg
+deelplaatjeAlt: De gang vol dozen, met Mo achterin in het licht bij de voordeur
 concept: false
 ---
 
