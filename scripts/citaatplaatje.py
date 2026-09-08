@@ -184,9 +184,34 @@ def maak(naam):
 
 
 
-CITAAT = ["Dit rondje doe ik", "nog maar dertig keer."]
-ONDER1 = "Sindsdien zie ik overal laatste keren."
-FOTO = str(WORTEL / "public" / "fotos" / "wandeling-mo.webp")
+# ---------------------------------------------------------------
+# Instellingen van het citaatplaatje. Alleen dit blok pas je aan.
+# De foto komt uit public/fotos/ en is daar al door grade.py gehaald;
+# er gaat hier dus geen tweede grade overheen.
+# ---------------------------------------------------------------
+FOTO   = str(WORTEL / "public" / "fotos" / "ik-en-joost.webp")
+LABEL  = "YAMAS"
+TITEL  = ["Wij zijn een", "slecht duo."]
+URL    = "WESLEYVADERS.NL"
+NAAM   = "yamas-instagram.jpg"
+
+# De aftelling wordt niet ingetypt maar berekend, net als op de site.
+WOORD = ["nul", "één", "twee", "drie", "vier", "vijf", "zes", "zeven",
+         "acht", "negen", "tien", "elf", "twaalf", "dertien", "veertien"]
+
+def aftelzin(dagen):
+    if dagen < 0:  return "Onderweg."
+    if dagen == 0: return "Vandaag."
+    if dagen == 1: return "Nog één dag."
+    if dagen < 14: return f"Nog {WOORD[dagen]} dagen."
+    return f"Nog {WOORD[round(dagen/7)]} weken."
+
+ONDER = aftelzin(DAGEN)
+
+# Waar de tekst begint en eindigt, als deel van de hoogte. Instagram
+# toont in het grid een vierkante uitsnede; hierbinnen valt niets weg.
+MERK_BOVEN  = 0.13   # bovenkant van het merkteken
+TEKST_ONDER = 0.82   # onderkant van de laatste regel
 
 def foto_vlak(pad, breedte, hoogte, donker):
     im = Image.open(pad).convert("RGB")
@@ -201,12 +226,12 @@ def foto_vlak(pad, breedte, hoogte, donker):
 def citaat(naam):
     kaart = foto_vlak(FOTO, B, H, 0.46)
     d = ImageDraw.Draw(kaart, "RGBA")
-    # Het verloop onderin is er voor de leesbaarheid, niet voor de sfeer.
-    # Zit het onderwerp laag in beeld, zoals Mo hier, dan mag het zachter:
-    # onder de laatste regel staat toch geen tekst meer.
+    # Het verloop is er voor de leesbaarheid, niet voor de sfeer. Boven
+    # loopt het door tot 40%, want daar staan het merkteken en het label
+    # en die vallen weg zodra er een lichte lucht of ruit achter zit.
     for y_ in range(H):
         t = y_/(H-1)
-        boven = 150*max(0.0, 1-t/0.30)**1.4
+        boven = 205*max(0.0, 1-t/0.40)**1.25
         onder = 150*max(0.0, (t-0.30)/0.70)**1.35
         a = int(min(244, boven+onder))
         if a:
@@ -219,35 +244,60 @@ def citaat(naam):
     def cenm(y_, tekst, font, kleur, sp):
         w = breed(d, tekst, font, sp)-sp
         spatie(d, (mid-w/2, y_), tekst, font, kleur, sp)
+    def onderkant(tekst, font):
+        """hoe ver de tekst onder zijn eigen y uitkomt"""
+        return d.textbbox((0, 0), tekst, font=font)[3]
 
+    # --- bovenin: merkteken en label, vastgezet op MERK_BOVEN ---
+    merk_y = int(H*MERK_BOVEN)
     fmerk = mono(21)
     wm = breed(d, "WESLEY VADERS", fmerk, 3)-3
-    merkteken(d, mid-wm/2-66, VEILIG_BOVEN-82, 50, PAPER, GOLD)
-    spatie(d, (mid-wm/2, VEILIG_BOVEN-74), "WESLEY VADERS", fmerk, PAPER, 3)
+    merkteken(d, mid-wm/2-66, merk_y, 50, PAPER, GOLD)
+    spatie(d, (mid-wm/2, merk_y+8), "WESLEY VADERS", fmerk, PAPER, 3)
 
+    flabel = mono(19)
+    y_label = merk_y + 76
+    # zand, niet terracotta: op een foto met een lichte plek haalt
+    # terracotta maar 1,4:1 en dan valt het label gewoon weg
+    cenm(y_label, LABEL, flabel, SAND, 3.4)
+    onderkant_label = y_label + onderkant(LABEL, flabel)
+
+    # --- onderin: terugrekenen vanaf TEKST_ONDER ---
+    furl = mono(18)
+    y_url = int(H*TEKST_ONDER) - onderkant(URL, furl)
+    fonder = sans(28)
+    y_onder = y_url - 34 - onderkant(ONDER, fonder)
+
+    # --- de titel, gecentreerd in de ruimte die overblijft ---
     ft = serif(88)
-    hoogte_blok = len(CITAAT)*82
-    y = (VEILIG_BOVEN+VEILIG_ONDER)//2 - hoogte_blok//2 - 40
+    regelhoogte = 82
+    blok = len(TITEL)*regelhoogte
+    y = (onderkant_label + y_onder)//2 - blok//2 + 20
+
     fq = serif(150)
     wq = d.textlength("\u201c", font=fq)
     d.text((mid-wq/2, y-104), "\u201c", font=fq, fill=SAND+(110,))
-    for r in CITAAT:
+    for r in TITEL:
         cen(y, r, ft, PAPER)
-        y += 82
+        y += regelhoogte
 
-    y += 40
-    cen(y, ONDER1, sans(28), (216, 210, 198))
-    y += 58
-    cenm(y, f"WESLEYVADERS.NL   \u00b7   NOG {DAGEN} DAGEN", mono(18), SAND, 3.0)
+    cen(y_onder, ONDER, fonder, (216, 210, 198))
+    cenm(y_url, URL, furl, SAND, 3.0)
 
-    uit = UIT
-    os.makedirs(uit, exist_ok=True)
-    kaart.save(uit+naam, quality=92, subsampling=0)
+    os.makedirs(UIT, exist_ok=True)
+    kaart.save(UIT+naam, quality=92, subsampling=0)
+
+    # controlestrook: de drie vierkante uitsnedes die Instagram kan maken
     strook = Image.new("RGB", (B*3+40, B), (60, 60, 58))
     for i, box in enumerate([(0, (H-B)//2, B, (H-B)//2+B), (0, 0, B, B), (0, H-B, B, H)]):
         strook.paste(kaart.crop(box), (i*(B+20), 0))
-    strook.save(uit+"controle-alles.jpg", quality=80)
-    print(naam, kaart.size)
+    strook.save(UIT+"controle-alles.jpg", quality=80)
 
-citaat("laatste-keer-instagram.jpg")
+    print(f"{naam}  {kaart.size}")
+    print(f"  merkteken begint op {merk_y/H*100:.1f}% van boven")
+    print(f"  laatste regel eindigt op {(y_url+onderkant(URL, furl))/H*100:.1f}%")
+    print(f"  onderregel: {ONDER!r}")
+
+
+citaat(NAAM)
 

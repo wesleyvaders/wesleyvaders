@@ -64,6 +64,7 @@ npm run preview  # dist/ lokaal bekijken
 | `scripts/grade.py` | Fotogrades. Draaien vóór upload, niet tijdens de build. |
 | `scripts/og.py` | Deelplaatjes van de hoofdfoto's. Handmatig draaien. |
 | `scripts/og-gastenboek.py` | Het deelplaatje van het gastenboek. Loopt mee bij elke build, zodat de aftelling klopt. |
+| `scripts/citaatplaatje.py` | Citaatplaatjes voor Instagram, 1080x1350. Instellingen staan in één blok bovenin. Schrijft naar `~/Downloads/citaat/`, niet naar de site. |
 | `scripts/gastenboek-pdf.py` | De berichten als A5-boekje. Voor Wesley zelf, schrijft niet naar de site. |
 
 ## Een verhaal toevoegen
