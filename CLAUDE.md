@@ -8,18 +8,29 @@ Astro 5, statisch, geen database, geen CMS. Bouwt naar `dist/` en gaat bij elke 
 
 Deze site praat over een vertrek dat steeds dichterbij komt. Daardoor
 veroudert inhoud snel en spreken twee plekken elkaar zomaar tegen. Loop bij
-elke inhoudelijke wijziging deze vier na:
+elke inhoudelijke wijziging deze vijf na:
 
 1. **Het NU-blok** in `site.js`: klopt de kop nog met hoe het huis erbij staat, en het logboek met wat er af is?
 2. **De tijdlijn** op de homepage (`route` in `site.js`): staat `nu` nog op de goede halte, of is die al `gehad`?
 3. **De cijferstrook**: spreekt geen enkel cijfer een andere pagina tegen.
 4. **De aftelling**: hero, gastenboek, menu en route horen hetzelfde te zeggen.
+5. **Bij een nieuw verhaal: bestaat de og:image echt?** De verhaalpagina
+   leidt hem af van de hoofdfoto, dus een nieuwe foto betekent een nieuw
+   bestand in `public/og/`. Staat het er niet, draai dan `scripts/og.py`.
+   Controleer de URL uit de `og:image`-tag met een 200 en `image/jpeg`.
+   Dit valt niet op in de browser: je ziet het pas als iemand de link al
+   gedeeld heeft, en dan hangt het lege plaatje ook nog in hun cache.
 
 **Alles wat de huidige stand beschrijft moet berekend zijn en niet
 ingetypt:** de aftelling, het NU-blok, de cijferstrook, de tijdlijn. Dat
 komt uit `vertrek` in `site.js` via `src/lib/tijd.js` en wordt in de
-browser bijgewerkt via `data-dagen`, `data-weken` en `data-aftel` in
+browser bijgewerkt via `data-dagen`, `data-weken`, `data-tijd` en `data-aftel` in
 `Base.astro`. Schrijf dus `{weken}` in de tekst, geen "drie weken".
+
+In het NU-blok kun je `{weken}` schrijven voor "Nog twaalf dagen" en
+`{tijd}` voor "Twaalf dagen", dat laatste voor de logboekregel waar het
+woordje Nog al in de kop staat. Beide mogen in de kop, de tekst en het
+logboek, en boven de veertien dagen slaan ze vanzelf om naar weken.
 
 **Verhalen en korte berichten zijn momentopnamen en bevriezen.** Daarin mag
 "nog 22 dagen" blijven staan, ook als dat er inmiddels 18 zijn. Dat was wat

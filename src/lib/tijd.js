@@ -29,3 +29,13 @@ export const wekenKort = (dagen) => {
   const z = wekenZin(dagen);
   return z.charAt(0).toLowerCase() + z.slice(1);
 };
+
+// Zelfde waarde, maar zonder het woordje Nog ervoor: "Twaalf dagen".
+// Voor plekken waar dat er al staat, zoals de logboekregel NOG. Anders
+// leest die regel als "NOG · Nog twaalf dagen".
+export function tijdZin(dagen) {
+  const z = wekenZin(dagen);
+  if (!z.startsWith('Nog ')) return z;
+  const rest = z.slice(4);
+  return rest.charAt(0).toUpperCase() + rest.slice(1);
+}

@@ -6,7 +6,7 @@ import Routelijn from '../components/Routelijn.astro';
 import { site, nu, route, stappen, socials, vertrek, cijfers } from '../data/site.js';
 import Gastenboek from '../components/Gastenboek.astro';
 import { haalGastenboek } from '../lib/gastenboek.js';
-import { dagenTot as dagenTotDatum, wekenZin, wekenKort } from '../lib/tijd.js';
+import { dagenTot as dagenTotDatum, wekenZin, wekenKort, tijdZin } from '../lib/tijd.js';
 
 import transporter from '../../public/fotos/transporter.webp';
 import landschap from '../../public/fotos/hero.webp';
@@ -35,12 +35,17 @@ const heroPreload = await getImage({ src: transporter, widths: [900, 1400], size
 
 // beginwaarden; de browser rekent ze daarna zelf bij
 const dagenTot = dagenTotDatum(vertrek);
-const aftelStart = dagenTot > 0 ? `Nog ${dagenTot} dagen`
-  : dagenTot === 0 ? 'Vandaag' : `${-dagenTot} dagen in Spanje`;
+const aftelStart = dagenTot > 1 ? `Nog ${dagenTot} dagen`
+  : dagenTot === 1 ? 'Nog 1 dag'
+  : dagenTot === 0 ? 'Vandaag'
+  : dagenTot === -1 ? '1 dag in Spanje' : `${-dagenTot} dagen in Spanje`;
 
-// het NU-blok noemt een aantal weken; dat wordt nergens ingetypt
+// het NU-blok noemt een aantal dagen of weken; dat wordt nergens
+// ingetypt. {weken} geeft "Nog twaalf dagen", {tijd} geeft "Twaalf dagen"
+// voor de logboekregel waar het woordje Nog al in de kop staat.
 const weken = wekenZin(dagenTot);
 const nuTekst = nu.tekst.split('{weken}');
+const nuKop = nu.kop.split('{weken}');
 
 // aantal gastenboekberichten voor in de hero; is de API niet bereikbaar,
 // dan laten we dat item gewoon weg
@@ -105,12 +110,21 @@ const gastenboek = await haalGastenboek();
         </div>
         <div>
           <p class="eyebrow" style="color:var(--gold)">{nu.label}</p>
-          <h2 class="nu-h">{nu.kop}</h2>
-          <p class="nu-p">{nuTekst[0]}<span data-weken data-kort>{wekenKort(dagenTot)}</span>{nuTekst[1]}</p>
+          <h2 class="nu-h">
+            {nuKop.length > 1
+              ? <>{nuKop[0]}<span data-weken>{weken}</span>{nuKop[1]}</>
+              : nu.kop}
+          </h2>
+          <p class="nu-p">
+            {nuTekst.length > 1
+              ? <>{nuTekst[0]}<span data-weken data-kort>{wekenKort(dagenTot)}</span>{nuTekst[1]}</>
+              : nu.tekst}
+          </p>
           <dl class="log">
             {nu.logboek.map(([k, v]) => (
               <div class="logrow"><dt>{k}</dt><dd>
-                {v === '{weken}' ? <span data-weken>{weken}</span> : v}
+                {v === '{weken}' ? <span data-weken>{weken}</span>
+                  : v === '{tijd}' ? <span data-tijd>{tijdZin(dagenTot)}</span> : v}
               </dd></div>
             ))}
           </dl>

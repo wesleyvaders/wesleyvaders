@@ -107,8 +107,10 @@ const persoon = {
       el.textContent = String(Math.max(0, dagenOver));
     });
     document.querySelectorAll('[data-aftel]').forEach(el => {
-      el.textContent = dagenOver > 0 ? `Nog ${dagenOver} dagen`
-        : dagenOver === 0 ? 'Vandaag' : `${-dagenOver} dagen in Spanje`;
+      el.textContent = dagenOver > 1 ? `Nog ${dagenOver} dagen`
+        : dagenOver === 1 ? 'Nog 1 dag'
+        : dagenOver === 0 ? 'Vandaag'
+        : dagenOver === -1 ? '1 dag in Spanje' : `${-dagenOver} dagen in Spanje`;
     });
 
     // hetzelfde voor de plekken die een aantal weken noemen
@@ -127,6 +129,12 @@ const persoon = {
       const zin = wekenZin(dagenOver);
       el.textContent = el.hasAttribute('data-kort')
         ? zin.charAt(0).toLowerCase() + zin.slice(1) : zin;
+    });
+    // zonder het woordje Nog ervoor, voor de logboekregel NOG
+    document.querySelectorAll('[data-tijd]').forEach(el => {
+      const zin = wekenZin(dagenOver);
+      el.textContent = zin.startsWith('Nog ')
+        ? zin.charAt(4).toUpperCase() + zin.slice(5) : zin;
     });
     if (dagenOver <= 0) {
       document.querySelectorAll('[data-tot-vertrek]').forEach(el => { el.hidden = true; });
