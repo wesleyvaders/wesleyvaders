@@ -742,6 +742,8 @@ footer{background:var(--forest);color:var(--paper);position:relative;overflow:hi
   font-size:.6875rem;letter-spacing:.14em;border:1px solid rgba(20,20,18,.28);
   border-radius:2px;color:var(--ink);transition:border-color .25s,background .25s}
 .deel-knop:hover{border-color:var(--ink);background:rgba(20,20,18,.05)}
+/* een losse knop midden in een verhaal, zelfde stijl als de deelknoppen */
+.artikel .knop-los{margin:2rem 0}
 
 /* ---------- reacties onder een verhaal ----------
    Zelfde eindpunt als het gastenboek, maar op papier in plaats van op
