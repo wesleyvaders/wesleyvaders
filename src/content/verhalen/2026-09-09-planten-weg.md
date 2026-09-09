@@ -22,7 +22,7 @@ De plant die het meeste zeer doet is de agapanthus. Die heb ik vanmiddag ingelad
 
 ![De agapanthus in bloei, achter in de bus op weg naar Nel](../../../public/fotos/agapanthus-bus.webp)
 
-Deze plant heb ik al zo'n vijftien jaar en hij heeft een bijzondere geschiedenis. Ik werkte destijds als glazenwasser bij Paleis Noordeinde, en naast het gebouw ernaast stond een hele bijzondere woning. Daar woonde meneer Barda. Ik waste bij hem de ramen en werd altijd getrakteerd op een heerlijke cappuccino met wat lekkers erbij.
+Deze plant heb ik al zo'n vijftien jaar en hij heeft een bijzondere geschiedenis. Ik werkte destijds als glazenwasser bij Paleis Noordeinde, en vlakbij stond een bijzondere woning. Daar woonde meneer Barda. Ik waste bij hem de ramen en werd altijd getrakteerd op een heerlijke cappuccino met wat lekkers erbij.
 
 Hij hield van kunst en van planten. Zijn tuin stond helemaal vol en zijn huis hing vol met bijzondere kunst. Een aparte, intelligente man met een goed hart.
 
@@ -61,6 +61,10 @@ Sommige dingen gebeuren met een reden. Soms komen er mensen op je pad die nooit 
 Ik was trouwens niet de enige die er moeite mee had. Mo was onrustig, en dat is voor het eerst sinds heel operatie De Spaanse Droom. Hij is soms lomp, maar hij voelt wel degelijk dingen aan. Wat doet baasje nou? Planten de deur uit? Dat is niet best. Alsof ze gek zijn.
 
 ![Mo in de gang, kijkend naar het baasje, met een plant op de voorgrond](../../../public/fotos/mo-onrustig.webp)
+
+Nadat ik de planten bij Nel had afgeleverd ben ik nog even naar de ijzerboer gereden met het lood, ijzer en messing dat ik de afgelopen maanden heb verzameld. Leverde weer een paar tientjes op. Kan ik in Spanje weer nieuwe planten kopen.
+
+![De krat met lood, ijzer en messing in de tuin, klaar voor de ijzerboer](../../../public/fotos/oud-ijzer.webp)
 
 Misschien een verborgen les voor vandaag. Wat je aandacht geeft, groeit. Geef aandacht aan je geliefden, maar zeker ook aan dieren en planten. Alles is energie en alles staat in verbinding.
 
