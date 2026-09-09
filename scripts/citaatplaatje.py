@@ -189,11 +189,11 @@ def maak(naam):
 # De foto komt uit public/fotos/ en is daar al door grade.py gehaald;
 # er gaat hier dus geen tweede grade overheen.
 # ---------------------------------------------------------------
-FOTO   = str(WORTEL / "public" / "fotos" / "ik-en-joost.webp")
-LABEL  = "YAMAS"
-TITEL  = ["Wij zijn een", "slecht duo."]
+FOTO   = str(WORTEL / "public" / "fotos" / "planten-verhuisdoos.webp")
+LABEL  = "WAT EEN PECH"
+TITEL  = ["Wat je aandacht", "geeft, groeit."]
 URL    = "WESLEYVADERS.NL"
-NAAM   = "yamas-instagram.jpg"
+NAAM   = "planten-instagram.jpg"
 
 # De aftelling wordt niet ingetypt maar berekend, net als op de site.
 WOORD = ["nul", "één", "twee", "drie", "vier", "vijf", "zes", "zeven",

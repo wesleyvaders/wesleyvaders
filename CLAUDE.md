@@ -119,6 +119,19 @@ De enige uitzondering is de **og:image**, het plaatje dat automatisch bij een ge
 
 Tekst blijft altijd binnen **13,5% marge boven en onder**. Dan blijft een vierkante uitsnede ook leesbaar.
 
+`scripts/citaatplaatje.py` maakt de citaatplaatjes. Alle instellingen
+staan in één blok bovenin: foto, label, titel, URL en bestandsnaam. Het
+merkteken en de onderste regel worden vastgezet op een deel van de
+hoogte, dus je stuurt zelf wat er in de vierkante uitsnede overeind
+blijft. De aftelling wordt berekend uit `vertrek`, nooit ingetypt.
+
+**Het label staat altijd in zand, niet in terracotta.** Terracotta is de
+eyebrow-kleur op papier, maar op een foto zakt hij weg zodra er iets
+lichts achter zit. Gemeten bij twee plaatjes: tegen een lichte ruit 1,44:1
+en tegen karton 2,50:1, allebei ver onder de 3:1. Zand haalde op dezelfde
+plekken 4,66 en 7,37 en past bovendien bij de URL-regel onderin. Meet het
+contrast bij een nieuwe foto opnieuw en houd het label boven de 4:1.
+
 ## Regels die niet gebroken worden
 
 **Kleur.** Inkt `#141412`, papier `#F5F1E8`, terracotta `#B0573A`, bos `#2C4739`, zand `#D9C6A5`, goud `#DFAF4A`. Ongeveer 60% papier, 25% inkt, 8% terracotta, 5% zand, 2% goud. **Goud is uitsluitend het NU-punt.** Zie je het vaker dan één keer per scherm, dan is het fout.
