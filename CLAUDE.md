@@ -89,6 +89,13 @@ De tekst.
 
 `concept: true` houdt hem uit de build. Datum, locatie, hoofdstuk en categorie sturen automatisch de route, de tijdlijn en de filters. Nooit dezelfde informatie op twee plekken invoeren.
 
+**De hoofdfoto moet liggend zijn, ongeveer 4:3.** De hero snijdt af op
+70svh, dus van een liggende foto blijft ruim de helft over en van een
+staande maar een derde. Bij een staande foto zie je daardoor een strook
+uit het midden: de onder- en bovenkant vallen weg en wat er toevallig
+naast het onderwerp staat gaat het beeld bepalen. Staande foto's horen in
+de lopende tekst, daar worden ze helemaal getoond.
+
 Wil je een ander deelplaatje dan dat van de hoofdfoto, zet dan `deelplaatje: route.jpg` erbij (een bestandsnaam uit `public/og/`), eventueel met `deelplaatjeAlt`.
 
 Optionele velden die nu al bestaan en later gebruikt worden: `coordinaten` ([lat, lng] voor de kaart), `aflevering`, `onderdeel` (De Finca), `budget`, `voorNa`, `galerij`, `tags`. **Vul `coordinaten` altijd in.** Later terugkomen op vijftig verhalen om er coördinaten bij te zoeken is een middag werk, nu is het tien seconden.
