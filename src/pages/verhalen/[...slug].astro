@@ -55,7 +55,8 @@ const schema = {
 };
 ---
 <Base titel={d.titel} omschrijving={d.kort} type="article" schema={schema}
-  og={ogPad} ogAlt={ogTekst}>
+  og={ogPad} ogAlt={ogTekst}
+  kruimelpad={[['Verhalen', '/verhalen/'], [d.titel, `/verhalen/${v.id}/`]]}>
   <article>
     <header class="paper" style="padding:clamp(9rem,16vw,13rem) 0 clamp(2.5rem,5vw,4rem)">
       <div class="wrap" style="max-width:52rem">

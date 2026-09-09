@@ -828,3 +828,40 @@ footer{background:var(--forest);color:var(--paper);position:relative;overflow:hi
   .cbar-b .btn{flex:1;justify-content:center}
 }
 @media(prefers-reduced-motion:reduce){.cbar{transition:none}}
+
+/* ---------- aanraakvlakken ----------
+   Knoppen, formulierknoppen en navigatielinks zijn minstens 44px hoog.
+   Losse links midden in een zin krijgen dit bewust niet: die zijn
+   uitgezonderd van de eis en zouden het regelritme breken.
+
+   Let op met `display` hierin. Twee dingen gaan snel mis: inline-flex
+   gooit de spaties tussen losse woorden weg, en dit blok staat na de
+   media queries, dus een display hier wint van een display:none
+   daarboven. Waar een element al een werkende layout heeft, groeit het
+   klikvlak daarom via padding of min-height. */
+
+/* staat al op flex, alleen te laag */
+.brand{min-height:44px}
+
+/* knoppen zijn inline-block, min-height is genoeg */
+.close{min-height:44px;padding-block:.75rem}
+
+/* padding en geen display, anders wint dit van display:none in de
+   media query op 960px en verschijnt de knop weer op mobiel */
+.navcta{padding-block:.875rem}
+
+/* inline-block houden, zie de opmerking bij de regel zelf */
+.gb-uit-a{padding-block:.95rem}
+
+/* deze staan naast elkaar in een regel */
+.skip,
+.navlinks a,
+.fbot a{display:inline-flex;align-items:center;min-height:44px}
+
+/* deze staan onder elkaar; met inline-flex zouden ze op één regel
+   komen en aan elkaar plakken */
+.fcol a,
+.menu-ook a,
+.menu-soc a{display:flex;align-items:center;min-height:44px}
+
+.menu-soc a{flex-direction:column;align-items:flex-start;justify-content:center}

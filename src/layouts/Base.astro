@@ -15,8 +15,23 @@ const {
   schema = null,
   navDonker = false,
   preloadBeeld = null,
-  noindex = false
+  noindex = false,
+  kruimelpad = null
 } = Astro.props;
+
+// BreadcrumbList voor de zoekmachine. Bewust geen zichtbare broodkruimels,
+// die passen niet bij het ontwerp. Geef een lijst [[naam, pad], ...] mee;
+// Home staat er altijd als eerste voor.
+const kruimels = kruimelpad && {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [['Home', '/'], ...kruimelpad].map(([naam, pad], i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: naam,
+    item: new URL(pad, site.domein).href
+  }))
+};
 
 const volledigeTitel = titel ? `${titel} · ${site.naam}` : `${site.naam} · ${site.serie}`;
 const url = new URL(Astro.url.pathname, site.domein).href;
@@ -76,6 +91,7 @@ const persoon = {
 
   <script type="application/ld+json" set:html={JSON.stringify(persoon)} />
   {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+  {kruimels && <script type="application/ld+json" set:html={JSON.stringify(kruimels)} />}
 
   <Analytics />
 </head>

@@ -1,6 +1,7 @@
 ---
 import Merkteken from './Merkteken.astro';
 import { site, nav, navExtra, socials, nu, vertrek } from '../data/site.js';
+import { dagenTot as berekenDagen, wekenZin } from '../lib/tijd.js';
 
 const { donker = false } = Astro.props;
 
@@ -10,8 +11,11 @@ const isHuidig = (href) =>
   href === pad || (href !== '/' && !href.includes('#') && pad.startsWith(href));
 
 // het gastenboek is tijdelijk het belangrijkste; dat mag je zien
-const vandaag = new Date(); vandaag.setHours(0, 0, 0, 0);
-const dagen = Math.round((new Date(vertrek + 'T00:00:00') - vandaag) / 86400000);
+const dagen = berekenDagen(vertrek);
+
+// de NU-kop kan {weken} bevatten; die hoort hier net zo vervangen te
+// worden als op de homepage, anders leest het menu letterlijk {weken}
+const kopDelen = nu.kop.split('{weken}');
 ---
 <nav class:list={['nav', donker ? 'nav-donker' : 'nav-licht']} aria-label="Hoofdnavigatie">
   <div class="wrap">
@@ -56,7 +60,11 @@ const dagen = Math.round((new Date(vertrek + 'T00:00:00') - vandaag) / 86400000)
 
   <div class="menu-nu" data-item style={`--i:${menuItems.length + 2}`}>
     <span class="m-punt" aria-hidden="true"></span>
-    <p>{nu.label}<br /><span>{nu.kop}</span></p>
+    <p>{nu.label}<br /><span>
+      {kopDelen.length > 1
+        ? <>{kopDelen[0]}<span data-weken>{wekenZin(dagen)}</span>{kopDelen[1]}</>
+        : nu.kop}
+    </span></p>
   </div>
 
   <div class="menu-soc" data-item style={`--i:${menuItems.length + 3}`}>
