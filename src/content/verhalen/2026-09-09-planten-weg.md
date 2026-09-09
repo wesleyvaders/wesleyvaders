@@ -36,6 +36,12 @@ Meeverhuizen naar Spanje had gekund, maar ik heb heel beperkt ruimte. Wat ik wel
 
 ![De zaadjes van de agapanthus op een doekje, naast twee potten aarde](../../../public/fotos/agapanthus-zaadjes.webp)
 
+In Spanje heb ik straks alle ruimte om los te gaan met planten. Heerlijk. Dat aardt me en het brengt me in het hier en nu.
+
+Al moet ik nog wel even oefenen met groente en fruit. Dat heb ik hier in Nederland geprobeerd met bloemkool en broccoli, en dat ging niet zo goed. De rupsen vonden het in elk geval prachtig.
+
+<p class="knop-los"><a class="deel-knop mono" href="https://www.tiktok.com/@wesleyvaders/video/6848136285576645894" target="_blank" rel="noopener">Zie de rupsen aan het werk</a></p>
+
 Ook van mijn pannenkoekplanten heb ik tijdelijk afscheid genomen. Jeetje, wat heb ik die dingen gestekt en weggegeven. Er zijn nog aardig wat oud-studenten van de hypno-opleiding die er eentje hebben staan. Heerlijk vond ik dat, stekken en weggeven.
 
 Mijn jacaranda mimosifolia bonsai-stekjes heb ik ook bij Nel gelaten. Die zijn nu zo'n vier maanden oud. Ik zou ze mee kunnen nemen, maar ze zijn nog kwetsbaar en bij Nel zijn ze in goede handen. Slaagt dat project, dan neem ik zeker een stekje mee als ik weer in Nederland ben.
