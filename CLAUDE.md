@@ -158,7 +158,10 @@ Het enige dynamische deel van de site. De berichten staan **niet** in de repo ma
 
 Drie bestanden horen daar: `berichten.json`, `token.txt` (jouw wachtwoord voor `/beheer/`, mag een zin zijn die je onthoudt) en `geheim.txt` (ondertekent het tijdstempel van het formulier).
 
-Elk bericht heeft een **bron**: `gastenboek`, `route:03-dune-du-pilat` voor een tip bij een etappe, of `verhaal:2026-09-05-de-laatste-zaterdagnacht` voor een reactie onder een verhaal. Berichten zonder bron tellen als gastenboek. De filters zijn voor alle drie gelijk: honeypot, minstens vier seconden tussen laden en versturen, geen links, maximaal 1200 tekens. De rem per IP verschilt en elk soort heeft een eigen teller: drie gastenboekberichten per uur, tien tips en tien reacties. Zo eet een reactie onder een verhaal je tips voor de route niet op.
+Elk bericht heeft een **bron**: `gastenboek`, `route:03-dune-du-pilat` voor een tip bij een etappe, of `verhaal:2026-09-05-de-laatste-zaterdagnacht` voor een reactie onder een verhaal. Berichten zonder bron tellen als gastenboek. De filters zijn voor alle drie gelijk: honeypot, minstens vier seconden tussen laden en versturen, geen links, maximaal 3000 tekens. Dat was 1200, maar dit is een
+afscheidsgastenboek en daar hoort een lange brief bij: het eerste echt
+lange bericht liep vast op 2334 tekens en de schrijver kon er niets mee.
+Wie vastloopt schrijft je dat meestal niet, die klikt weg. De rem per IP verschilt en elk soort heeft een eigen teller: drie gastenboekberichten per uur, tien tips en tien reacties. Zo eet een reactie onder een verhaal je tips voor de route niet op.
 
 `?tellen=1` op het eindpunt geeft het aantal per bron. Dat gebruikt de verhalenpagina bij de build om bij elk verhaal het aantal reacties te tonen. Lukt dat niet, dan komt er simpelweg geen teller.
 

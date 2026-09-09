@@ -5,7 +5,7 @@
 // die bron mee.
 import { Image } from 'astro:assets';
 import { etappes, bronVan } from '../data/route.js';
-const MAX = 1200;
+const MAX = 3000;
 ---
 <section class="et-blok">
   <div class="et-vraag rv">
@@ -76,7 +76,7 @@ const MAX = 1200;
   const telBij = () => {
     const n = tekstveld.value.length;
     teller.textContent = `${n} / ${MAX}`;
-    teller.classList.toggle('bijna', n >= 1000 && n <= MAX);
+    teller.classList.toggle('bijna', n >= MAX - 200 && n <= MAX);
     teller.classList.toggle('over', n > MAX);
     knop.disabled = n > MAX;
   };

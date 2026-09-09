@@ -148,8 +148,8 @@ if ($naam === '' || $bericht === '') {
 if (mb_strlen($naam) > 40) {
   fout(400, 'Hou de naam onder de 40 tekens.');
 }
-if (mb_strlen($bericht) > 1200) {
-  fout(400, 'Hou het bericht onder de 1200 tekens.');
+if (mb_strlen($bericht) > 3000) {
+  fout(400, 'Hou het bericht onder de 3000 tekens.');
 }
 foreach (['http', 'https', 'www.'] as $verboden) {
   if (stripos($bericht, $verboden) !== false || stripos($naam, $verboden) !== false) {

@@ -12,7 +12,7 @@ const suggesties = [
   'Iets wat ik in Spanje moet doen'
 ];
 
-const MAX = 1200;
+const MAX = 3000;
 
 // één bericht uitgelicht. Bij de build kiezen we er alvast een, zodat er
 // meteen iets staat; de browser wisselt hem daarna bij elke weergave.
@@ -117,7 +117,7 @@ const fmtNL = (iso) => {
   const telBij = () => {
     const n = tekstveld.value.length;
     teller.textContent = `${n} / ${MAX}`;
-    teller.classList.toggle('bijna', n >= 1000 && n <= MAX);
+    teller.classList.toggle('bijna', n >= MAX - 200 && n <= MAX);
     teller.classList.toggle('over', n > MAX);
     knop.disabled = n > MAX;
   };

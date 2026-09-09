@@ -75,8 +75,8 @@ if ($wijzigt) {
     }
     if (array_key_exists('bericht', $in)) {
       $bericht = trim(strip_tags((string)$in['bericht']));
-      if ($bericht === '' || mb_strlen($bericht) > 1200) {
-        http_response_code(400); echo json_encode(['fout' => 'Bericht is leeg of langer dan 1200 tekens.']); exit;
+      if ($bericht === '' || mb_strlen($bericht) > 3000) {
+        http_response_code(400); echo json_encode(['fout' => 'Bericht is leeg of langer dan 3000 tekens.']); exit;
       }
       $b['bericht'] = $bericht;
     }

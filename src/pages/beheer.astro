@@ -153,7 +153,7 @@ import Base from '../layouts/Base.astro';
       item.insertAdjacentHTML('beforeend', `
         <div class="bh-bewerk">
           <input type="text" value="${esc(naam)}" maxlength="40" data-veld-naam />
-          <textarea rows="4" maxlength="1200" data-veld-tekst>${esc(tekst)}</textarea>
+          <textarea rows="4" maxlength="3000" data-veld-tekst>${esc(tekst)}</textarea>
           <div class="bh-knoppen">
             <button type="button" class="bh-knop" data-bewaar>Bewaren</button>
             <button type="button" class="bh-knop" data-terug>Laat maar</button>

@@ -6,7 +6,7 @@
 // Het formulier staat ingeklapt tot iemand op Reageer klikt. Zo blijft
 // het einde van een verhaal rustig.
 const { bron } = Astro.props;
-const MAX = 1200;
+const MAX = 3000;
 ---
 <section class="rea" data-rea data-bron={bron} data-max={MAX}>
   <h2 class="rea-h">Wat vind jij?</h2>
@@ -65,7 +65,7 @@ const MAX = 1200;
     const telBij = () => {
       const n = tekstveld.value.length;
       teller.textContent = `${n} / ${MAX}`;
-      teller.classList.toggle('bijna', n >= 1000 && n <= MAX);
+      teller.classList.toggle('bijna', n >= MAX - 200 && n <= MAX);
       teller.classList.toggle('over', n > MAX);
       verzend.disabled = n > MAX;
     };
