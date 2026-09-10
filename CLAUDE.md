@@ -142,6 +142,8 @@ contrast bij een nieuwe foto opnieuw en houd het label boven de 4:1.
 
 **Toon.** Nederlands, Haags, nuchter, droog. Woorden mogen wegvallen, het mag plat. Me en mijn wisselen af: terloops "me vader", op zware momenten "mijn vader". Niet gladstrijken en niet corrigeren.
 
+**"Vroegah" is de Haagse schrijfwijze van vroeger en blijft staan, net als "rustaghhh".** Dit soort klankschrijfwijzen zijn geen typefouten en worden nooit gecorrigeerd. Twijfel je of iets een verschrijving is of de spreektaal: laat het staan en vraag het.
+
 Verboden woorden: ontdek, discover, learn more, get started, stap voor stap, steen voor steen, authentiek, transformatie, journey, mindset, reis als metafoor, en alles met een uitroepteken.
 
 Wesley woont in Monster maar is een Hagenees, en zo communiceert hij ook. Den Haag gebruiken bij afkomst en identiteit: de hero, Mijn verhaal, de routelijn, de footer. Monster gebruiken bij feitelijke locaties bij een datum: korte berichten, verhalen, locatiebadges. Nooit Westland gebruiken.
