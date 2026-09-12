@@ -131,13 +131,19 @@ merkteken en de onderste regel worden vastgezet op een deel van de
 hoogte, dus je stuurt zelf wat er in de vierkante uitsnede overeind
 blijft. De aftelling wordt berekend uit `vertrek`, nooit ingetypt.
 
-**Meet het contrast op de achtergrond zonder de tekst erin.** Meet je op
-het opgeslagen plaatje, dan tellen je eigen witte letters mee in het
-gemiddelde en komt er een veel te laag getal uit. Dat is een keer
-gebeurd: de kop leek 3,20:1 te halen terwijl het in werkelijkheid 7,10:1
-was. Meet ook het zwakste stukje van een regel en niet het gemiddelde,
-want een enkel woord boven een fel raam verdwijnt terwijl de rest van de
-regel donker genoeg is.
+**Contrast meet je nooit op een beeld waar tekst op staat.** Dat gebeurde
+twee keer met een verkeerde conclusie: één keer door te meten op het
+opgeslagen plaatje, één keer door te meten op een "lege" achtergrond
+waarin het merkteken, de onderregel en de URL nog werden getekend.
+
+Werkwijze: sla de achtergrond apart op zonder énige tekst, snijd het
+stukje uit waar je gaat meten, en bekijk het met eigen ogen voordat je
+een cijfer opschrijft. Zie je een letter, dan is de meting ongeldig.
+Meet het zwakste stukje, niet het gemiddelde.
+
+Als een meting je tot de conclusie brengt dat een foto onbruikbaar is,
+controleer dan eerst de meting. Twee keer bleek de meting fout en de
+foto goed.
 
 **Het label staat altijd in zand, niet in terracotta.** Terracotta is de
 eyebrow-kleur op papier, maar op een foto zakt hij weg zodra er iets
