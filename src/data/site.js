@@ -80,17 +80,20 @@ export const cijfers = [
 
 // Het NU-blok. Dit is het enige dat je echt vaak aanpast.
 // {weken} wordt berekend uit vertrek, niet ingetypt. Zie src/lib/tijd.js.
+// Let op: onder de veertien dagen levert {weken} zelf al "nog acht dagen".
+// Schrijf er dus geen tweede "Nog" voor, anders staat er "Nog nog acht
+// dagen" zodra de teller onder de veertien zakt.
 export const nu = {
-  label: 'Nu · 10 september 2026',
-  kop: '{weken}.',
+  label: 'Nu · 12 september 2026',
+  kop: 'De deur zit op slot.',
   tekst:
-    'De banken en tafels zijn naar het grofvuil, de rest naar Shir. De woonkamer lijkt nu een campingplek: wat tuinstoelen, verhuisdozen en de tv op de grond. Zaterdag rijd ik naar mijn broertje in Hoeven.',
+    'Het huis is leeg en de bus staat vol. Ik slaap nu bij mijn broertje in Hoeven, en het is {weken} tot ik naar het zuiden rijd.',
   logboek: [
-    ['Huis', 'Verkocht, sleutel weg 17.09.2026'],
-    ['Hier weg', '12.09.2026'],
+    ['Huis', 'Leeg, deur op slot 12.09.2026'],
+    ['Nu', 'Bij mijn broertje in Hoeven'],
+    ['17.09', 'Eindinspectie, notaris, sleutel weg'],
     ['Nog', '{tijd}'],
-    ['Bus', 'Nagekeken, bijna 450.000 km'],
-    ['Eerste stop', 'Bij een vriend in Spanje'],
+    ['Bus', 'Vol. Alles zit erin'],
     ['Mee', 'Mo, en zo min mogelijk spullen'],
     ['Plan', 'De route staat. De finca nog niet.']
   ]
@@ -101,7 +104,8 @@ export const nu = {
 // href is optioneel: staat er een pagina over die halte, dan wordt hij klikbaar.
 export const route = [
   { wanneer: 'Monster', titel: 'Inpakken', tekst: 'Kasten gesloopt, drie ritten naar de stort, de rest weggegeven.', status: 'gehad' },
-  { wanneer: 'September', titel: 'Prio 1', tekst: 'De eerste lading mee naar beneden.', status: 'nu', href: '/route/', link: 'Bekijk de route' },
+  { wanneer: 'Hoeven', titel: 'Tussenstop', tekst: 'Huis leeg, bus vol. Hier wacht ik de sleuteloverdracht af.', status: 'nu' },
+  { wanneer: 'September', titel: 'Prio 1', tekst: 'De eerste lading mee naar beneden.', status: 'komt', href: '/route/', link: 'Bekijk de route' },
   { wanneer: 'Oktober', titel: 'Prio 2', tekst: 'Even terug naar Nederland. Ik word oom.', status: 'komt' },
   { wanneer: '?', titel: 'De finca', tekst: 'Bestaat nog niet. Staat er wel ergens.', status: 'komt' }
 ];

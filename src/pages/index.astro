@@ -238,7 +238,7 @@ const gastenboek = await haalGastenboek();
         <p class="rt-sub">Van Monster naar waar we uitkomen. Deze lijn groeit mee.</p>
       </div>
       <div class="rail rv">
-        <div class="stops">
+        <div class="stops" style={`--haltes:${route.length}`}>
           {route.map(r => {
             const Halte = r.href ? 'a' : 'div';
             return (

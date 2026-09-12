@@ -27,6 +27,12 @@ komt uit `vertrek` in `site.js` via `src/lib/tijd.js` en wordt in de
 browser bijgewerkt via `data-dagen`, `data-weken`, `data-tijd` en `data-aftel` in
 `Base.astro`. Schrijf dus `{weken}` in de tekst, geen "drie weken".
 
+**Zet geen "Nog" vóór `{weken}`.** Onder de veertien dagen levert de
+plaatshouder zelf al "nog acht dagen" op, en dan staat er "Nog nog acht
+dagen". Boven de veertien dagen valt dat niet op, want dan komt er
+"drie weken" uit. Schrijf de zin dus zo dat de plaatshouder het woordje
+zelf meebrengt, bijvoorbeeld "het is {weken} tot ik vertrek".
+
 In het NU-blok kun je `{weken}` schrijven voor "Nog twaalf dagen" en
 `{tijd}` voor "Twaalf dagen", dat laatste voor de logboekregel waar het
 woordje Nog al in de kop staat. Beide mogen in de kop, de tekst en het
@@ -125,12 +131,36 @@ merkteken en de onderste regel worden vastgezet op een deel van de
 hoogte, dus je stuurt zelf wat er in de vierkante uitsnede overeind
 blijft. De aftelling wordt berekend uit `vertrek`, nooit ingetypt.
 
+**Meet het contrast op de achtergrond zonder de tekst erin.** Meet je op
+het opgeslagen plaatje, dan tellen je eigen witte letters mee in het
+gemiddelde en komt er een veel te laag getal uit. Dat is een keer
+gebeurd: de kop leek 3,20:1 te halen terwijl het in werkelijkheid 7,10:1
+was. Meet ook het zwakste stukje van een regel en niet het gemiddelde,
+want een enkel woord boven een fel raam verdwijnt terwijl de rest van de
+regel donker genoeg is.
+
 **Het label staat altijd in zand, niet in terracotta.** Terracotta is de
 eyebrow-kleur op papier, maar op een foto zakt hij weg zodra er iets
-lichts achter zit. Gemeten bij twee plaatjes: tegen een lichte ruit 1,44:1
-en tegen karton 2,50:1, allebei ver onder de 3:1. Zand haalde op dezelfde
-plekken 4,66 en 7,37 en past bovendien bij de URL-regel onderin. Meet het
-contrast bij een nieuwe foto opnieuw en houd het label boven de 4:1.
+lichts achter zit. Gemeten over vier plaatjes, zwakste stukje:
+
+| Plaatje | terracotta | zand |
+|---|---|---|
+| De laatste keer | 2,41 | 7,09 |
+| Yamas | 1,73 | 5,10 |
+| Wat een pech | 2,86 | 8,41 |
+| De laatste loodjes | 2,05 | 6,02 |
+
+Terracotta blijft overal onder de 3:1, zand haalt overal ruim de 5. Zand
+past bovendien bij de URL-regel onderin. Meet bij een nieuwe foto opnieuw
+en houd het label boven de 4:1.
+
+**Het verloop krijgt geen extra demping in de middenband.** Dat is
+overwogen omdat de kop daar in het lichtste deel van het verloop staat,
+maar de kop haalt over dezelfde vier plaatjes 6,63 · 5,42 · 5,88 · 5,39,
+allemaal ruim boven de 4:1. Een demping van 95 tilde dat naar 8,60 · 7,75
+· 9,29 · 7,71 en maakte alle vier de foto's zichtbaar vlakker, vooral de
+groenen. Niet doen dus, tenzij een nieuwe foto de kop wel onder de 4
+drukt; meet dat eerst.
 
 ## Regels die niet gebroken worden
 
@@ -146,7 +176,11 @@ contrast bij een nieuwe foto opnieuw en houd het label boven de 4:1.
 
 Verboden woorden: ontdek, discover, learn more, get started, stap voor stap, steen voor steen, authentiek, transformatie, journey, mindset, reis als metafoor, en alles met een uitroepteken.
 
-Wesley woont in Monster maar is een Hagenees, en zo communiceert hij ook. Den Haag gebruiken bij afkomst en identiteit: de hero, Mijn verhaal, de routelijn, de footer. Monster gebruiken bij feitelijke locaties bij een datum: korte berichten, verhalen, locatiebadges. Nooit Westland gebruiken.
+Wesley is een Hagenees en communiceert zo. **Den Haag gebruiken bij afkomst en identiteit**: de hero, Mijn verhaal, de routelijn, de footer. Dat verandert nooit, waar hij ook woont.
+
+**De feitelijke locatie verhuist mee.** Die staat bij een datum: korte berichten, verhalen, locatiebadges, het NU-blok. Tot 12 september 2026 was dat Monster. Sinds 12 september is het **Hoeven**, bij zijn broertje, tot hij op 20 september naar het zuiden rijdt. Daarna schuift hij op met de route.
+
+Verhalen van vóór een verhuizing houden hun eigen locatie; die bevriezen, net als de rest van een verhaal. Alleen wat de huidige stand beschrijft gaat mee. Nooit Westland gebruiken.
 
 **Over zijn ouders.** Zijn vader Leo en zijn moeder zijn overleden, zijn oude hond Bo ook. Daar wordt over geschreven zoals hij erover praat: gewoon, tussen de dagelijkse dingen door. Geen kader, geen zwart-witfilter, geen plechtige typografie, nooit als opener en nooit als verkoopargument. Dit gaat over vooruit kijken, niet over verdriet. Schrijf er nooit omheen, maar maak er ook nooit een verhaal op zich van.
 

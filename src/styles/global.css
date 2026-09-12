@@ -377,7 +377,10 @@ footer .brand .wm small{font-size:.5rem;letter-spacing:.24em;opacity:.8;margin-t
 .rt-sub{color:rgba(20,20,18,.55);font-size:.9375rem;max-width:32ch}
 .rail{position:relative;padding-top:2.4rem}
 .rail::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:rgba(20,20,18,.18)}
-.stops{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+/* het aantal kolommen volgt het aantal haltes uit site.js. Stond hier
+   hard op vier, en bij een vijfde halte viel die naar een tweede rij
+   terwijl de lijn met de bolletjes maar één rij hoog is. */
+.stops{display:grid;grid-template-columns:repeat(var(--haltes,4),minmax(0,1fr));gap:1.5rem}
 .stop{position:relative;padding-top:1.7rem}
 .stop::before{content:"";position:absolute;top:-2.4rem;left:0;width:7px;height:7px;
   border-radius:50%;background:var(--ink);transform:translateY(-3px)}
