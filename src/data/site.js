@@ -84,18 +84,18 @@ export const cijfers = [
 // Schrijf er dus geen tweede "Nog" voor, anders staat er "Nog nog acht
 // dagen" zodra de teller onder de veertien zakt.
 export const nu = {
-  label: 'Nu · 12 september 2026',
-  kop: 'De deur zit op slot.',
+  label: 'Nu · 14 september 2026',
+  kop: 'Het hangt op de bus.',
   tekst:
-    'Het huis is leeg en de bus staat vol. Ik slaap nu bij mijn broertje in Hoeven, en het is {weken} tot ik naar het zuiden rijd.',
+    'De bus verloor onderweg naar Brabant opnieuw vermogen en wordt op 15 september uitgelezen in Oudenbosch. Of ik de twintigste echt kan vertrekken, weet ik daarna pas.',
   logboek: [
     ['Huis', 'Leeg, deur op slot 12.09.2026'],
     ['Nu', 'Bij mijn broertje in Hoeven'],
+    ['Bus', 'Verliest vermogen. Uitlezen op 15.09'],
     ['17.09', 'Eindinspectie, notaris, sleutel weg'],
     ['Nog', '{tijd}'],
-    ['Bus', 'Vol. Alles zit erin'],
     ['Mee', 'Mo, en zo min mogelijk spullen'],
-    ['Plan', 'De route staat. De finca nog niet.']
+    ['Plan', 'De route staat. Of de 20e haalbaar is hangt op de bus.']
   ]
 };
 
