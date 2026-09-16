@@ -868,3 +868,18 @@ footer{background:var(--forest);color:var(--paper);position:relative;overflow:hi
 .menu-soc a{display:flex;align-items:center;min-height:44px}
 
 .menu-soc a{flex-direction:column;align-items:flex-start;justify-content:center}
+
+/* ---------- uitstelmelding op de routepagina ----------
+   Staat op de donkere hero, dus zand en niet terracotta: terracotta
+   haalt op inkt maar 2,9:1 en dat is te weinig voor een klein label. */
+.rt-uitstel{margin-top:clamp(1.75rem,3.5vw,2.5rem);padding-top:1.5rem;
+  border-top:1px solid var(--lijn-licht);max-width:46ch}
+.rt-uitstel-l{margin:0 0 .7rem;font-size:.5625rem;color:var(--sand)}
+.rt-uitstel-t{margin:0;font-size:.9375rem;line-height:1.7;color:rgba(245,241,232,.7)}
+/* onderstreping via text-decoration en niet via een rand: met een
+   klikvlak van 44px zou die rand losgeslagen onder de tekst hangen */
+.rt-uitstel-a{display:inline-flex;align-items:center;min-height:44px;margin-top:.4rem;
+  font-size:.6875rem;color:var(--sand);
+  text-decoration:underline;text-decoration-color:rgba(217,198,165,.4);
+  text-underline-offset:6px;transition:color .25s,text-decoration-color .25s}
+.rt-uitstel-a:hover{color:var(--paper);text-decoration-color:var(--paper)}
