@@ -84,14 +84,13 @@ export const cijfers = [
 // Schrijf er dus geen tweede "Nog" voor, anders staat er "Nog nog acht
 // dagen" zodra de teller onder de veertien zakt.
 export const nu = {
-  label: 'Nu · 16 september 2026',
+  label: 'Nu · 17 september 2026',
   kop: 'Ik rij in één rechte lijn.',
   tekst:
-    'Morgen teken ik bij de notaris, dan is het huis niet meer van mij. De bus heeft drukverlies bij de turbo en rijdt, maar mist vermogen. De roadtrip door Frankrijk stel ik daarom uit en ik ga zondag in één keer naar beneden.',
+    'Getekend bij de notaris in Naaldwijk, sleutels ingeleverd. Het huis is niet meer van mij. De bus heeft drukverlies bij de turbo en rijdt, maar mist vermogen: optrekken, inhalen, een berg op en ik moet terugschakelen. De roadtrip door Frankrijk stel ik daarom uit en ik ga zondag in één keer naar beneden.',
   logboek: [
-    ['Huis', 'Leeg, deur op slot 12.09.2026'],
+    ['Huis', 'Overgedragen bij de notaris 17.09.2026'],
     ['Nu', 'Bij mijn broertje in Hoeven'],
-    ['17.09', 'Notaris. Dan is het huis niet meer van mij'],
     ['Bus', 'Drukverlies bij de turbo. Rijdt, mist vermogen'],
     ['Route', 'In één rechte lijn. De zeven etappes bewaar ik'],
     ['Nog', '{tijd}'],
@@ -104,7 +103,7 @@ export const nu = {
 // href is optioneel: staat er een pagina over die halte, dan wordt hij klikbaar.
 export const route = [
   { wanneer: 'Monster', titel: 'Inpakken', tekst: 'Kasten gesloopt, drie ritten naar de stort, de rest weggegeven.', status: 'gehad' },
-  { wanneer: 'Hoeven', titel: 'Tussenstop', tekst: 'Huis leeg, bus vol. Hier wacht ik de sleuteloverdracht af.', status: 'nu' },
+  { wanneer: 'Hoeven', titel: 'Tussenstop', tekst: 'Huis overgedragen, bus vol. Hier wacht ik zondag af.', status: 'nu' },
   { wanneer: '20 september', titel: 'Prio 1', tekst: 'In één rechte lijn naar Spanje. De mooie route bewaar ik.', status: 'komt', href: '/route/', link: 'Bekijk de route' },
   { wanneer: 'Oktober', titel: 'Prio 2', tekst: 'Even terug naar Nederland. Ik word oom.', status: 'komt' },
   { wanneer: '?', titel: 'De finca', tekst: 'Bestaat nog niet. Staat er wel ergens.', status: 'komt' }
