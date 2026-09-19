@@ -84,14 +84,14 @@ export const cijfers = [
 // Schrijf er dus geen tweede "Nog" voor, anders staat er "Nog nog acht
 // dagen" zodra de teller onder de veertien zakt.
 export const nu = {
-  label: 'Nu · 17 september 2026',
-  kop: 'Ik rij in één rechte lijn.',
+  label: 'Nu · 19 september 2026',
+  kop: '{weken}.',
   tekst:
-    'Getekend bij de notaris in Naaldwijk, sleutels ingeleverd. Het huis is niet meer van mij. De bus heeft drukverlies bij de turbo en rijdt, maar mist vermogen: optrekken, inhalen, een berg op en ik moet terugschakelen. De roadtrip door Frankrijk stel ik daarom uit en ik ga zondag in één keer naar beneden.',
+    'De bus is ingepakt en het slot zit op de trekhaak. Ik rij naar het zuiden: eerst Dijon voorbij en dan ergens voor Lyon stoppen, de dag erna verder. Dinsdagmiddag hoop ik in Alfaz del Pi te zijn.',
   logboek: [
     ['Huis', 'Overgedragen bij de notaris 17.09.2026'],
     ['Nu', 'Bij mijn broertje in Hoeven'],
-    ['Bus', 'Drukverlies bij de turbo. Rijdt, mist vermogen'],
+    ['Bus', 'Mist vermogen. Slot op de trekhaak'],
     ['Route', 'In één rechte lijn. De zeven etappes bewaar ik'],
     ['Nog', '{tijd}'],
     ['Mee', 'Mo, en zo min mogelijk spullen']
@@ -103,6 +103,9 @@ export const nu = {
 // href is optioneel: staat er een pagina over die halte, dan wordt hij klikbaar.
 export const route = [
   { wanneer: 'Monster', titel: 'Inpakken', tekst: 'Kasten gesloopt, drie ritten naar de stort, de rest weggegeven.', status: 'gehad' },
+  // Zodra hij zondag 20 september wegrijdt: zet Hoeven op 'gehad' en
+  // Prio 1 op 'nu'. Dat is de enige wijziging; het gouden punt schuift
+  // dan mee. Er mag er maar één 'nu' zijn.
   { wanneer: 'Hoeven', titel: 'Tussenstop', tekst: 'Huis overgedragen, bus vol. Hier wacht ik zondag af.', status: 'nu' },
   { wanneer: '20 september', titel: 'Prio 1', tekst: 'In één rechte lijn naar Spanje. De mooie route bewaar ik.', status: 'komt', href: '/route/', link: 'Bekijk de route' },
   { wanneer: 'Oktober', titel: 'Prio 2', tekst: 'Even terug naar Nederland. Ik word oom.', status: 'komt' },
