@@ -71,6 +71,7 @@ npm run preview  # dist/ lokaal bekijken
 | `scripts/og.py` | Deelplaatjes van de hoofdfoto's. Handmatig draaien. |
 | `scripts/og-gastenboek.py` | Het deelplaatje van het gastenboek. Loopt mee bij elke build, zodat de aftelling klopt. |
 | `scripts/citaatplaatje.py` | Citaatplaatjes voor Instagram, 1080x1350. Instellingen staan in één blok bovenin. Schrijft naar `~/Downloads/citaat/`, niet naar de site. |
+| `scripts/contrast.py` | Meet het contrast van het citaatplaatje dat op dat moment in `citaatplaatje.py` staat ingesteld. Tekent zelf geen enkele letter en schrijft de meetgebieden weg als losse uitsnedes om te bekijken. |
 | `scripts/gastenboek-pdf.py` | De berichten als A5-boekje. Voor Wesley zelf, schrijft niet naar de site. |
 
 ## Een verhaal toevoegen
@@ -136,10 +137,13 @@ twee keer met een verkeerde conclusie: één keer door te meten op het
 opgeslagen plaatje, één keer door te meten op een "lege" achtergrond
 waarin het merkteken, de onderregel en de URL nog werden getekend.
 
-Werkwijze: sla de achtergrond apart op zonder énige tekst, snijd het
-stukje uit waar je gaat meten, en bekijk het met eigen ogen voordat je
-een cijfer opschrijft. Zie je een letter, dan is de meting ongeldig.
-Meet het zwakste stukje, niet het gemiddelde.
+Werkwijze: draai `scripts/contrast.py` na `citaatplaatje.py`. Die tekent
+zelf geen enkele letter en kan de fout dus niet maken. Hij zet de drie
+meetgebieden als losse uitsnedes in `~/Downloads/citaat/`: bekijk die met
+eigen ogen voordat je een cijfer gelooft. Zie je een letter, dan is de
+meting ongeldig. Hij meet het zwakste stukje van een regel en niet het
+gemiddelde, want een enkel woord boven een fel raam verdwijnt terwijl de
+rest donker genoeg is.
 
 Als een meting je tot de conclusie brengt dat een foto onbruikbaar is,
 controleer dan eerst de meting. Twee keer bleek de meting fout en de
