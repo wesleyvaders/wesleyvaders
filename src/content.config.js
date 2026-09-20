@@ -45,6 +45,20 @@ const verhalen = defineCollection({
     klimaat: z.enum(['NL', 'ES']).default('NL'),
     galerij: z.array(z.object({ src: image(), alt: z.string() })).default([]),
 
+    // De video die bij dit verhaal hoort. Vaste sleutels en geen vrije
+    // lijst URL's: zo documenteert het schema zelf welke platforms er
+    // zijn, en valt de build om bij een verkeerd domein in plaats van
+    // stilletjes een fout label te tonen. De knopteksten staan in
+    // src/components/Video.astro, niet hier.
+    video: z.object({
+      youtube: z.string().url().refine(u => /(?:youtube\.com|youtu\.be)\//.test(u),
+        { message: 'Dit is geen YouTube-URL' }).optional(),
+      tiktok: z.string().url().refine(u => /tiktok\.com\//.test(u),
+        { message: 'Dit is geen TikTok-URL' }).optional(),
+      instagram: z.string().url().refine(u => /instagram\.com\//.test(u),
+        { message: 'Dit is geen Instagram-URL' }).optional()
+    }).optional(),
+
     aflevering: z.number().optional(),
     onderdeel: z.enum(onderdelen).optional(),
     budget: z.number().optional(),

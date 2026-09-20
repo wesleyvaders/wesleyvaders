@@ -14,6 +14,10 @@ elke inhoudelijke wijziging deze vijf na:
 2. **De tijdlijn** op de homepage (`route` in `site.js`): staat `nu` nog op de goede halte, of is die al `gehad`?
 3. **De cijferstrook**: spreekt geen enkel cijfer een andere pagina tegen.
 4. **De aftelling**: hero, gastenboek, menu en route horen hetzelfde te zeggen.
+   Na de vertrekdatum telt de site de dagen **onderweg**. Zodra hij in
+   Alfaz del Pi aankomt vul je `aankomst` in `site.js` in; vanaf dan telt
+   hij de dagen **in Spanje**. Laat je dat leeg, dan blijft er "onderweg"
+   staan terwijl hij er allang is.
 5. **Bij een nieuw verhaal: bestaat de og:image echt?** De verhaalpagina
    leidt hem af van de hoofdfoto, dus een nieuwe foto betekent een nieuw
    bestand in `public/og/`. Staat het er niet, draai dan `scripts/og.py`.
@@ -60,7 +64,7 @@ npm run preview  # dist/ lokaal bekijken
 | `src/content/hierennu/` | Korte berichten. Verschijnen op de homepage en op `/hierennu/`. |
 | `src/content.config.js` | De velden die een verhaal of bericht mag hebben. |
 | `src/styles/global.css` | Alle styling en alle merktokens. Ook de stijlen van dingen die JavaScript aanmaakt, want scoped CSS pakt die niet. |
-| `src/components/` | Nav, Footer, Merkteken, Routelijn, Routekaart, Etappes, Gastenboek, Reacties, Analytics, Cookiebanner. |
+| `src/components/` | Nav, Footer, Merkteken, Routelijn, Routekaart, Etappes, Gastenboek, Reacties, Video, Analytics, Cookiebanner. |
 | `src/lib/gastenboek.js` | Haalt bij de build het aantal berichten op voor de hero, en het aantal per bron voor de verhalenpagina. Faalt dat, dan blijven die stukjes leeg. |
 | `public/fotos/` | Gegradeerde foto's. |
 | `public/og/` | Deelplaatjes, 1200x630. |
@@ -104,6 +108,51 @@ naast het onderwerp staat gaat het beeld bepalen. Staande foto's horen in
 de lopende tekst, daar worden ze helemaal getoond.
 
 Wil je een ander deelplaatje dan dat van de hoofdfoto, zet dan `deelplaatje: route.jpg` erbij (een bestandsnaam uit `public/og/`), eventueel met `deelplaatjeAlt`.
+
+## Video bij een verhaal
+
+Hoort er een eigen video bij het verhaal, zet dan de links in de
+frontmatter:
+
+```yaml
+video:
+  youtube: https://www.youtube.com/watch?v=4uw5UkVBWxU
+  tiktok: https://www.tiktok.com/@wesleyvaders/video/7687691087204420886
+```
+
+De knoppen komen automatisch op een vaste plek: na de tekst en vóór het
+reactieblok. **De knopteksten staan in `src/components/Video.astro`, niet
+in de frontmatter**, want ze hangen af van de volgorde. De eerste knop
+nodigt uit ("Bekijk de video op YouTube"), de rest verwijst terug ("Of op
+TikTok"). Staat TikTok alleen, dan wordt het vanzelf "Bekijk de video op
+TikTok". YouTube staat altijd voorop; dat is het kanaal voor de volledige
+afleveringen.
+
+Zet je een verkeerd domein in een sleutel, dan valt de build om met
+"Dit is geen YouTube-URL". Dat is opzet: liever een bouwfout dan een knop
+die naar het verkeerde platform wijst.
+
+**Nooit insluiten, altijd linken.** Een YouTube- of TikTok-speler zet
+cookies van derden, en dan moet de cookietabel op de privacypagina worden
+uitgebreid.
+
+### `video:` of een losse knop in de tekst
+
+Die twee zijn niet hetzelfde en bestaan naast elkaar.
+
+- **`video:` in de frontmatter** is de video *van* dit verhaal. Vaste
+  plek onderaan, vaste tekst.
+- **Een `knop-los` midden in de tekst** is een link die bij díe alinea
+  hoort. Bijvoorbeeld "Zie de rupsen aan het werk" bij de mislukte
+  bloemkool in *Wat een pech, planten weg*, en "Het bewijs staat op
+  TikTok" bij het nerfpistool in *Yamas*. Dat zijn oude filmpjes die een
+  zin bewijzen, geen video van het verhaal.
+
+Zo'n losse knop schrijf je als HTML in de markdown:
+
+```html
+<p class="knop-los"><a class="deel-knop mono" href="..." target="_blank" rel="noopener">Zie de rupsen aan het werk</a></p>
+```
 
 Optionele velden die nu al bestaan en later gebruikt worden: `coordinaten` ([lat, lng] voor de kaart), `aflevering`, `onderdeel` (De Finca), `budget`, `voorNa`, `galerij`, `tags`. **Vul `coordinaten` altijd in.** Later terugkomen op vijftig verhalen om er coördinaten bij te zoeken is een middag werk, nu is het tien seconden.
 
@@ -188,7 +237,7 @@ Verboden woorden: ontdek, discover, learn more, get started, stap voor stap, ste
 
 Wesley is een Hagenees en communiceert zo. **Den Haag gebruiken bij afkomst en identiteit**: de hero, Mijn verhaal, de routelijn, de footer. Dat verandert nooit, waar hij ook woont.
 
-**De feitelijke locatie verhuist mee.** Die staat bij een datum: korte berichten, verhalen, locatiebadges, het NU-blok. Tot 12 september 2026 was dat Monster. Sinds 12 september is het **Hoeven**, bij zijn broertje, tot hij op 20 september naar het zuiden rijdt. Daarna schuift hij op met de route.
+**De feitelijke locatie verhuist mee.** Die staat bij een datum: korte berichten, verhalen, locatiebadges, het NU-blok. Monster tot 12 september 2026, Hoeven tot de 20e, en sinds 20 september schuift hij op met de reis: **Tournus** op 20 september, daarna verder naar Alfaz del Pi. Werk bij elk nieuw verhaal onderweg de locatie in het NU-blok bij.
 
 Verhalen van vóór een verhuizing houden hun eigen locatie; die bevriezen, net als de rest van een verhaal. Alleen wat de huidige stand beschrijft gaat mee. Nooit Westland gebruiken.
 

@@ -71,6 +71,12 @@ export const socials = [
 // van het huis, die is op 17 september.
 export const vertrek = '2026-09-20';
 
+// De dag dat hij in Alfaz del Pi aankomt. Zolang die leeg is telt de
+// site de dagen ónderweg; staat hij ingevuld, dan telt hij de dagen in
+// Spanje. Zonder dit veld zou de hero vanaf 21 september beweren dat hij
+// al een dag in Spanje is terwijl hij dan in Frankrijk staat.
+export const aankomst = null;
+
 // De cijferstrook op de homepage. Het eerste cijfer (dagen tot
 // vertrek) rekent de site zelf uit; deze twee zijn met de hand.
 export const cijfers = [
@@ -84,16 +90,15 @@ export const cijfers = [
 // Schrijf er dus geen tweede "Nog" voor, anders staat er "Nog nog acht
 // dagen" zodra de teller onder de veertien zakt.
 export const nu = {
-  label: 'Nu · 19 september 2026',
-  kop: '{weken}.',
+  label: 'Nu · 20 september 2026',
+  kop: 'Onderweg.',
   tekst:
-    'De bus is ingepakt en het slot zit op de trekhaak. Ik rij naar het zuiden: eerst Dijon voorbij en dan ergens voor Lyon stoppen, de dag erna verder. Dinsdagmiddag hoop ik in Alfaz del Pi te zijn.',
+    'Vanochtend om tien uur weggereden uit Hoeven. Zevenhonderd kilometer verder staan we in Tournus, tussen Dijon en Lyon. De Ardennen zonder vermogen waren pittig, maar we zijn er. Nog zo\'n twaalfhonderd kilometer te gaan.',
   logboek: [
-    ['Huis', 'Overgedragen bij de notaris 17.09.2026'],
-    ['Nu', 'Bij mijn broertje in Hoeven'],
-    ['Bus', 'Mist vermogen. Slot op de trekhaak'],
-    ['Route', 'In één rechte lijn. De zeven etappes bewaar ik'],
-    ['Nog', '{tijd}'],
+    ['Nu', 'Tournus, Frankrijk'],
+    ['Vandaag', 'Zevenhonderd kilometer'],
+    ['Te gaan', 'Ruim twaalfhonderd kilometer'],
+    ['Bus', 'Mist vermogen. Bergop terugschakelen'],
     ['Mee', 'Mo, en zo min mogelijk spullen']
   ]
 };
@@ -103,11 +108,8 @@ export const nu = {
 // href is optioneel: staat er een pagina over die halte, dan wordt hij klikbaar.
 export const route = [
   { wanneer: 'Monster', titel: 'Inpakken', tekst: 'Kasten gesloopt, drie ritten naar de stort, de rest weggegeven.', status: 'gehad' },
-  // Zodra hij zondag 20 september wegrijdt: zet Hoeven op 'gehad' en
-  // Prio 1 op 'nu'. Dat is de enige wijziging; het gouden punt schuift
-  // dan mee. Er mag er maar één 'nu' zijn.
-  { wanneer: 'Hoeven', titel: 'Tussenstop', tekst: 'Huis overgedragen, bus vol. Hier wacht ik zondag af.', status: 'nu' },
-  { wanneer: '20 september', titel: 'Prio 1', tekst: 'In één rechte lijn naar Spanje. De mooie route bewaar ik.', status: 'komt', href: '/route/', link: 'Bekijk de route' },
+  { wanneer: 'Hoeven', titel: 'Tussenstop', tekst: 'Huis overgedragen, bus vol. Hier wachtte ik zondag af.', status: 'gehad' },
+  { wanneer: '20 september', titel: 'Prio 1', tekst: 'In één rechte lijn naar Spanje. De mooie route bewaar ik.', status: 'nu', href: '/route/', link: 'Bekijk de route' },
   { wanneer: 'Oktober', titel: 'Prio 2', tekst: 'Even terug naar Nederland. Ik word oom.', status: 'komt' },
   { wanneer: '?', titel: 'De finca', tekst: 'Bestaat nog niet. Staat er wel ergens.', status: 'komt' }
 ];

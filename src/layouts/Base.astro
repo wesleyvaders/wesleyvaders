@@ -4,7 +4,7 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import Analytics from '../components/Analytics.astro';
 import Cookiebanner from '../components/Cookiebanner.astro';
-import { site, vertrek } from '../data/site.js';
+import { site, vertrek, aankomst } from '../data/site.js';
 
 const {
   titel,
@@ -51,7 +51,7 @@ const persoon = {
 };
 ---
 <!doctype html>
-<html lang="nl" data-vertrek={vertrek}>
+<html lang="nl" data-vertrek={vertrek} data-aankomst={aankomst ?? undefined}>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -126,7 +126,12 @@ const persoon = {
       el.textContent = dagenOver > 1 ? `Nog ${dagenOver} dagen`
         : dagenOver === 1 ? 'Nog 1 dag'
         : dagenOver === 0 ? 'Vandaag'
-        : dagenOver === -1 ? '1 dag in Spanje' : `${-dagenOver} dagen in Spanje`;
+        : (() => {
+            const na = -dagenOver;
+            const aank = document.documentElement.dataset.aankomst;
+            const waar = aank && new Date() >= new Date(aank + 'T00:00:00') ? 'in Spanje' : 'onderweg';
+            return na === 1 ? `1 dag ${waar}` : `${na} dagen ${waar}`;
+          })();
     });
 
     // hetzelfde voor de plekken die een aantal weken noemen

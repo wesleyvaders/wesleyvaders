@@ -1,0 +1,36 @@
+---
+// De knoppen naar de video die bij een verhaal hoort. Komt uit het
+// video-veld in de frontmatter; zie src/content.config.js.
+//
+// Geen embed maar een link. Een YouTube- of TikTok-speler zet cookies
+// van derden, en dan moet de cookietabel op de privacypagina worden
+// uitgebreid. Dat is bewust niet zo.
+//
+// De labels staan hier en niet in de frontmatter, want ze hangen af van
+// de volgorde: de eerste knop nodigt uit, de rest verwijst terug. Staat
+// TikTok alleen, dan hoort er "Bekijk de video op TikTok" te staan en
+// niet "Of op TikTok".
+const { video } = Astro.props;
+
+// YouTube eerst: dat is volgens site.js het kanaal voor de volledige
+// afleveringen. De rest volgt in deze vaste volgorde.
+const PLATFORMS = [
+  ['youtube', 'YouTube'],
+  ['tiktok', 'TikTok'],
+  ['instagram', 'Instagram']
+];
+
+const links = PLATFORMS
+  .filter(([sleutel]) => video?.[sleutel])
+  .map(([sleutel, naam], i) => ({
+    href: video[sleutel],
+    tekst: i === 0 ? `Bekijk de video op ${naam}` : `Of op ${naam}`
+  }));
+---
+{links.length > 0 && (
+  <p class="knop-los deel-k">
+    {links.map(l => (
+      <a class="deel-knop mono" href={l.href} target="_blank" rel="noopener">{l.tekst}</a>
+    ))}
+  </p>
+)}

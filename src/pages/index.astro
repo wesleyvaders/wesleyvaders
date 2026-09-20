@@ -3,15 +3,17 @@ import { Image, getImage } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Routelijn from '../components/Routelijn.astro';
-import { site, nu, route, stappen, socials, vertrek, cijfers } from '../data/site.js';
+import { site, nu, route, stappen, socials, vertrek, aankomst, cijfers } from '../data/site.js';
 import Gastenboek from '../components/Gastenboek.astro';
 import { haalGastenboek } from '../lib/gastenboek.js';
 import { dagenTot as dagenTotDatum, wekenZin, wekenKort, tijdZin } from '../lib/tijd.js';
 
 import transporter from '../../public/fotos/transporter.webp';
 import landschap from '../../public/fotos/hero.webp';
-import tekoop from '../../public/fotos/tekoop.webp';
-import moDozen from '../../public/fotos/mo-dozen.webp';
+// De twee foto's bij het NU-blok horen bij waar hij nu is. Verhuizen
+// dus mee met de reis, net als de locatie en het bijschrift eronder.
+import nuGroot from '../../public/fotos/bus-bij-motel.webp';
+import nuKlein from '../../public/fotos/motel-en-mo.webp';
 import boBus from '../../public/fotos/bo_bus.webp';
 import boZwem from '../../public/fotos/bo_zwem.webp';
 
@@ -35,10 +37,19 @@ const heroPreload = await getImage({ src: transporter, widths: [900, 1400], size
 
 // beginwaarden; de browser rekent ze daarna zelf bij
 const dagenTot = dagenTotDatum(vertrek);
+// Voor vertrek telt hij af, daarna telt hij op. Of dat "onderweg" of
+// "in Spanje" is hangt af van aankomst; zie site.js.
+// het hoofdstuk in de hero volgt het nieuwste verhaal. Stond hier hard
+// op 00 en bleef daardoor staan toen de reis begon.
+const hoofdstukNu = laatsteVerhalen.find(v => v.data.hoofdstuk)?.data.hoofdstuk ?? '00';
+
+const naVertrek = -dagenTot;
+const inSpanje = aankomst && new Date() >= new Date(aankomst + 'T00:00:00');
+const waar = inSpanje ? 'in Spanje' : 'onderweg';
 const aftelStart = dagenTot > 1 ? `Nog ${dagenTot} dagen`
   : dagenTot === 1 ? 'Nog 1 dag'
   : dagenTot === 0 ? 'Vandaag'
-  : dagenTot === -1 ? '1 dag in Spanje' : `${-dagenTot} dagen in Spanje`;
+  : naVertrek === 1 ? `1 dag ${waar}` : `${naVertrek} dagen ${waar}`;
 
 // het NU-blok noemt een aantal dagen of weken; dat wordt nergens
 // ingetypt. {weken} geeft "Nog twaalf dagen", {tijd} geeft "Twaalf dagen"
@@ -60,7 +71,7 @@ const gastenboek = await haalGastenboek();
     <div class="hero-veil"></div>
     <div class="grain"></div>
     <div class="wrap">
-      <p class="hrow mono"><span>Hoofdstuk 00</span><i>/</i><span>Den Haag</span><i>/</i><span data-aftel data-vertrek={vertrek}>{aftelStart}</span>{gastenboek && gastenboek.totaal > 0 && (
+      <p class="hrow mono"><span>Hoofdstuk {hoofdstukNu}</span><i>/</i><span>Den Haag</span><i>/</i><span data-aftel data-vertrek={vertrek}>{aftelStart}</span>{gastenboek && gastenboek.totaal > 0 && (
         <><i>/</i><a class="hrow-gb" href="/gastenboek/"><span data-hero-aantal>{gastenboek.totaal}</span> {gastenboek.totaal === 1 ? 'bericht' : 'berichten'}</a></>
       )}</p>
       <h1 class="htitle">De Spaanse<span class="l2">droom</span></h1>
@@ -104,9 +115,9 @@ const gastenboek = await haalGastenboek();
     <div class="wrap">
       <div class="grid2 g-nu rv">
         <div class="nuphotos">
-          <Image src={tekoop} alt="Het te-koop-bord van de makelaar aan de gevel" widths={[500, 900]} sizes="(max-width:880px) 90vw, 45vw" />
-          <Image src={moDozen} class="nu-b" alt="Mowgli slaapt op de bank tussen de verhuisdozen" widths={[400, 700]} sizes="30vw" />
-          <p class="nucap mono">September 2026 · Monster</p>
+          <Image src={nuGroot} alt="De bus geparkeerd bij het motel in Tournus, in de avondzon" widths={[500, 900]} sizes="(max-width:880px) 90vw, 45vw" />
+          <Image src={nuKlein} class="nu-b" alt="Mowgli aan de lijn op het pad bij het motel" widths={[400, 700]} sizes="30vw" />
+          <p class="nucap mono">20 september 2026 · Tournus</p>
         </div>
         <div>
           <p class="eyebrow" style="color:var(--gold)">{nu.label}</p>
