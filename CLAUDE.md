@@ -8,17 +8,32 @@ Astro 5, statisch, geen database, geen CMS. Bouwt naar `dist/` en gaat bij elke 
 
 Deze site praat over een vertrek dat steeds dichterbij komt. Daardoor
 veroudert inhoud snel en spreken twee plekken elkaar zomaar tegen. Loop bij
-elke inhoudelijke wijziging deze vijf na:
+elke inhoudelijke wijziging deze zes na:
 
 1. **Het NU-blok** in `site.js`: klopt de kop nog met hoe het huis erbij staat, en het logboek met wat er af is?
 2. **De tijdlijn** op de homepage (`route` in `site.js`): staat `nu` nog op de goede halte, of is die al `gehad`?
 3. **De cijferstrook**: spreekt geen enkel cijfer een andere pagina tegen.
-4. **De aftelling**: hero, gastenboek, menu en route horen hetzelfde te zeggen.
+   De eerste twee kolommen rekent de site zelf uit, uit `vertrek` en
+   `afstand` in `site.js`. Alleen de derde staat er met de hand bij.
+4. **`afstand.gereden` en `afstand.waar`** in `site.js`: die bepalen waar
+   het gouden punt op de routelijn in de hero staat en welke plaats
+   eronder. Werk ze bij na elke etappe, anders blijft de reis stilstaan.
+5. **De aftelling**: hero, gastenboek, menu en route horen hetzelfde te zeggen.
    Na de vertrekdatum telt de site de dagen **onderweg**. Zodra hij in
    Alfaz del Pi aankomt vul je `aankomst` in `site.js` in; vanaf dan telt
    hij de dagen **in Spanje**. Laat je dat leeg, dan blijft er "onderweg"
    staan terwijl hij er allang is.
-5. **Bij een nieuw verhaal: bestaat de og:image echt?** De verhaalpagina
+
+   Die teller staat in `dagenTeller()` in `src/lib/tijd.js` en voedt de
+   eerste kolom van de cijferstrook en de eyebrow van `/gastenboek/`.
+   **De dag van vertrek is dag 1, niet dag 0.** Het eerste verhaal
+   onderweg is hoofdstuk 01 en het citaatplaatje van die dag zegt "Dag 1 ·
+   700 km"; een teller op nul spreekt die allebei tegen. Let op het
+   verschil met `data-dagen`: dat is het aantal dagen tót het vertrek en
+   dat blijft daarna op nul staan. De teller zelf hangt aan
+   `data-reisteller`, met `-l` voor het label en `-e` voor de eyebrow.
+   Niet `data-teller` gebruiken, dat is de tekenteller van de formulieren.
+6. **Bij een nieuw verhaal: bestaat de og:image echt?** De verhaalpagina
    leidt hem af van de hoofdfoto, dus een nieuwe foto betekent een nieuw
    bestand in `public/og/`. Staat het er niet, draai dan `scripts/og.py`.
    Controleer de URL uit de `og:image`-tag met een 200 en `image/jpeg`.
@@ -41,6 +56,12 @@ In het NU-blok kun je `{weken}` schrijven voor "Nog twaalf dagen" en
 `{tijd}` voor "Twaalf dagen", dat laatste voor de logboekregel waar het
 woordje Nog al in de kop staat. Beide mogen in de kop, de tekst en het
 logboek, en boven de veertien dagen slaan ze vanzelf om naar weken.
+
+**Tekst die vóór en ná het vertrek anders moet luiden staat dubbel in de
+bron en wordt gekozen op de datum.** Zo is het met `site.omschrijving` en
+`site.omschrijvingOnderweg` voor de herotekst, en met de kop en de intro
+van het gastenboek. Nooit met de hand omzetten: dan staat er op de dag
+zelf "Nog 0 dagen tot ik vertrek".
 
 **Verhalen en korte berichten zijn momentopnamen en bevriezen.** Daarin mag
 "nog 22 dagen" blijven staan, ook als dat er inmiddels 18 zijn. Dat was wat

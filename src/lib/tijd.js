@@ -39,3 +39,27 @@ export function tijdZin(dagen) {
   const rest = z.slice(4);
   return rest.charAt(0).toUpperCase() + rest.slice(1);
 }
+
+// De teller in de cijferstrook en de eyebrow van het gastenboek. Vóór
+// het vertrek telt hij af, daarna telt hij de dagen van de reis, en
+// zodra aankomst is ingevuld de dagen in Spanje. De dag van vertrek is
+// dag 1 en niet dag 0: het eerste verhaal onderweg is hoofdstuk 01 en
+// het citaatplaatje van die dag zegt "Dag 1 · 700 km". Stond die teller
+// op 0 terwijl er al zevenhonderd kilometer op zat.
+export function dagenTeller(vertrek, aankomst, nu = new Date()) {
+  const over = dagenTot(vertrek, nu);
+  if (over > 0) {
+    return {
+      getal: over,
+      label: 'Dagen tot vertrek',
+      eyebrow: over === 1 ? 'Nog één dag' : `Nog ${over} dagen`
+    };
+  }
+  const sinds = (datum) => 1 - dagenTot(datum, nu);
+  if (aankomst && sinds(aankomst) >= 1) {
+    const n = sinds(aankomst);
+    return { getal: n, label: 'Dagen in Spanje', eyebrow: `Dag ${n} in Spanje` };
+  }
+  const n = sinds(vertrek);
+  return { getal: n, label: 'Dagen onderweg', eyebrow: `Dag ${n} onderweg` };
+}

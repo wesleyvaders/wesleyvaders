@@ -122,6 +122,33 @@ const persoon = {
     document.querySelectorAll('[data-dagen]').forEach(el => {
       el.textContent = String(Math.max(0, dagenOver));
     });
+
+    // De teller in de cijferstrook en de eyebrow van het gastenboek.
+    // Zie dagenTeller() in src/lib/tijd.js; dit is dezelfde rekensom.
+    // Let op: data-dagen hierboven is iets anders, dat is het aantal
+    // dagen tot het vertrek en dat blijft na de vertrekdag op nul staan.
+    {
+      const aank = document.documentElement.dataset.aankomst;
+      const sinds = (datum) => 1 - Math.round(
+        (new Date(datum + 'T00:00:00') - vandaag0) / 86400000);
+      let getal, label, eyebrow;
+      if (dagenOver > 0) {
+        getal = dagenOver;
+        label = 'Dagen tot vertrek';
+        eyebrow = dagenOver === 1 ? 'Nog één dag' : `Nog ${dagenOver} dagen`;
+      } else if (aank && sinds(aank) >= 1) {
+        getal = sinds(aank);
+        label = 'Dagen in Spanje';
+        eyebrow = `Dag ${getal} in Spanje`;
+      } else {
+        getal = sinds(document.documentElement.dataset.vertrek);
+        label = 'Dagen onderweg';
+        eyebrow = `Dag ${getal} onderweg`;
+      }
+      document.querySelectorAll('[data-reisteller]').forEach(el => { el.textContent = String(getal); });
+      document.querySelectorAll('[data-reisteller-l]').forEach(el => { el.textContent = label; });
+      document.querySelectorAll('[data-reisteller-e]').forEach(el => { el.textContent = eyebrow; });
+    }
     document.querySelectorAll('[data-aftel]').forEach(el => {
       el.textContent = dagenOver > 1 ? `Nog ${dagenOver} dagen`
         : dagenOver === 1 ? 'Nog 1 dag'

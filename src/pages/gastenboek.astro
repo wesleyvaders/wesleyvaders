@@ -1,22 +1,29 @@
 ---
 import Base from '../layouts/Base.astro';
 import Gastenboek from '../components/Gastenboek.astro';
-import { vertrek } from '../data/site.js';
+import { vertrek, aankomst } from '../data/site.js';
+import { dagenTot, dagenTeller } from '../lib/tijd.js';
 
-const vandaag = new Date(); vandaag.setHours(0, 0, 0, 0);
-const dagen = Math.round((new Date(vertrek + 'T00:00:00') - vandaag) / 86400000);
+const dagen = dagenTot(vertrek);
+const teller = dagenTeller(vertrek, aankomst);
+
+// Voor en na het vertrek een andere omschrijving; zie CLAUDE.md. Anders
+// staat hier "voordat ik vertrek" terwijl de bus al in Frankrijk staat.
+const omschrijving = dagen > 0
+  ? 'Laat iets achter voordat ik naar Spanje vertrek. Een herinnering, een goede raad, of iets wat ik daar moet doen.'
+  : 'Laat iets achter nu ik onderweg ben naar Spanje. Een herinnering, een goede raad, of iets wat ik daar moet doen.';
 ---
 
 <Base
   titel="Gastenboek"
-  omschrijving="Laat iets achter voordat ik naar Spanje vertrek. Een herinnering, een goede raad, of iets wat ik daar moet doen."
+  omschrijving={omschrijving}
   og="/og/gastenboek.jpg"
   ogAlt="Het gastenboek van wesleyvaders.nl"
 >
   <header class="paper" style="padding:clamp(9rem,16vw,13rem) 0 clamp(1rem,2vw,2rem)">
     <div class="grain"></div>
     <div class="wrap">
-      <p class="eyebrow">Nog <span data-dagen>{dagen}</span> dagen</p>
+      <p class="eyebrow" data-reisteller-e>{teller.eyebrow}</p>
       <h1 class="h2" style="margin-top:.7rem">Gastenboek</h1>
     </div>
   </header>

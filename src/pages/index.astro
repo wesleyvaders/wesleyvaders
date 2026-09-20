@@ -3,10 +3,10 @@ import { Image, getImage } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Routelijn from '../components/Routelijn.astro';
-import { site, nu, route, stappen, socials, vertrek, aankomst, cijfers } from '../data/site.js';
+import { site, nu, route, stappen, socials, vertrek, aankomst, afstand, cijfers } from '../data/site.js';
 import Gastenboek from '../components/Gastenboek.astro';
 import { haalGastenboek } from '../lib/gastenboek.js';
-import { dagenTot as dagenTotDatum, wekenZin, wekenKort, tijdZin } from '../lib/tijd.js';
+import { dagenTot as dagenTotDatum, dagenTeller, wekenZin, wekenKort, tijdZin } from '../lib/tijd.js';
 
 import transporter from '../../public/fotos/transporter.webp';
 import landschap from '../../public/fotos/hero.webp';
@@ -39,6 +39,9 @@ const heroPreload = await getImage({ src: transporter, widths: [900, 1400], size
 const dagenTot = dagenTotDatum(vertrek);
 // Voor vertrek telt hij af, daarna telt hij op. Of dat "onderweg" of
 // "in Spanje" is hangt af van aankomst; zie site.js.
+// vóór de vertrekdatum de eerste omschrijving, daarna de tweede
+const heroTekst = dagenTot > 0 ? site.omschrijving : site.omschrijvingOnderweg;
+
 // het hoofdstuk in de hero volgt het nieuwste verhaal. Stond hier hard
 // op 00 en bleef daardoor staan toen de reis begon.
 const hoofdstukNu = laatsteVerhalen.find(v => v.data.hoofdstuk)?.data.hoofdstuk ?? '00';
@@ -46,6 +49,10 @@ const hoofdstukNu = laatsteVerhalen.find(v => v.data.hoofdstuk)?.data.hoofdstuk 
 const naVertrek = -dagenTot;
 const inSpanje = aankomst && new Date() >= new Date(aankomst + 'T00:00:00');
 const waar = inSpanje ? 'in Spanje' : 'onderweg';
+
+// de teller in de cijferstrook: getal en label slaan samen om van
+// aftellen naar dagen onderweg naar dagen in Spanje
+const teller = dagenTeller(vertrek, aankomst);
 const aftelStart = dagenTot > 1 ? `Nog ${dagenTot} dagen`
   : dagenTot === 1 ? 'Nog 1 dag'
   : dagenTot === 0 ? 'Vandaag'
@@ -76,7 +83,7 @@ const gastenboek = await haalGastenboek();
       )}</p>
       <h1 class="htitle">De Spaanse<span class="l2">droom</span></h1>
       <div class="hbot">
-        <p class="hsub">{site.omschrijving}</p>
+        <p class="hsub">{heroTekst}</p>
         <div class="cta">
           <a class="btn btn-f" href="#volg">Volg het avontuur</a>
           <a class="btn btn-l" href="/mijn-verhaal/">Begin bij het begin</a>
@@ -272,8 +279,12 @@ const gastenboek = await haalGastenboek();
     <div class="wrap">
       <div class="cijfers-grid rv">
         <div class="cijfer-blok">
-          <p class="cijfer-w" data-dagen>{dagenTot}</p>
-          <p class="cijfer-l mono">Dagen tot vertrek</p>
+          <p class="cijfer-w" data-reisteller>{teller.getal}</p>
+          <p class="cijfer-l mono" data-reisteller-l>{teller.label}</p>
+        </div>
+        <div class="cijfer-blok">
+          <p class="cijfer-w">{afstand.gereden.toLocaleString('nl-NL')}</p>
+          <p class="cijfer-l mono">Kilometer gereden</p>
         </div>
         {cijfers.map(c => (
           <div class="cijfer-blok">

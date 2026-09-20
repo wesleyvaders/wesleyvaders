@@ -5,8 +5,12 @@ export const site = {
   naam: 'Wesley Vaders',
   serie: 'De Spaanse Droom',
   domein: 'https://wesleyvaders.nl',
+  // Twee varianten: vóór de vertrekdatum de eerste, daarna de tweede.
+  // Welke er staat rekent index.astro uit; nooit met de hand omzetten.
   omschrijving:
     'Ik vertrek naar Spanje en wil daar mijn droom uit laten komen. Hoe dat uitpakt, geen idee. Maar ik ga ervoor.',
+  omschrijvingOnderweg:
+    'Ik ben onderweg naar Spanje om daar mijn droom uit te laten komen. Hoe dat uitpakt, geen idee. Maar ik ga ervoor.',
   slotzin: ['Alles komt goed.', 'Alles is al goed.']
 };
 
@@ -77,11 +81,22 @@ export const vertrek = '2026-09-20';
 // al een dag in Spanje is terwijl hij dan in Frankrijk staat.
 export const aankomst = null;
 
+// Hoeveel kilometer er gereden is en hoeveel de hele rit telt. Voedt de
+// stand van het gouden punt op de routelijn in de hero en de tweede
+// cijferkolom. Werk gereden bij na elke etappe; bij aankomst zet je hem
+// op totaal en staat het punt vanzelf op 100%.
+export const afstand = {
+  gereden: 700,
+  totaal: 1900,
+  waar: 'Tournus'        // het punt van nu, als label onder de lijn
+};
+
 // De cijferstrook op de homepage. Het eerste cijfer (dagen tot
 // vertrek) rekent de site zelf uit; deze twee zijn met de hand.
+// De cijferstrook. De eerste twee kolommen rekent index.astro zelf uit
+// (de teller en de gereden kilometers); deze staat er met de hand bij.
 export const cijfers = [
-  { waarde: '53', label: 'Verdiepingen op één dag' },
-  { waarde: '2.750', label: 'Kilometer via de mooie weg' }
+  { waarde: '53', label: 'Verdiepingen op één dag' }
 ];
 
 // Het NU-blok. Dit is het enige dat je echt vaak aanpast.
