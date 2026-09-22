@@ -40,26 +40,35 @@ export function tijdZin(dagen) {
   return rest.charAt(0).toUpperCase() + rest.slice(1);
 }
 
-// De teller in de cijferstrook en de eyebrow van het gastenboek. Vóór
-// het vertrek telt hij af, daarna telt hij de dagen van de reis, en
-// zodra aankomst is ingevuld de dagen in Spanje. De dag van vertrek is
-// dag 1 en niet dag 0: het eerste verhaal onderweg is hoofdstuk 01 en
-// het citaatplaatje van die dag zegt "Dag 1 · 700 km". Stond die teller
-// op 0 terwijl er al zevenhonderd kilometer op zat.
+// De teller in de cijferstrook, de eyebrow van het gastenboek en de
+// aftelregel in de hero. Eén rekensom voor alle drie, anders zeggen ze
+// op de dag van de omslag iets anders.
+//
+// Twee verschillende starts, met opzet:
+//   - Onderweg telt de vertrekdag mee. Je rijdt die dag; het eerste
+//     verhaal onderweg is hoofdstuk 01 en het citaatplaatje van die dag
+//     zegt "Dag 1 - 700 km".
+//   - In Spanje begint de telling de ochtend ná de aankomst. Hij kwam
+//     maandagavond uitgeblust binnen; die avond is geen dag in Spanje.
+//     De eerste dag is de eerste keer wakker worden.
 export function dagenTeller(vertrek, aankomst, nu = new Date()) {
   const over = dagenTot(vertrek, nu);
   if (over > 0) {
     return {
       getal: over,
       label: 'Dagen tot vertrek',
-      eyebrow: over === 1 ? 'Nog één dag' : `Nog ${over} dagen`
+      eyebrow: over === 1 ? 'Nog één dag' : `Nog ${over} dagen`,
+      zin: over === 1 ? 'Nog 1 dag' : `Nog ${over} dagen`
     };
   }
-  const sinds = (datum) => 1 - dagenTot(datum, nu);
-  if (aankomst && sinds(aankomst) >= 1) {
-    const n = sinds(aankomst);
-    return { getal: n, label: 'Dagen in Spanje', eyebrow: `Dag ${n} in Spanje` };
-  }
-  const n = sinds(vertrek);
-  return { getal: n, label: 'Dagen onderweg', eyebrow: `Dag ${n} onderweg` };
+  const sindsAankomst = aankomst ? -dagenTot(aankomst, nu) : -1;
+  const [getal, waar] = sindsAankomst >= 1
+    ? [sindsAankomst, 'in Spanje']
+    : [1 - over, 'onderweg'];
+  return {
+    getal,
+    label: `Dagen ${waar}`,
+    eyebrow: `Dag ${getal} ${waar}`,
+    zin: over === 0 ? 'Vandaag' : `${getal} ${getal === 1 ? 'dag' : 'dagen'} ${waar}`
+  };
 }

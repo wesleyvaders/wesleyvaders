@@ -40,7 +40,9 @@ mono  = lambda s: ImageFont.truetype(ttf("jetbrains-mono-latin"), s)
 
 UIT = os.path.expanduser("~/Downloads/citaat/")
 
-VERTREK = datetime.date(2026, 9, 20)
+VERTREK  = datetime.date(2026, 9, 20)
+# De aankomst in Alfaz del Pi. Leeg laten zolang hij onderweg is.
+AANKOMST = datetime.date(2026, 9, 21)
 DAGEN = (VERTREK - datetime.date.today()).days
 
 B, H = 1080, 1350
@@ -189,24 +191,31 @@ def maak(naam):
 # De foto komt uit public/fotos/ en is daar al door grade.py gehaald;
 # er gaat hier dus geen tweede grade overheen.
 # ---------------------------------------------------------------
-FOTO   = str(WORTEL / "public" / "fotos" / "bus-bij-motel.webp")
-LABEL  = "DAG 1 · 700 KM"
-TITEL  = ["Zo hard mogelijk", "de berg af."]
+FOTO   = str(WORTEL / "public" / "fotos" / "spaanse-grens.webp")
+LABEL  = "DAG 1 IN SPANJE"
+TITEL  = ["Knallen met dat ding."]
 URL    = "WESLEYVADERS.NL"
-NAAM   = "berg-af-instagram.jpg"
+NAAM   = "knallen-instagram.jpg"
 
 # De aftelling wordt niet ingetypt maar berekend, net als op de site.
 WOORD = ["nul", "één", "twee", "drie", "vier", "vijf", "zes", "zeven",
          "acht", "negen", "tien", "elf", "twaalf", "dertien", "veertien"]
 
 def aftelzin(dagen):
-    if dagen < 0:  return "Onderweg."
     if dagen == 0: return "Vandaag."
     if dagen == 1: return "Nog één dag."
-    if dagen < 14: return f"Nog {WOORD[dagen]} dagen."
-    return f"Nog {WOORD[round(dagen/7)]} weken."
+    if dagen < 14 and dagen > 0: return f"Nog {WOORD[dagen]} dagen."
+    if dagen > 0:  return f"Nog {WOORD[round(dagen/7)]} weken."
+    # na het vertrek: dezelfde telling als dagenTeller() in src/lib/tijd.js.
+    # Onderweg telt de vertrekdag mee, in Spanje begint het de ochtend
+    # ná de aankomst.
+    na = (datetime.date.today() - AANKOMST).days if AANKOMST else -1
+    return f"Dag {na} in Spanje." if na >= 1 else f"Dag {1 - dagen} onderweg."
 
-ONDER = aftelzin(DAGEN)
+# Meestal de berekende aftelling, aftelzin(DAGEN). Staat hier een vaste
+# zin, dan is dat omdat het plaatje iets anders wil zeggen dan waar hij
+# staat in de tijd; het label zegt dat hier al.
+ONDER = "1250 km in 12 uur, met een bus zonder vermogen"
 
 # Waar de tekst begint en eindigt, als deel van de hoogte. Instagram
 # toont in het grid een vierkante uitsnede; hierbinnen valt niets weg.

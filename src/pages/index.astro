@@ -12,8 +12,8 @@ import transporter from '../../public/fotos/transporter.webp';
 import landschap from '../../public/fotos/hero.webp';
 // De twee foto's bij het NU-blok horen bij waar hij nu is. Verhuizen
 // dus mee met de reis, net als de locatie en het bijschrift eronder.
-import nuGroot from '../../public/fotos/bus-bij-motel.webp';
-import nuKlein from '../../public/fotos/motel-en-mo.webp';
+import nuGroot from '../../public/fotos/mijn-verblijf.webp';
+import nuKlein from '../../public/fotos/spaanse-grens.webp';
 import boBus from '../../public/fotos/bo_bus.webp';
 import boZwem from '../../public/fotos/bo_zwem.webp';
 
@@ -39,24 +39,23 @@ const heroPreload = await getImage({ src: transporter, widths: [900, 1400], size
 const dagenTot = dagenTotDatum(vertrek);
 // Voor vertrek telt hij af, daarna telt hij op. Of dat "onderweg" of
 // "in Spanje" is hangt af van aankomst; zie site.js.
-// vóór de vertrekdatum de eerste omschrijving, daarna de tweede
-const heroTekst = dagenTot > 0 ? site.omschrijving : site.omschrijvingOnderweg;
+// Drie standen, gekozen op de datum: tot het vertrek, onderweg, en
+// aangekomen. Stond er één te lang, dan beweerde de hero "ik ben
+// onderweg naar Spanje" terwijl er een regel hoger "1 dag in Spanje"
+// stond. Zie de dubbeltekst-regel in CLAUDE.md.
+const erAl = aankomst && dagenTotDatum(aankomst) <= 0;
+const heroTekst = dagenTot > 0 ? site.omschrijving
+  : erAl ? site.omschrijvingAangekomen : site.omschrijvingOnderweg;
 
 // het hoofdstuk in de hero volgt het nieuwste verhaal. Stond hier hard
 // op 00 en bleef daardoor staan toen de reis begon.
 const hoofdstukNu = laatsteVerhalen.find(v => v.data.hoofdstuk)?.data.hoofdstuk ?? '00';
 
-const naVertrek = -dagenTot;
-const inSpanje = aankomst && new Date() >= new Date(aankomst + 'T00:00:00');
-const waar = inSpanje ? 'in Spanje' : 'onderweg';
-
-// de teller in de cijferstrook: getal en label slaan samen om van
-// aftellen naar dagen onderweg naar dagen in Spanje
+// De teller: getal en label voor de cijferstrook, zin voor de
+// aftelregel in de hero. Eén rekensom, zie src/lib/tijd.js, anders
+// zeggen de twee op de dag van de omslag iets anders.
 const teller = dagenTeller(vertrek, aankomst);
-const aftelStart = dagenTot > 1 ? `Nog ${dagenTot} dagen`
-  : dagenTot === 1 ? 'Nog 1 dag'
-  : dagenTot === 0 ? 'Vandaag'
-  : naVertrek === 1 ? `1 dag ${waar}` : `${naVertrek} dagen ${waar}`;
+const aftelStart = teller.zin;
 
 // het NU-blok noemt een aantal dagen of weken; dat wordt nergens
 // ingetypt. {weken} geeft "Nog twaalf dagen", {tijd} geeft "Twaalf dagen"
@@ -122,9 +121,9 @@ const gastenboek = await haalGastenboek();
     <div class="wrap">
       <div class="grid2 g-nu rv">
         <div class="nuphotos">
-          <Image src={nuGroot} alt="De bus geparkeerd bij het motel in Tournus, in de avondzon" widths={[500, 900]} sizes="(max-width:880px) 90vw, 45vw" />
-          <Image src={nuKlein} class="nu-b" alt="Mowgli aan de lijn op het pad bij het motel" widths={[400, 700]} sizes="30vw" />
-          <p class="nucap mono">20 september 2026 · Tournus</p>
+          <Image src={nuGroot} alt="Het terras met zwembad in Alfaz del Pi in de ochtendzon, met Mo op de voorgrond" widths={[500, 900]} sizes="(max-width:880px) 90vw, 45vw" />
+          <Image src={nuKlein} class="nu-b" alt="Het ESPANA-bord boven de snelweg bij de Spaanse grens" widths={[400, 700]} sizes="30vw" />
+          <p class="nucap mono">22 september 2026 · Alfaz del Pi</p>
         </div>
         <div>
           <p class="eyebrow" style="color:var(--gold)">{nu.label}</p>

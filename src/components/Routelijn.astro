@@ -11,12 +11,18 @@ const {
 
 const deel = Math.min(1, Math.max(0, (afstand.gereden ?? 0) / (afstand.totaal || 1)));
 const procent = Math.round(deel * 100);
+
+// Het label staat gecentreerd onder het punt, maar aan de uiteinden
+// loopt het dan half van het scherm af. Bij aankomst staat het punt op
+// 100% en verdween op 390 breed de helft van Alfaz del Pi. Dichtbij een
+// rand schuift het label dus naar binnen.
+const kant = procent >= 88 ? ' rlijn-nu-r' : procent <= 12 ? ' rlijn-nu-l' : '';
 ---
 <div class="rlijn">
   <div class="rlijn-l"></div>
   <div class="rlijn-p" style={`left:${procent}%`}></div>
   {afstand.waar && (
-    <p class="rlijn-nu mono" style={`left:${procent}%`}>{afstand.waar}</p>
+    <p class={`rlijn-nu mono${kant}`} style={`left:${procent}%`}>{afstand.waar}</p>
   )}
   <div class="rlijn-m mono"><span>{van}</span><span>{naar}</span></div>
 </div>

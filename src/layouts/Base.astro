@@ -129,37 +129,28 @@ const persoon = {
     // dagen tot het vertrek en dat blijft na de vertrekdag op nul staan.
     {
       const aank = document.documentElement.dataset.aankomst;
-      const sinds = (datum) => 1 - Math.round(
-        (new Date(datum + 'T00:00:00') - vandaag0) / 86400000);
-      let getal, label, eyebrow;
+      const dagenNa = (datum) => Math.round((vandaag0 - new Date(datum + 'T00:00:00')) / 86400000);
+      let getal, label, eyebrow, zin;
       if (dagenOver > 0) {
         getal = dagenOver;
         label = 'Dagen tot vertrek';
         eyebrow = dagenOver === 1 ? 'Nog één dag' : `Nog ${dagenOver} dagen`;
-      } else if (aank && sinds(aank) >= 1) {
-        getal = sinds(aank);
-        label = 'Dagen in Spanje';
-        eyebrow = `Dag ${getal} in Spanje`;
+        zin = dagenOver === 1 ? 'Nog 1 dag' : `Nog ${dagenOver} dagen`;
       } else {
-        getal = sinds(document.documentElement.dataset.vertrek);
-        label = 'Dagen onderweg';
-        eyebrow = `Dag ${getal} onderweg`;
+        // Onderweg telt de vertrekdag mee; in Spanje begint de telling
+        // de ochtend ná de aankomst. Zie dagenTeller() in tijd.js.
+        const na = aank ? dagenNa(aank) : -1;
+        const waar = na >= 1 ? 'in Spanje' : 'onderweg';
+        getal = na >= 1 ? na : 1 - dagenOver;
+        label = `Dagen ${waar}`;
+        eyebrow = `Dag ${getal} ${waar}`;
+        zin = dagenOver === 0 ? 'Vandaag' : `${getal} ${getal === 1 ? 'dag' : 'dagen'} ${waar}`;
       }
       document.querySelectorAll('[data-reisteller]').forEach(el => { el.textContent = String(getal); });
       document.querySelectorAll('[data-reisteller-l]').forEach(el => { el.textContent = label; });
       document.querySelectorAll('[data-reisteller-e]').forEach(el => { el.textContent = eyebrow; });
+      document.querySelectorAll('[data-aftel]').forEach(el => { el.textContent = zin; });
     }
-    document.querySelectorAll('[data-aftel]').forEach(el => {
-      el.textContent = dagenOver > 1 ? `Nog ${dagenOver} dagen`
-        : dagenOver === 1 ? 'Nog 1 dag'
-        : dagenOver === 0 ? 'Vandaag'
-        : (() => {
-            const na = -dagenOver;
-            const aank = document.documentElement.dataset.aankomst;
-            const waar = aank && new Date() >= new Date(aank + 'T00:00:00') ? 'in Spanje' : 'onderweg';
-            return na === 1 ? `1 dag ${waar}` : `${na} dagen ${waar}`;
-          })();
-    });
 
     // hetzelfde voor de plekken die een aantal weken noemen
     const WOORD = ['nul', 'één', 'twee', 'drie', 'vier', 'vijf', 'zes', 'zeven',

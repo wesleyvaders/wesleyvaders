@@ -285,6 +285,9 @@ footer .brand .wm small{font-size:.5rem;letter-spacing:.24em;opacity:.8;margin-t
 .rlijn-nu{position:absolute;top:.7rem;transform:translateX(-50%);margin:0;
   font-size:.5625rem;color:var(--gold);white-space:nowrap;
   text-shadow:0 1px 12px rgba(20,20,18,.9)}
+/* aan de uiteinden naar binnen, anders valt het label van het scherm */
+.rlijn-nu-r{transform:translateX(-100%)}
+.rlijn-nu-l{transform:translateX(0)}
 .rlijn-m{display:flex;justify-content:space-between;gap:1rem;margin-top:2.2rem;
   color:var(--sand);opacity:.92;text-shadow:0 1px 12px rgba(20,20,18,.9)}
 @media(max-width:560px){

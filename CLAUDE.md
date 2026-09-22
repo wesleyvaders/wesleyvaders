@@ -25,11 +25,18 @@ elke inhoudelijke wijziging deze zes na:
    staan terwijl hij er allang is.
 
    Die teller staat in `dagenTeller()` in `src/lib/tijd.js` en voedt de
-   eerste kolom van de cijferstrook en de eyebrow van `/gastenboek/`.
-   **De dag van vertrek is dag 1, niet dag 0.** Het eerste verhaal
-   onderweg is hoofdstuk 01 en het citaatplaatje van die dag zegt "Dag 1 ·
-   700 km"; een teller op nul spreekt die allebei tegen. Let op het
-   verschil met `data-dagen`: dat is het aantal dagen tót het vertrek en
+   eerste kolom van de cijferstrook, de eyebrow van `/gastenboek/` en de
+   aftelregel in de hero. Twee verschillende starts, met opzet:
+
+   - **Onderweg telt de vertrekdag mee.** Je rijdt die dag. Het eerste
+     verhaal onderweg is hoofdstuk 01 en het citaatplaatje van die dag
+     zegt "Dag 1 · 700 km"; een teller op nul spreekt die allebei tegen.
+   - **In Spanje begint de telling de ochtend ná de aankomst.** Hij kwam
+     maandagavond uitgeblust binnen; die avond is geen dag in Spanje. De
+     eerste dag is de eerste keer wakker worden, precies zoals het
+     verhaal het zegt.
+
+   Let op het verschil met `data-dagen`: dat is het aantal dagen tót het vertrek en
    dat blijft daarna op nul staan. De teller zelf hangt aan
    `data-reisteller`, met `-l` voor het label en `-e` voor de eyebrow.
    Niet `data-teller` gebruiken, dat is de tekenteller van de formulieren.
@@ -196,11 +203,27 @@ De enige uitzondering is de **og:image**, het plaatje dat automatisch bij een ge
 
 Tekst blijft altijd binnen **13,5% marge boven en onder**. Dan blijft een vierkante uitsnede ook leesbaar.
 
+**Beide deelplaatjes komen uit de scripts in deze repo**, ook als er al
+een kant-en-klaar bestand klaarstaat: `scripts/og.py` voor de og:image en
+`scripts/citaatplaatje.py` voor het socialbeeld. Buiten de repo om gemaakte
+plaatjes wijken af van de huisstijl.
+
+Wil een verhaal een andere og:image dan die van de hoofdfoto, zet dan
+`deelplaatje: spaanse-grens.jpg` in de frontmatter. Staat er een
+gegradeerde foto met die naam in `public/fotos/`, dan maakt `og.py` hem
+er vanzelf bij; staat die er niet, dan laat het script het bestand met
+rust, want dan is het met de hand gemaakt.
+
 `scripts/citaatplaatje.py` maakt de citaatplaatjes. Alle instellingen
 staan in één blok bovenin: foto, label, titel, URL en bestandsnaam. Het
 merkteken en de onderste regel worden vastgezet op een deel van de
 hoogte, dus je stuurt zelf wat er in de vierkante uitsnede overeind
 blijft. De aftelling wordt berekend uit `vertrek`, nooit ingetypt.
+
+**Een foto die al los op social media is geplaatst wordt geen deelplaatje
+meer.** Hij is als deelbeeld op: wie hem daar zonder link voorbij zag
+scrollen herkent hem, en dan doet het plaatje bij de gedeelde link geen
+werk meer. In het verhaal zelf mag hij gewoon staan.
 
 **Contrast meet je nooit op een beeld waar tekst op staat.** Dat gebeurde
 twee keer met een verkeerde conclusie: één keer door te meten op het
@@ -252,13 +275,18 @@ drukt; meet dat eerst.
 
 **Toon.** Nederlands, Haags, nuchter, droog. Woorden mogen wegvallen, het mag plat. Me en mijn wisselen af: terloops "me vader", op zware momenten "mijn vader". Niet gladstrijken en niet corrigeren.
 
+**Getallen blijven cijfers.** Schrijf 100 km/u en niet honderd kilometer
+per uur, 200 km en niet tweehonderd kilometer, 1250 km en niet
+twaalfhonderdvijftig. Alleen uitschrijven als het echt beter leest in een
+lopende zin.
+
 **"Vroegah" is de Haagse schrijfwijze van vroeger en blijft staan, net als "rustaghhh".** Dit soort klankschrijfwijzen zijn geen typefouten en worden nooit gecorrigeerd. Twijfel je of iets een verschrijving is of de spreektaal: laat het staan en vraag het.
 
 Verboden woorden: ontdek, discover, learn more, get started, stap voor stap, steen voor steen, authentiek, transformatie, journey, mindset, reis als metafoor, en alles met een uitroepteken.
 
 Wesley is een Hagenees en communiceert zo. **Den Haag gebruiken bij afkomst en identiteit**: de hero, Mijn verhaal, de routelijn, de footer. Dat verandert nooit, waar hij ook woont.
 
-**De feitelijke locatie verhuist mee.** Die staat bij een datum: korte berichten, verhalen, locatiebadges, het NU-blok. Monster tot 12 september 2026, Hoeven tot de 20e, en sinds 20 september schuift hij op met de reis: **Tournus** op 20 september, daarna verder naar Alfaz del Pi. Werk bij elk nieuw verhaal onderweg de locatie in het NU-blok bij.
+**De feitelijke locatie verhuist mee.** Die staat bij een datum: korte berichten, verhalen, locatiebadges, het NU-blok. Monster tot 12 september 2026, Hoeven tot de 20e, Tournus op de 20e, en sinds 21 september 2026 **Alfaz del Pi**. Daar woont hij nu. Werk bij elke verhuizing de locatie in het NU-blok bij.
 
 Verhalen van vóór een verhuizing houden hun eigen locatie; die bevriezen, net als de rest van een verhaal. Alleen wat de huidige stand beschrijft gaat mee. Nooit Westland gebruiken.
 

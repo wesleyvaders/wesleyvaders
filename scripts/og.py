@@ -30,6 +30,22 @@ def verhaalfotos():
     return namen
 
 
+def eigen_deelplaatjes():
+    """Verhalen met een eigen deelplaatje: veld. Dat wijst naar een
+    bestandsnaam in public/og/, en als er een gegradeerde foto met
+    dezelfde naam in public/fotos/ staat hoort die hier gemaakt te
+    worden en niet met de hand.
+
+    Staat die foto er niet, dan is het deelplaatje elders gemaakt
+    (og-zaterdagnacht.jpg, gastenboek.jpg) en laten we het met rust."""
+    namen = []
+    for md in sorted((WORTEL / "src" / "content" / "verhalen").glob("*.md")):
+        m = re.search(r"^deelplaatje:\s*([\w-]+)\.jpg\s*$", md.read_text(), re.M)
+        if m and (FOTOS / f"{m.group(1)}.webp").exists():
+            namen.append(m.group(1))
+    return namen
+
+
 def maak(naam):
     bron = FOTOS / f"{naam}.webp"
     if not bron.exists():
@@ -54,5 +70,5 @@ def maak(naam):
 
 if __name__ == "__main__":
     OG.mkdir(exist_ok=True)
-    for naam in dict.fromkeys(VAST + verhaalfotos()):
+    for naam in dict.fromkeys(VAST + verhaalfotos() + eigen_deelplaatjes()):
         maak(naam)

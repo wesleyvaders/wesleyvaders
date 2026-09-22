@@ -5,12 +5,15 @@ export const site = {
   naam: 'Wesley Vaders',
   serie: 'De Spaanse Droom',
   domein: 'https://wesleyvaders.nl',
-  // Twee varianten: vóór de vertrekdatum de eerste, daarna de tweede.
-  // Welke er staat rekent index.astro uit; nooit met de hand omzetten.
+  // Drie varianten: tot het vertrek, onderweg, en aangekomen. Welke
+  // er staat rekent index.astro uit uit vertrek en aankomst; nooit met
+  // de hand omzetten.
   omschrijving:
     'Ik vertrek naar Spanje en wil daar mijn droom uit laten komen. Hoe dat uitpakt, geen idee. Maar ik ga ervoor.',
   omschrijvingOnderweg:
     'Ik ben onderweg naar Spanje om daar mijn droom uit te laten komen. Hoe dat uitpakt, geen idee. Maar ik ga ervoor.',
+  omschrijvingAangekomen:
+    'Ik ben in Spanje om hier mijn droom uit te laten komen. Hoe dat uitpakt, geen idee. Maar ik ga ervoor.',
   slotzin: ['Alles komt goed.', 'Alles is al goed.']
 };
 
@@ -79,16 +82,16 @@ export const vertrek = '2026-09-20';
 // site de dagen ónderweg; staat hij ingevuld, dan telt hij de dagen in
 // Spanje. Zonder dit veld zou de hero vanaf 21 september beweren dat hij
 // al een dag in Spanje is terwijl hij dan in Frankrijk staat.
-export const aankomst = null;
+export const aankomst = '2026-09-21';
 
 // Hoeveel kilometer er gereden is en hoeveel de hele rit telt. Voedt de
 // stand van het gouden punt op de routelijn in de hero en de tweede
 // cijferkolom. Werk gereden bij na elke etappe; bij aankomst zet je hem
 // op totaal en staat het punt vanzelf op 100%.
 export const afstand = {
-  gereden: 700,
-  totaal: 1900,
-  waar: 'Tournus'        // het punt van nu, als label onder de lijn
+  gereden: 1950,
+  totaal: 1950,
+  waar: 'Alfaz del Pi'   // het punt van nu, als label onder de lijn
 };
 
 // De cijferstrook op de homepage. Het eerste cijfer (dagen tot
@@ -105,15 +108,15 @@ export const cijfers = [
 // Schrijf er dus geen tweede "Nog" voor, anders staat er "Nog nog acht
 // dagen" zodra de teller onder de veertien zakt.
 export const nu = {
-  label: 'Nu · 20 september 2026',
-  kop: 'Onderweg.',
+  label: 'Nu · 22 september 2026',
+  kop: 'Aangekomen.',
   tekst:
-    'Vanochtend om tien uur weggereden uit Hoeven. Zevenhonderd kilometer verder staan we in Tournus, tussen Dijon en Lyon. De Ardennen zonder vermogen waren pittig, maar we zijn er. Nog zo\'n twaalfhonderd kilometer te gaan.',
+    'Maandag in één ruk van Tournus naar Alfaz del Pi gereden, 1250 km, 12 uur. De klim naar de Spaanse grens was het zwaarste stuk. Sinds maandagavond ben ik hier, en vanochtend werd ik voor het eerst in Spanje wakker.',
   logboek: [
-    ['Nu', 'Tournus, Frankrijk'],
-    ['Vandaag', 'Zevenhonderd kilometer'],
-    ['Te gaan', 'Ruim twaalfhonderd kilometer'],
-    ['Bus', 'Mist vermogen. Bergop terugschakelen'],
+    ['Nu', 'Alfaz del Pi, Spanje'],
+    ['Maandag', '1250 km in één ruk'],
+    ['Totaal', '1950 km vanaf Monster'],
+    ['Bus', 'Heeft het gehaald. Zonder vermogen'],
     ['Mee', 'Mo, en zo min mogelijk spullen']
   ]
 };
@@ -124,7 +127,8 @@ export const nu = {
 export const route = [
   { wanneer: 'Monster', titel: 'Inpakken', tekst: 'Kasten gesloopt, drie ritten naar de stort, de rest weggegeven.', status: 'gehad' },
   { wanneer: 'Hoeven', titel: 'Tussenstop', tekst: 'Huis overgedragen, bus vol. Hier wachtte ik zondag af.', status: 'gehad' },
-  { wanneer: '20 september', titel: 'Prio 1', tekst: 'In één rechte lijn naar Spanje. De mooie route bewaar ik.', status: 'nu', href: '/route/', link: 'Bekijk de route' },
+  { wanneer: '20 september', titel: 'Prio 1', tekst: 'In één rechte lijn naar Spanje. De mooie route bewaar ik.', status: 'gehad', href: '/route/', link: 'Bekijk de route' },
+  { wanneer: '21 september', titel: 'Alfaz del Pi', tekst: 'Aangekomen bij Pat en Sori. Tijdelijk onderdak, en van hieruit zoeken.', status: 'nu' },
   { wanneer: 'Oktober', titel: 'Prio 2', tekst: 'Even terug naar Nederland. Ik word oom.', status: 'komt' },
   { wanneer: '?', titel: 'De finca', tekst: 'Bestaat nog niet. Staat er wel ergens.', status: 'komt' }
 ];
