@@ -41,9 +41,15 @@ export const cookiebanner = {
 // klaar: false = de pagina bestaat nog niet en wordt niet getoond.
 // Zet op true zodra je hem gebouwd hebt. Zo geen kapotte links in de nav.
 //
-// /route/, /hierennu/ en /beheer/ staan hier bewust niet in. De route
-// staat vastgezet bovenaan de verhalenpagina, hier en nu hangt aan het
-// Onderweg-blok, en beheer is alleen voor Wesley.
+// /hierennu/ en /beheer/ staan hier bewust niet in: hier en nu hangt
+// aan het Onderweg-blok en beheer is alleen voor Wesley.
+//
+// /route/ bestaat niet meer. Die pagina beschreef de mooie weg langs
+// Mont-Saint-Michel en de Bardenas, en die is er niet van gekomen; de
+// bus is over de snelweg gegaan. De tekst staat in
+// bewaard/route-zeven-etappes.md en de URL gaat met een 301 naar
+// /verhalen/, want hij is gedeeld. De routelijn in de hero is iets
+// anders en blijft.
 export const navAlles = [
   { titel: 'Mijn verhaal', href: '/mijn-verhaal/', klaar: true },
   { titel: 'Afleveringen', href: '/afleveringen/', klaar: false },
@@ -57,7 +63,6 @@ export const nav = navAlles.filter(i => i.klaar);
 // staan onderaan het mobiele menu en in de footer, zodat ze niet
 // alleen via een link in de tekst te vinden zijn.
 export const navExtra = [
-  { titel: 'De route', href: '/route/' },
   { titel: 'Even in het hier en nu', href: '/hierennu/' }
 ];
 
@@ -127,15 +132,17 @@ export const nu = {
 export const route = [
   { wanneer: 'Monster', titel: 'Inpakken', tekst: 'Kasten gesloopt, drie ritten naar de stort, de rest weggegeven.', status: 'gehad' },
   { wanneer: 'Hoeven', titel: 'Tussenstop', tekst: 'Huis overgedragen, bus vol. Hier wachtte ik zondag af.', status: 'gehad' },
-  { wanneer: '20 september', titel: 'Prio 1', tekst: 'In één rechte lijn naar Spanje. De mooie route bewaar ik.', status: 'gehad', href: '/route/', link: 'Bekijk de route' },
+  { wanneer: '20 september', titel: 'Prio 1', tekst: 'In één rechte lijn naar Spanje, over de snelweg. De mooie route is er niet van gekomen.', status: 'gehad' },
   { wanneer: '21 september', titel: 'Alfaz del Pi', tekst: 'Aangekomen bij Pat en Sori. Tijdelijk onderdak, en van hieruit zoeken.', status: 'nu' },
   { wanneer: 'Oktober', titel: 'Prio 2', tekst: 'Even terug naar Nederland. Ik word oom.', status: 'komt' },
   { wanneer: '?', titel: 'De finca', tekst: 'Bestaat nog niet. Staat er wel ergens.', status: 'komt' }
 ];
 
+// De drie stappen. Het gouden puntje hangt aan nu: true, dus die vlag
+// schuift mee. Vertrekken is gehad sinds 20 september 2026.
 export const stappen = [
-  { n: '01 / Nu', titel: 'Vertrekken', tekst: 'Het huis uit, de bus vol, en richting het zuiden.', nu: true },
-  { n: '02', titel: 'Zoeken', tekst: 'De juiste streek, de juiste plek, en uiteindelijk een finca.' },
+  { n: '01 / Gehad', titel: 'Vertrekken', tekst: 'Het huis uit, de bus vol, en in twee dagen naar het zuiden.', gehad: true },
+  { n: '02 / Nu', titel: 'Zoeken', tekst: 'De juiste streek, de juiste plek, en uiteindelijk een finca.', nu: true },
   { n: '03', titel: 'Bouwen', tekst: 'Van een Spaans huis iets maken wat echt van mij is.' }
 ];
 

@@ -82,7 +82,15 @@
 
   # Eigen verhalen die van URL zijn veranderd
   Redirect 301 /verhalen/2026-08-26-mijn-bed-gaat-naar-rijswijk/ https://wesleyvaders.nl/verhalen/2026-08-25-mijn-bed-gaat-naar-rijswijk/
-  Redirect 301 /verhalen/2026-08-30-niet-de-snelste-weg/ https://wesleyvaders.nl/route/
+
+  # /route/ is weggehaald op 1 oktober 2026. Die pagina beschreef de
+  # mooie weg langs Mont-Saint-Michel en de Bardenas; de bus is over de
+  # snelweg gegaan. De URL stond in de sitemap en is gedeeld, dus geen
+  # 404. De tekst staat in bewaard/route-zeven-etappes.md.
+  # Dit verhaal wees naar /route/ en gaat nu rechtstreeks door, anders
+  # staan er twee redirects achter elkaar.
+  Redirect 301 /verhalen/2026-08-30-niet-de-snelste-weg/ https://wesleyvaders.nl/verhalen/
+  Redirect 301 /route/ https://wesleyvaders.nl/verhalen/
 </IfModule>
 
 # ---------- 2 · Compressie ----------

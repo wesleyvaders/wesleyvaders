@@ -99,13 +99,13 @@ const gastenboek = await haalGastenboek();
       <div class="grid2 g-intro rv">
         <h2 class="h2">Geen masterplan.<br />Wel een <em>droom</em>.</h2>
         <div class="lead">
-          <p>Ik laat me leven in Nederland achter en vertrek richting Spanje. Eerst een tijdje bij een vriend, daarna zoeken naar een eigen plek. Liefst met ruimte, bergen en genoeg werk om mezelf de komende jaren bezig te houden.</p>
+          <p>Ik heb me leven in Nederland achter me gelaten en zit nu in Spanje. Eerst een tijdje bij een vriend, daarna zoeken naar een eigen plek. Liefst met ruimte, bergen en genoeg werk om mezelf de komende jaren bezig te houden.</p>
           <p>Met Mo naast me en waarschijnlijk regelmatig geen idee waar ik aan begonnen ben.</p>
         </div>
       </div>
       <div class="steps rv">
         {stappen.map(s => (
-          <div class={s.nu ? 'step now' : 'step'}>
+          <div class={s.nu ? 'step now' : s.gehad ? 'step gehad' : 'step'}>
             <div class="step-n">{s.n}</div>
             <div class="step-t">{s.titel}</div>
             <div class="step-d">{s.tekst}</div>
@@ -159,7 +159,7 @@ const gastenboek = await haalGastenboek();
   <!-- 5 · Story break -->
   <section class="break">
     <Image src={landschap} alt="Spaans berglandschap met terrassen en amandelbomen"
-      class="break-bg" widths={[900, 1400, 1900]} sizes="100vw" />
+      class="break-bg" widths={[900, 1400, 1600]} sizes="100vw" />
     <div class="wrap">
       <p class="quote rv">Alles komt goed. Rustaghhh.
         <span>Wesley Vaders</span></p>

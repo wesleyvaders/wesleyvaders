@@ -317,6 +317,10 @@ footer .brand .wm small{font-size:.5rem;letter-spacing:.24em;opacity:.8;margin-t
 .step-d{font-size:.9375rem;line-height:1.6;color:rgba(20,20,18,.66);max-width:38ch}
 .step.now .step-n{color:var(--terra)}
 .step.now .step-n::after{content:" ●";font-size:.6em;vertical-align:.2em;color:var(--gold)}
+/* gehad: dezelfde stip maar gedoofd, zodat een afgeronde stap niet
+   leest als een stap die nog moet komen */
+.step.gehad .step-n::after{content:" ●";font-size:.6em;vertical-align:.2em;
+  color:rgba(20,20,18,.3)}
 
 /* ---------- vastgezet bovenaan het archief ---------- */
 .vast{display:block;border:1px solid rgba(20,20,18,.28);border-radius:2px;

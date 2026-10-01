@@ -191,11 +191,11 @@ def maak(naam):
 # De foto komt uit public/fotos/ en is daar al door grade.py gehaald;
 # er gaat hier dus geen tweede grade overheen.
 # ---------------------------------------------------------------
-FOTO   = str(WORTEL / "public" / "fotos" / "spaanse-grens.webp")
-LABEL  = "DAG 1 IN SPANJE"
-TITEL  = ["Knallen met dat ding."]
+FOTO   = str(WORTEL / "public" / "fotos" / "bergen-ochtendwandeling.webp")
+LABEL  = "1 OKTOBER 2026"
+TITEL  = ["Habla tranquilo,", "por favor"]
 URL    = "WESLEYVADERS.NL"
-NAAM   = "knallen-instagram.jpg"
+NAAM   = "habla-tranquilo-instagram.jpg"
 
 # De aftelling wordt niet ingetypt maar berekend, net als op de site.
 WOORD = ["nul", "één", "twee", "drie", "vier", "vijf", "zes", "zeven",
@@ -215,7 +215,7 @@ def aftelzin(dagen):
 # Meestal de berekende aftelling, aftelzin(DAGEN). Staat hier een vaste
 # zin, dan is dat omdat het plaatje iets anders wil zeggen dan waar hij
 # staat in de tijd; het label zegt dat hier al.
-ONDER = "1250 km in 12 uur, met een bus zonder vermogen"
+ONDER = "Ruim een week in Spanje"
 
 # Waar de tekst begint en eindigt, als deel van de hoogte. Instagram
 # toont in het grid een vierkante uitsnede; hierbinnen valt niets weg.

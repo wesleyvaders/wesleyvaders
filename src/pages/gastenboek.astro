@@ -9,8 +9,11 @@ const teller = dagenTeller(vertrek, aankomst);
 
 // Voor en na het vertrek een andere omschrijving; zie CLAUDE.md. Anders
 // staat hier "voordat ik vertrek" terwijl de bus al in Frankrijk staat.
+const erAl = aankomst && dagenTot(aankomst) <= 0;
 const omschrijving = dagen > 0
   ? 'Laat iets achter voordat ik naar Spanje vertrek. Een herinnering, een goede raad, of iets wat ik daar moet doen.'
+  : erAl
+  ? 'Laat iets achter nu ik in Spanje zit. Een herinnering, een goede raad, of iets wat ik hier moet doen.'
   : 'Laat iets achter nu ik onderweg ben naar Spanje. Een herinnering, een goede raad, of iets wat ik daar moet doen.';
 ---
 

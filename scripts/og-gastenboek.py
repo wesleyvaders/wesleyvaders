@@ -34,6 +34,13 @@ def vertrekdatum():
     return datetime.date(*map(int, m.groups()))
 
 
+def aankomstdatum():
+    """leeg zolang hij onderweg is; zie aankomst in site.js"""
+    tekst = (WORTEL / "src" / "data" / "site.js").read_text()
+    m = re.search(r"export const aankomst = '(\d{4})-(\d{2})-(\d{2})'", tekst)
+    return datetime.date(*map(int, m.groups())) if m else None
+
+
 def ttf(naam, tmp):
     """PIL leest geen woff2, dus even uitpakken naar een tijdelijke ttf"""
     pad = Path(tmp) / f"{naam}.ttf"
@@ -75,8 +82,28 @@ def maak():
     if not FOTO.exists():
         raise SystemExit(f"{FOTO} ontbreekt")
 
+    # Dezelfde drietrap als dagenTeller() in src/lib/tijd.js: aftellen,
+    # dan onderweg, en na de aankomst de dagen in Spanje. Stond hier
+    # vast op ONDERWEG en dat bleef staan toen hij er al was.
     dagen = (vertrekdatum() - datetime.date.today()).days
-    label = f"NOG {dagen} DAGEN" if dagen > 0 else "ONDERWEG"
+    aank = aankomstdatum()
+    na_aankomst = (datetime.date.today() - aank).days if aank else -1
+    if dagen > 0:
+        label = f"NOG {dagen} DAGEN"
+    elif na_aankomst >= 1:
+        label = f"DAG {na_aankomst} IN SPANJE"
+    else:
+        label = f"DAG {1 - dagen} ONDERWEG"
+
+    # De kop hoort bij het label. Stond vast op "Voordat ik ga" en zei
+    # dat dus nog naast DAG 10 IN SPANJE. Zelfde drietrap, en dezelfde
+    # woorden als de kop op /gastenboek/ zelf.
+    if dagen > 0:
+        kop, onderkop = "Voordat ik ga", "Laat iets voor me achter"
+    elif na_aankomst >= 1:
+        kop, onderkop = "Nu ik weg ben", "Laat iets voor me achter"
+    else:
+        kop, onderkop = "Onderweg", "Laat iets voor me achter"
 
     with tempfile.TemporaryDirectory() as tmp:
         serif = ImageFont.truetype(ttf("instrument-serif-latin", tmp), 96)
@@ -104,8 +131,8 @@ def maak():
         y = H - m
         knop_h = int(B * 0.062)
         spatie(d, (m, y - knop_h - B * 0.055), "WESLEYVADERS.NL", mono_klein, SAND, B * 0.0035)
-        d.text((m, y - knop_h - B * 0.115), "Laat iets voor me achter", font=sans, fill=(232, 226, 214))
-        d.text((m, y - knop_h - B * 0.16 - 96 * 0.86), "Voordat ik ga", font=serif, fill=PAPER)
+        d.text((m, y - knop_h - B * 0.115), onderkop, font=sans, fill=(232, 226, 214))
+        d.text((m, y - knop_h - B * 0.16 - 96 * 0.86), kop, font=serif, fill=PAPER)
 
         br = sum(d.textlength(c, font=mono_klein) + B * 0.0035 for c in label)
         spatie(d, (B - m - br, m + B * 0.012), label, mono_klein, GOLD, B * 0.0035)

@@ -64,11 +64,20 @@ In het NU-blok kun je `{weken}` schrijven voor "Nog twaalf dagen" en
 woordje Nog al in de kop staat. Beide mogen in de kop, de tekst en het
 logboek, en boven de veertien dagen slaan ze vanzelf om naar weken.
 
-**Tekst die vóór en ná het vertrek anders moet luiden staat dubbel in de
-bron en wordt gekozen op de datum.** Zo is het met `site.omschrijving` en
-`site.omschrijvingOnderweg` voor de herotekst, en met de kop en de intro
-van het gastenboek. Nooit met de hand omzetten: dan staat er op de dag
-zelf "Nog 0 dagen tot ik vertrek".
+**Tekst die vóór, tijdens en ná de reis anders moet luiden staat in
+drievoud in de bron en wordt gekozen op de datum.** Drie standen:
+aftellen, onderweg, aangekomen. Zo is het met `site.omschrijving`,
+`site.omschrijvingOnderweg` en `site.omschrijvingAangekomen` voor de
+herotekst én de meta-omschrijving, met de kop en de intro van het
+gastenboek, en met het label en de kop op `og/gastenboek.jpg`. Nooit met
+de hand omzetten: dan staat er op de dag zelf "Nog 0 dagen tot ik
+vertrek".
+
+**Vergeet de `<head>` niet.** De meta-omschrijving en `og:description`
+zijn twee weken blijven zeggen "ik vertrek naar Spanje" terwijl de pagina
+er zelf al "1 dag in Spanje" boven had staan. Die tags worden nooit door
+het browserscript bijgewerkt, dus daar valt niets vanzelf recht. Ze
+komen nu uit dezelfde drietrap, bovenin `Base.astro`.
 
 **Verhalen en korte berichten zijn momentopnamen en bevriezen.** Daarin mag
 "nog 22 dagen" blijven staan, ook als dat er inmiddels 18 zijn. Dat was wat
@@ -87,12 +96,12 @@ npm run preview  # dist/ lokaal bekijken
 | Pad | Wat |
 |---|---|
 | `src/data/site.js` | Alle terugkerende content: NU-blok, route, stappen, cijfers, socials, navigatie, vertrekdatum. Dit bestand pas je het vaakst aan. |
-| `src/data/route.js` | De zeven etappes naar Alfaz del Pi: coördinaten, kilometers, status en foto. Voedt de kaart, de lijst en de tips. |
 | `src/content/verhalen/` | Losse verhalen. Eén markdown per verhaal. |
 | `src/content/hierennu/` | Korte berichten. Verschijnen op de homepage en op `/hierennu/`. |
 | `src/content.config.js` | De velden die een verhaal of bericht mag hebben. |
 | `src/styles/global.css` | Alle styling en alle merktokens. Ook de stijlen van dingen die JavaScript aanmaakt, want scoped CSS pakt die niet. |
-| `src/components/` | Nav, Footer, Merkteken, Routelijn, Routekaart, Etappes, Gastenboek, Reacties, Video, Analytics, Cookiebanner. |
+| `src/components/` | Nav, Footer, Merkteken, Routelijn, Gastenboek, Reacties, Video, Analytics, Cookiebanner. |
+| `bewaard/` | Tekst die van de site af is maar bewaard blijft. Staat buiten de build en wordt niet gepubliceerd. |
 | `src/lib/gastenboek.js` | Haalt bij de build het aantal berichten op voor de hero, en het aantal per bron voor de verhalenpagina. Faalt dat, dan blijven die stukjes leeg. |
 | `public/fotos/` | Gegradeerde foto's. |
 | `public/og/` | Deelplaatjes, 1200x630. |
@@ -185,6 +194,17 @@ Zo'n losse knop schrijf je als HTML in de markdown:
 Optionele velden die nu al bestaan en later gebruikt worden: `coordinaten` ([lat, lng] voor de kaart), `aflevering`, `onderdeel` (De Finca), `budget`, `voorNa`, `galerij`, `tags`. **Vul `coordinaten` altijd in.** Later terugkomen op vijftig verhalen om er coördinaten bij te zoeken is een middag werk, nu is het tien seconden.
 
 ## Foto's
+
+**Verkleinen geldt niet als het onleesbaar maken van gegevens.** Staat er
+op een foto iets dat niet gedeeld mag worden, dan gaat die foto er niet
+op, of hij wordt opnieuw gemaakt. Niet vertrouwen op de uitleverbreedte.
+
+Dat die breedte nu op 1300 en 1600 ligt is een ontwerpkeuze, geen slot:
+het bestand in `public/fotos/` staat rechtstreeks op `/fotos/<naam>.webp`
+en is te downloaden, niet alleen te bekijken. Wil je weten wat er echt
+uitgeleverd wordt, kijk dan naar wat `grade.py` wegschrijft en niet naar
+de `widths` in een `<Image>`-tag: Astro schaalt nooit op, dus het
+bronbestand is altijd het plafond.
 
 Alle beelden gaan eerst door `scripts/grade.py`. Twee profielen:
 
@@ -325,10 +345,25 @@ Stap je ooit over naar `cloudflare`, `plausible` of `umami`, dan verdwijnt de ba
 
 `src/data/site.js` heeft `navAlles` met een `klaar`-vlag per item. Alleen items met `klaar: true` verschijnen in de navigatie en de footer. **Bouw je een nieuwe pagina, zet dan pas daarna de vlag om.** Zo staan er nooit links naar pagina's die nog niet bestaan.
 
-Nu klaar: Mijn verhaal, De route, Het avontuur, Verhalen, Gastenboek, Privacy, Cookies, Contact.
+Nu klaar: Mijn verhaal, Het avontuur, Verhalen, Gastenboek, Privacy, Cookies, Contact.
 Nog niet: Afleveringen, Spanje.
 
 `/hierennu/` en `/beheer/` staan bewust niet in de navigatie. De eerste is bereikbaar via het Onderweg-blok op de homepage, de tweede is alleen voor Wesley en staat op noindex.
+
+**`/route/` bestaat niet meer, sinds 1 oktober 2026.** Die pagina
+beschreef de mooie weg langs Mont-Saint-Michel en de Bardenas, en die is
+er niet van gekomen: de bus ging over de snelweg. De pagina, de kaart,
+de etappelijst en `src/data/route.js` zijn weg; de tekst staat in
+`bewaard/route-zeven-etappes.md` en de URL gaat met een 301 naar
+`/verhalen/`, want hij stond in de sitemap en is gedeeld.
+
+De gastenboekberichten met bron `route:<etappe>` zijn blijven staan. Dat
+kan veilig: `/beheer/` zet een bron om in leesbare tekst en bouwt er geen
+link van, en `geldige_bron()` in `gastenboek.php` toetst met een regex en
+niet tegen een lijst etappes. Ze blijven dus te lezen en te filteren.
+
+**De routelijn in de hero is iets anders en blijft.** Die loopt van
+Monster via Hoeven naar Alfaz del Pi en komt uit `afstand` in `site.js`.
 
 ## Juridische pagina's
 
@@ -351,6 +386,14 @@ De finca, de verbouwing, before-after, het budget, de plattegrond, de aflevering
 ## Deploy
 
 Elke push naar `main` deployt vanzelf. GitHub Actions (`.github/workflows/deploy.yml`) bouwt de site en zet `dist/` via FTPS op de server. De inloggegevens staan in GitHub onder Settings > Secrets and variables > Actions: `FTP_HOST`, `FTP_USER`, `FTP_PASSWORD`.
+
+**Er loopt ook elke nacht een build, om 04:00 UTC.** Niet omdat er dan
+iets verandert in de repo, maar omdat de site datums uitrekent. De
+teller, de cijferstrook en het label op `og/gastenboek.jpg` worden bij de
+build vastgelegd; in de browser worden ze daarna bijgewerkt, maar het
+deelplaatje niet, want dat is een afbeelding. Zonder die nachtelijke
+build staat er in de uitgeleverde HTML en op dat plaatje de stand van de
+laatste push. Zie `schedule` in `deploy.yml`.
 
 **Gebruik de Git Deploy plugin in DirectAdmin niet meer.** Die schrijft naar dezelfde map en overschrijft dan wat Actions net heeft neergezet.
 

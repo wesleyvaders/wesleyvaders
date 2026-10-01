@@ -5,10 +5,18 @@ import Footer from '../components/Footer.astro';
 import Analytics from '../components/Analytics.astro';
 import Cookiebanner from '../components/Cookiebanner.astro';
 import { site, vertrek, aankomst } from '../data/site.js';
+import { dagenTot } from '../lib/tijd.js';
+
+// Dezelfde drietrap als de herotekst: tot het vertrek, onderweg, en
+// aangekomen. Stond vast op de eerste en beweerde daardoor in de
+// zoekresultaten nog "ik vertrek naar Spanje" terwijl hij er al woonde.
+const omschrijvingNu = dagenTot(vertrek) > 0 ? site.omschrijving
+  : (aankomst && dagenTot(aankomst) <= 0) ? site.omschrijvingAangekomen
+  : site.omschrijvingOnderweg;
 
 const {
   titel,
-  omschrijving = site.omschrijving,
+  omschrijving = omschrijvingNu,
   og = '/og/transporter.jpg',
   ogAlt = 'De bus van Wesley bij de bergen in Spanje',
   type = 'website',
@@ -41,7 +49,7 @@ const persoon = {
   '@type': 'Person',
   name: site.naam,
   url: site.domein,
-  description: site.omschrijving,
+  description: omschrijvingNu,
   sameAs: [
     'https://www.youtube.com/@wesleyvaders9102',
     'https://www.instagram.com/wesleyvaders/',

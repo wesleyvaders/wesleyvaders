@@ -7,6 +7,13 @@ name: Bouwen en publiceren
 on:
   push:
     branches: [main]
+  # Elke nacht opnieuw bouwen. De site rekent datums uit bij de build:
+  # de dagenteller, de cijferstrook en het label op og/gastenboek.jpg.
+  # In de browser worden die bijgewerkt, maar een deelplaatje is een
+  # afbeelding en corrigeert zichzelf niet. Zonder dit blijft daar de
+  # stand van de laatste push op staan.
+  schedule:
+    - cron: '0 4 * * *'
   workflow_dispatch:
 
 concurrency:
