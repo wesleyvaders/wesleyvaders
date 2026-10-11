@@ -288,7 +288,48 @@ Als een meting je tot de conclusie brengt dat een foto onbruikbaar is,
 controleer dan eerst de meting. Twee keer bleek de meting fout en de
 foto goed.
 
-**Het label staat altijd in zand, niet in terracotta.** Terracotta is de
+**Er zijn twee sjablonen, en het zijn twee ontwerpen.** `SJABLOON`
+bovenin `citaatplaatje.py` staat op `donker` of `licht`:
+
+- **donker** — tekst óver de foto, gecentreerd, met een verloop eronder
+  voor de leesbaarheid. Voor foto's die zelf donker of gedempt zijn.
+- **licht** — de foto bovenaan met zijn eigen kleur, de tekst daaronder
+  op een vlak crèmeblok, links uitgelijnd. Voor felle Spaanse foto's met
+  zee, lucht en witte gevels. Daar werkt een donkere laag tegen het beeld
+  in, en de foto houdt op deze manier zijn kleur. Links uitgelijnd omdat
+  de site dat overal is.
+
+**Op het lichte sjabloon raakt de tekst de foto niet.** Dat is het hele
+punt: geen waas over het beeld, en de contrastvraag is simpel, want de
+tekst staat op een vlakke kleur.
+
+| licht sjabloon | kleur | gemeten |
+|---|---|---|
+| ondergrond | `#F3ECDE` | |
+| titel | `#17140F` | 15,62 |
+| label | `#A4441F` | 5,22 |
+| onderregel | `#4A4135` | 8,51 |
+| url | `#8C3A1B` | 6,53 |
+
+**Goud is alleen een accentkleur op het donkere sjabloon.** Op crème
+haalt het 1,72:1 en verdwijnt het. Op licht is het accent terracotta
+`#A4441F` en de url `#8C3A1B`; de gewone terracotta `#B0573A` blijft met
+4,18 te krap. `contrast.py` zet die twee als waarschuwing onder de
+meting, zodat niemand ze per ongeluk alsnog pakt.
+
+De hele kleurenset staat in `SJABLONEN` in het script, en `contrast.py`
+leest die daar uit. Net zo belangrijk: de plaatsing van de regels staat
+in `blok_posities()` en wordt door beide scripts gebruikt, zodat de
+meting niet op andere plekken kan kijken dan waar de tekst staat.
+
+**Het blok wordt gecentreerd tot de onderrand van de vierkante
+uitsnede**, `(H+B)/2`, en niet tot de onderkant van de kaart. Instagram
+toont in het grid het midden; centreerden we over het hele crèmevlak,
+dan viel de url er net buiten. De bovenste vierkante uitsnede snijdt bij
+dit ontwerp altijd door de titel, dat hoort erbij.
+
+**Het label staat altijd in zand, niet in terracotta.** Dit geldt alleen
+voor het donkere sjabloon. Terracotta is de
 eyebrow-kleur op papier, maar op een foto zakt hij weg zodra er iets
 lichts achter zit. Gemeten over vier plaatjes, zwakste stukje:
 
