@@ -288,28 +288,44 @@ Als een meting je tot de conclusie brengt dat een foto onbruikbaar is,
 controleer dan eerst de meting. Twee keer bleek de meting fout en de
 foto goed.
 
-**Er is één sjabloon en dat blijft zo:** gecentreerd, de foto over het
-hele vlak, een aanhalingsteken en een witte kop. Niet links uitlijnen en
-geen lichte ondergrond.
+**Het deelplaatje is vanaf Spanje licht en zonnig:** de foto op volle
+kleur bovenaan, de tekst gecentreerd op crème eronder. Dat de feed er
+anders uitziet dan vóór september is geen fout, dat is het nieuwe
+hoofdstuk. `SJABLOON` bovenin `citaatplaatje.py` staat op `licht`;
+`donker` is het oude ontwerp met de tekst over de foto.
 
-Twee redenen. De plaatjes staan naast elkaar in het Instagram-raster en
-moeten daar één muur vormen. En gecentreerde tekst overleeft de vierkante
-uitsnede; links uitgelijnde tekst wordt afgesneden.
+**Tekst nooit links uitlijnen en nooit over de foto.** Het raster van
+Instagram snijdt vierkant, en dan valt er tekst af: bij links uitlijnen
+viel de D van *Donde* eraf. Gecentreerd verliest links en rechts evenveel
+en blijft heel. **Houd de tekst binnen 90% van de hoogte**, want daar
+eindigt de midden-uitsnede.
 
-Een lichte variant met de foto bovenaan en de tekst op een crèmeblok is
-gebouwd en weer teruggedraaid, precies hierom. Niet opnieuw voorstellen.
+**Kies een foto met kleur, niet met een donkere helft.** Het sjabloon
+hoeft hem niet meer te verduisteren, want de tekst raakt hem niet.
 
-**Het Spaanse gevoel komt uit de foto, niet uit het sjabloon.** Kies een
-foto met warme kleur en een donkere helft: lage zon, gouden heuvels,
-schaduw. Een foto die overal licht is — wit strand, blauwe lucht, volle
-middag — werkt niet, want dan is er geen plek voor de kleine letters.
+Maatvoering van het lichte sjabloon:
 
-**Meet daarom het merkteken, het label en de url, niet alleen de kop.**
-De kop staat midden in het beeld waar het verloop het lichtst is, maar
-hij is groot en wit en komt er bijna altijd doorheen. De kleine regels
-boven- en onderaan zijn de echte test. Bij *Donde vayas* haalde de kop
-4,74 en 8,15 terwijl het label op 5,08 uitkwam; dat label is wat je in de
-gaten houdt.
+| | |
+|---|---|
+| foto | 744 px van 1350, tot 55,1% |
+| tekst | gecentreerd, eindigt op 88,7% |
+| merkteken | inkt `#17140F` — niet terracotta, anders plakt het aan de datum |
+| datum | terracotta `#A4441F` |
+| kop | inkt `#17140F` |
+| onderregel | zacht `#4A4135` |
+| url | diep `#8C3A1B` |
+
+Gemeten: 15,62 · 5,22 · 15,62 · 8,51 · 6,53.
+
+**Het is krap.** Tussen de foto en het merkteken zit 10 px. De vijf
+regels vullen de 453 px die er tussen 744 en 88,7% overblijft bijna
+helemaal, dus de tussenruimtes zijn kleiner dan op het donkere sjabloon.
+Komt er een derde titelregel bij, dan valt de build om met de melding dat
+de foto korter moet. Verschuif liever de foto dan de ondergrens van 90%.
+
+**Goud kan niet op crème**, 1,72:1. Het accent is daar terracotta
+`#A4441F`; de gewone `#B0573A` haalt 4,18 en is te krap voor kleine
+tekst. `contrast.py` zet die twee als waarschuwing onder de meting.
 
 **Het label staat altijd in zand, niet in terracotta.** Terracotta is de
 eyebrow-kleur op papier, maar op een foto zakt hij weg zodra er iets
