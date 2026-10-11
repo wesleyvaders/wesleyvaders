@@ -19,42 +19,6 @@ TERRA = (176, 87, 58)
 SAND  = (217, 198, 165)
 GOLD  = (223, 175, 74)
 
-# Twee sjablonen. Donker voor foto's die zelf donker of gedempt zijn,
-# licht voor felle Spaanse foto's met zee, lucht en witte gevels: daar
-# werkt een donkere laag tegen het beeld in.
-#
-# Goud kan NIET op de lichte ondergrond, dat haalt 1,97:1. En de gewone
-# terracotta #B0573A zakt daar door de ondergrens voor kleine tekst.
-# Vandaar de diepere varianten hieronder.
-CREME  = (243, 236, 222)   # #F3ECDE
-INKT_D = ( 23,  20,  15)   # #17140F
-TERRA_D = (164, 68, 31)    # #A4441F
-ZACHT  = ( 74,  65,  53)   # #4A4135
-DIEP   = (140,  58,  27)   # #8C3A1B
-ONDERK = (216, 210, 198)
-
-# Het zijn twee ontwerpen, niet alleen twee kleurenzetten:
-#
-#   donker  tekst óver de foto, gecentreerd, met een verloop eronder.
-#   licht   de foto bovenaan met zijn eigen kleur, de tekst daaronder op
-#           een vlak crèmeblok, links uitgelijnd. De tekst raakt de foto
-#           niet, dus er hoeft geen waas overheen en de foto houdt zijn
-#           kleur. Links uitgelijnd omdat de site dat overal is.
-SJABLONEN = {
-    "donker": dict(ontwerp="over-foto", grond=INK, demping=0.46,
-                   merk=PAPER, accent=GOLD, label=SAND,
-                   titel=PAPER, onder=ONDERK, url=SAND, aanhaling=SAND + (110,)),
-    "licht":  dict(ontwerp="blok-onder", grond=CREME, demping=0.0,
-                   merk=INKT_D, accent=TERRA_D, label=TERRA_D,
-                   titel=INKT_D, onder=ZACHT, url=DIEP, aanhaling=TERRA_D + (90,)),
-}
-
-# bij blok-onder: waar de foto ophoudt en het crèmeblok begint
-FOTO_HOOGTE = 0.50
-# links uitlijnen, ruimer dan de marge van het donkere sjabloon want
-# daar staat alles gecentreerd
-MARGE_LINKS = 0.105
-
 WORTEL = Path(__file__).resolve().parents[1]
 FONTS = WORTEL / "public" / "fonts"
 TMP = tempfile.mkdtemp()
@@ -227,8 +191,7 @@ def maak(naam):
 # De foto komt uit public/fotos/ en is daar al door grade.py gehaald;
 # er gaat hier dus geen tweede grade overheen.
 # ---------------------------------------------------------------
-SJABLOON = "licht"   # "donker" of "licht"; zie SJABLONEN bovenin
-FOTO   = str(WORTEL / "public" / "fotos" / "albir-baai.webp")
+FOTO   = str(WORTEL / "public" / "fotos" / "weg-met-mo.webp")
 LABEL  = "11 OKTOBER 2026"
 TITEL  = ["Donde vayas,", "ahí estás"]
 URL    = "WESLEYVADERS.NL"
@@ -259,103 +222,29 @@ ONDER = "Waar je ook naartoe gaat, je neemt jezelf mee"
 MERK_BOVEN  = 0.13   # bovenkant van het merkteken
 TEKST_ONDER = 0.82   # onderkant van de laatste regel
 
-def foto_vlak(pad, breedte, hoogte, demping=None, grond=None):
-    """De foto bijgesneden en naar de ondergrond toe gedempt. Op het
-    donkere sjabloon is dat inkt, op het lichte crème."""
-    P = SJABLONEN[SJABLOON]
-    if demping is None: demping = P["demping"]
-    if grond is None: grond = P["grond"]
+def foto_vlak(pad, breedte, hoogte, donker):
     im = Image.open(pad).convert("RGB")
     v = max(breedte/im.width, hoogte/im.height)
     im = im.resize((int(im.width*v)+1, int(im.height*v)+1), Image.LANCZOS)
     l = (im.width-breedte)//2
     b = int((im.height-hoogte)*0.42)
     im = im.crop((l, b, l+breedte, b+hoogte))
-    return Image.blend(im, Image.new("RGB", (breedte, hoogte), grond), demping)
+    return Image.blend(im, Image.new("RGB", (breedte, hoogte), INK), donker)
 
 
-def verloop(d, hoogte=None):
-    """Het verloop dat de tekst leesbaar houdt, in de kleur van de
-    ondergrond. Boven tot 40%, want daar staan het merkteken en het
-    label en die vallen weg zodra er een lichte lucht achter zit."""
-    hoogte = hoogte or H
-    grond = SJABLONEN[SJABLOON]["grond"]
-    for y_ in range(hoogte):
-        t = y_/(hoogte-1)
-        a = int(min(244, 205*max(0.0, 1-t/0.40)**1.25
-                       + 150*max(0.0, (t-0.30)/0.70)**1.35))
+def citaat(naam):
+    kaart = foto_vlak(FOTO, B, H, 0.46)
+    d = ImageDraw.Draw(kaart, "RGBA")
+    # Het verloop is er voor de leesbaarheid, niet voor de sfeer. Boven
+    # loopt het door tot 40%, want daar staan het merkteken en het label
+    # en die vallen weg zodra er een lichte lucht of ruit achter zit.
+    for y_ in range(H):
+        t = y_/(H-1)
+        boven = 205*max(0.0, 1-t/0.40)**1.25
+        onder = 150*max(0.0, (t-0.30)/0.70)**1.35
+        a = int(min(244, boven+onder))
         if a:
-            d.line([(0, y_), (B, y_)], fill=grond+(a,))
-
-
-def blok_grond():
-    """De ondergrond van het lichte sjabloon zonder één letter: de foto
-    bovenaan en het crèmeblok eronder. contrast.py meet hierop."""
-    P = SJABLONEN[SJABLOON]
-    fh = int(H * FOTO_HOOGTE)
-    kaart = Image.new("RGB", (B, H), P["grond"])
-    kaart.paste(foto_vlak(FOTO, B, fh, demping=0.0), (0, 0))
-    return kaart, fh
-
-
-def blok_posities(d):
-    """Waar elke regel komt te staan. Eén berekening, gebruikt om te
-    tekenen én om te meten, zodat die twee niet uiteen kunnen lopen."""
-    fh = int(H * FOTO_HOOGTE)
-    x = int(B * MARGE_LINKS)
-    ok = lambda t, f: d.textbbox((0, 0), t, font=f)[3]
-    fmerk, flabel = mono(21), mono(19)
-    ft, fonder, furl = serif(88), sans(28), mono(18)
-    regelhoogte = 82
-    gat_label, gat_titel, gat_onder, gat_url = 74, 56, 30, 40
-
-    h_merk, h_label = ok("WESLEY VADERS", fmerk), ok(LABEL, flabel)
-    h_titel = len(TITEL) * regelhoogte
-    h_onder, h_url = ok(ONDER, fonder), ok(URL, furl)
-    totaal = (h_merk + gat_label + h_label + gat_titel + h_titel
-              + gat_onder + h_onder + gat_url + h_url)
-
-    # Centreren tot de onderrand van de vierkante uitsnede, niet tot de
-    # onderkant van de kaart. Instagram toont in het grid het midden, en
-    # dat loopt tot (H+B)/2; over het hele blok centreren liet de url er
-    # net buiten vallen.
-    y = fh + ((H + B)//2 - fh - totaal)//2
-
-    p = {"x": x, "merk": (y, fmerk), "merk_y": y - 8}
-    y += h_merk + gat_label
-    p["label"] = (y, flabel)
-    y += h_label + gat_titel
-    p["titel"] = [(y + i*regelhoogte, ft) for i in range(len(TITEL))]
-    y += h_titel + gat_onder - regelhoogte + ok(TITEL[-1], ft)
-    p["onder"] = (y, fonder)
-    y += h_onder + gat_url
-    p["url"] = (y, furl)
-    return p
-
-
-def citaat_blok(naam):
-    """De foto bovenaan, de tekst eronder op een vlak crèmeblok."""
-    P = SJABLONEN[SJABLOON]
-    kaart, fh = blok_grond()
-    d = ImageDraw.Draw(kaart, "RGBA")
-    p = blok_posities(d)
-    x = p["x"]
-
-    merkteken(d, x, p["merk_y"], 50, P["merk"], P["accent"])
-    spatie(d, (x + 66, p["merk"][0]), "WESLEY VADERS", p["merk"][1], P["merk"], 3)
-    spatie(d, (x, p["label"][0]), LABEL, p["label"][1], P["label"], 3.4)
-    for (y_, f), r in zip(p["titel"], TITEL):
-        d.text((x, y_), r, font=f, fill=P["titel"])
-    d.text((x, p["onder"][0]), ONDER, font=p["onder"][1], fill=P["onder"])
-    spatie(d, (x, p["url"][0]), URL, p["url"][1], P["url"], 3.0)
-    return kaart, p["merk_y"], p["url"][0], p["url"][1]
-
-
-def citaat_over_foto(naam):
-    P = SJABLONEN[SJABLOON]
-    kaart = foto_vlak(FOTO, B, H)
-    d = ImageDraw.Draw(kaart, "RGBA")
-    verloop(d)
+            d.line([(0, y_), (B, y_)], fill=INK+(a,))
 
     mid = B//2
     def cen(y_, tekst, font, kleur):
@@ -372,15 +261,14 @@ def citaat_over_foto(naam):
     merk_y = int(H*MERK_BOVEN)
     fmerk = mono(21)
     wm = breed(d, "WESLEY VADERS", fmerk, 3)-3
-    merkteken(d, mid-wm/2-66, merk_y, 50, P["merk"], P["accent"])
-    spatie(d, (mid-wm/2, merk_y+8), "WESLEY VADERS", fmerk, P["merk"], 3)
+    merkteken(d, mid-wm/2-66, merk_y, 50, PAPER, GOLD)
+    spatie(d, (mid-wm/2, merk_y+8), "WESLEY VADERS", fmerk, PAPER, 3)
 
     flabel = mono(19)
     y_label = merk_y + 76
-    # Op donker is dit zand en niet terracotta: op een foto met een lichte
-    # plek haalt terracotta maar 1,4:1 en dan valt het label weg. Op licht
-    # is het de diepe terracotta; zie SJABLONEN bovenin.
-    cenm(y_label, LABEL, flabel, P["label"], 3.4)
+    # zand, niet terracotta: op een foto met een lichte plek haalt
+    # terracotta maar 1,4:1 en dan valt het label gewoon weg
+    cenm(y_label, LABEL, flabel, SAND, 3.4)
     onderkant_label = y_label + onderkant(LABEL, flabel)
 
     # --- onderin: terugrekenen vanaf TEKST_ONDER ---
@@ -397,20 +285,13 @@ def citaat_over_foto(naam):
 
     fq = serif(150)
     wq = d.textlength("\u201c", font=fq)
-    d.text((mid-wq/2, y-104), "\u201c", font=fq, fill=P["aanhaling"])
+    d.text((mid-wq/2, y-104), "\u201c", font=fq, fill=SAND+(110,))
     for r in TITEL:
-        cen(y, r, ft, P["titel"])
+        cen(y, r, ft, PAPER)
         y += regelhoogte
 
-    cen(y_onder, ONDER, fonder, P["onder"])
-    cenm(y_url, URL, furl, P["url"], 3.0)
-
-    return kaart, merk_y, y_url, furl
-
-
-def citaat(naam):
-    maak = citaat_blok if SJABLONEN[SJABLOON]["ontwerp"] == "blok-onder" else citaat_over_foto
-    kaart, merk_y, y_url, furl = maak(naam)
+    cen(y_onder, ONDER, fonder, (216, 210, 198))
+    cenm(y_url, URL, furl, SAND, 3.0)
 
     os.makedirs(UIT, exist_ok=True)
     kaart.save(UIT+naam, quality=92, subsampling=0)
@@ -421,10 +302,9 @@ def citaat(naam):
         strook.paste(kaart.crop(box), (i*(B+20), 0))
     strook.save(UIT+"controle-alles.jpg", quality=80)
 
-    d = ImageDraw.Draw(kaart)
-    print(f"{naam}  {kaart.size}  sjabloon {SJABLOON}")
+    print(f"{naam}  {kaart.size}")
     print(f"  merkteken begint op {merk_y/H*100:.1f}% van boven")
-    print(f"  laatste regel eindigt op {(y_url+d.textbbox((0,0),URL,font=furl)[3])/H*100:.1f}%")
+    print(f"  laatste regel eindigt op {(y_url+onderkant(URL, furl))/H*100:.1f}%")
     print(f"  onderregel: {ONDER!r}")
 
 
