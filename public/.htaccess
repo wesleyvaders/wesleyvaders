@@ -108,7 +108,6 @@
   ExpiresByType image/svg+xml          "access plus 1 year"
   ExpiresByType text/css               "access plus 1 year"
   ExpiresByType application/javascript "access plus 1 year"
-  ExpiresByType text/html              "access plus 10 minutes"
 </IfModule>
 
 # ---------- 4 · Headers ----------
@@ -116,6 +115,28 @@
   Header set X-Content-Type-Options "nosniff"
   Header set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Strict-Transport-Security "max-age=31536000"
+
+  # HTML en versie.txt mogen nooit verouderd worden uitgeleverd.
+  #
+  # no-cache betekent niet "niet bewaren" maar "altijd even navragen":
+  # de browser houdt de kopie, vraagt bij elk bezoek of hij nog klopt en
+  # krijgt een 304 als er niets veranderd is. Dus geen oude pagina's meer
+  # en bijna geen snelheidsverlies, want bij een 304 komt er geen inhoud
+  # overheen.
+  #
+  # HTML stond hiervoor op tien minuten via mod_expires. Daardoor zag je
+  # na een deploy nog de oude homepage terwijl de upload gelukt was.
+  # versie.txt had helemaal geen regel, en dan mag een cache zelf een
+  # houdbaarheid verzinnen; ook die liep daardoor achter. Dat bestand is
+  # juist de snelle waarheid over wat er live staat.
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+    Header unset Expires
+  </FilesMatch>
+  <FilesMatch "^versie\.txt$">
+    Header set Cache-Control "no-cache"
+    Header unset Expires
+  </FilesMatch>
 </IfModule>
 
 # ---------- 5 · Nette 404 ----------

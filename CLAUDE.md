@@ -438,6 +438,30 @@ Monster via Hoeven naar Alfaz del Pi en komt uit `afstand` in `site.js`.
 
 Het e-mailadres staat in `site.js` onder `contact.email`.
 
+## Caching
+
+`public/.htaccess` zet beeld, CSS en JS op een jaar: die hebben een hash
+in hun naam, dus een nieuwe versie is een nieuwe URL.
+
+**HTML en `versie.txt` staan op `no-cache`.** Dat betekent niet "niet
+bewaren" maar "altijd even navragen": de browser houdt de kopie en krijgt
+een 304 terug als er niets veranderd is. Geen verouderde pagina's, en
+nauwelijks trager, want bij een 304 komt er geen inhoud overheen.
+
+Dat is er niet voor niets. HTML stond op tien minuten, en `versie.txt`
+had helemaal geen regel — en zonder regel mag een cache zelf een
+houdbaarheid verzinnen. Gevolg: na een deploy stond de oude homepage er
+nog, en één keer beweerde `versie.txt` een oudere commit dan er
+daadwerkelijk live stond. Juist dat bestand is de snelle waarheid over
+wat er draait, dus dat mag nooit.
+
+**Controleer na een wijziging hieraan de headers echt**, want er zit een
+nginx-laag voor Apache (zichtbaar aan `x-accel-version`):
+
+```bash
+curl -sI https://wesleyvaders.nl/ | grep -i cache-control
+```
+
 ## Redirects
 
 De oude therapeutencontent van wesleyvaders.nl is verwijderd. Er is geen inhoudelijke tegenhanger, dus alle 58 oude URL's gaan met een 301 naar `https://burovaders.nl/`.
