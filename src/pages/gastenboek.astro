@@ -2,19 +2,14 @@
 import Base from '../layouts/Base.astro';
 import Gastenboek from '../components/Gastenboek.astro';
 import { vertrek, aankomst } from '../data/site.js';
-import { dagenTot, dagenTeller } from '../lib/tijd.js';
+import { dagenTeller, fase, kies } from '../lib/tijd.js';
 
-const dagen = dagenTot(vertrek);
 const teller = dagenTeller(vertrek, aankomst);
-
-// Voor en na het vertrek een andere omschrijving; zie CLAUDE.md. Anders
-// staat hier "voordat ik vertrek" terwijl de bus al in Frankrijk staat.
-const erAl = aankomst && dagenTot(aankomst) <= 0;
-const omschrijving = dagen > 0
-  ? 'Laat iets achter voordat ik naar Spanje vertrek. Een herinnering, een goede raad, of iets wat ik daar moet doen.'
-  : erAl
-  ? 'Laat iets achter nu ik in Spanje zit. Een herinnering, een goede raad, of iets wat ik hier moet doen.'
-  : 'Laat iets achter nu ik onderweg ben naar Spanje. Een herinnering, een goede raad, of iets wat ik daar moet doen.';
+const omschrijving = kies(fase(vertrek, aankomst), {
+  aftellen: 'Laat iets achter voordat ik naar Spanje vertrek. Een herinnering, een goede raad, of iets wat ik daar moet doen.',
+  onderweg: 'Laat iets achter nu ik onderweg ben naar Spanje. Een herinnering, een goede raad, of iets wat ik daar moet doen.',
+  aangekomen: 'Laat iets achter nu ik in Spanje zit. Een herinnering, een goede raad, of iets wat ik hier moet doen.'
+});
 ---
 
 <Base

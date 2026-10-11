@@ -5,14 +5,16 @@ import Footer from '../components/Footer.astro';
 import Analytics from '../components/Analytics.astro';
 import Cookiebanner from '../components/Cookiebanner.astro';
 import { site, vertrek, aankomst } from '../data/site.js';
-import { dagenTot } from '../lib/tijd.js';
+import { fase, kies } from '../lib/tijd.js';
 
-// Dezelfde drietrap als de herotekst: tot het vertrek, onderweg, en
-// aangekomen. Stond vast op de eerste en beweerde daardoor in de
-// zoekresultaten nog "ik vertrek naar Spanje" terwijl hij er al woonde.
-const omschrijvingNu = dagenTot(vertrek) > 0 ? site.omschrijving
-  : (aankomst && dagenTot(aankomst) <= 0) ? site.omschrijvingAangekomen
-  : site.omschrijvingOnderweg;
+// De meta-omschrijving volgt dezelfde fase als de herotekst. Stond vast
+// op de vertrektekst en beweerde daardoor in de zoekresultaten nog
+// "ik vertrek naar Spanje" terwijl hij er al woonde.
+const omschrijvingNu = kies(fase(vertrek, aankomst), {
+  aftellen: site.omschrijving,
+  onderweg: site.omschrijvingOnderweg,
+  aangekomen: site.omschrijvingAangekomen
+});
 
 const {
   titel,

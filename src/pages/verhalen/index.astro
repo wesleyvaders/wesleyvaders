@@ -47,9 +47,9 @@ const reacties = (id) => aantallen[`verhaal:${id}`] ?? 0;
               <span class="arch-n">{fmt(v.data.datum)}</span>
               <span class="arch-t">{v.data.titel}</span>
               <span class="arch-d">{v.data.kort}</span>
-              {reacties(v.id) > 0 && (
-                <span class="arch-r mono">{reacties(v.id)} {reacties(v.id) === 1 ? 'reactie' : 'reacties'}</span>
-              )}
+              <span class="arch-r mono" data-reacties={`verhaal:${v.id}`} hidden={reacties(v.id) === 0}>
+                {reacties(v.id)} {reacties(v.id) === 1 ? 'reactie' : 'reacties'}
+              </span>
             </a>
           ))}
         </div>
@@ -87,4 +87,26 @@ const reacties = (id) => aantallen[`verhaal:${id}`] ?? 0;
     verborgen.slice(0, per).forEach(e => { e.hidden = false; });
     if (verborgen.length <= per) knop.hidden = true;
   });
+</script>
+
+<script>
+  // De aantallen komen uit de build, dus een reactie van vandaag telt pas
+  // mee na de volgende deploy. Hier halen we ze opnieuw op en corrigeren
+  // we ze, net zoals de dagenteller zichzelf bijwerkt. Lukt het niet, dan
+  // blijft het getal uit de build staan; dat is beter dan geen getal.
+  const vakjes = document.querySelectorAll('[data-reacties]');
+  if (vakjes.length) {
+    fetch('/api/gastenboek.php?tellen=1')
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(d => {
+        const per = d?.aantallen;
+        if (!per || typeof per !== 'object') return;
+        vakjes.forEach(el => {
+          const n = per[el.dataset.reacties] ?? 0;
+          el.textContent = `${n} ${n === 1 ? 'reactie' : 'reacties'}`;
+          el.hidden = n === 0;
+        });
+      })
+      .catch(() => { /* build-getal laten staan */ });
+  }
 </script>

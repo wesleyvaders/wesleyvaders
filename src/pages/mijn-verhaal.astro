@@ -1,7 +1,24 @@
 ---
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import { site } from '../data/site.js';
+import { site, vertrek, aankomst } from '../data/site.js';
+import { fase, kies } from '../lib/tijd.js';
+
+const f = fase(vertrek, aankomst);
+
+// Het slotblok beschrijft de huidige stand en schuift mee. De oude
+// tekst blijft als stand aftellen in de bron staan, die gaat niet
+// verloren.
+const slotKop = kies(f, {
+  aftellen: ['Hier zit ik dan,', 'half tussen de dozen.'],
+  onderweg: ['Hier zit ik dan,', 'ergens onderweg.'],
+  aangekomen: ['Hier zit ik dan,', 'in Spanje.']
+});
+const slotTekst = kies(f, {
+  aftellen: 'Nog een paar weken en dan ben ik dakloos. Wat er daarna gebeurt komt allemaal hier terecht.',
+  onderweg: 'Het huis is weg, de spullen pasten in een bus. Wat er nu gebeurt komt allemaal hier terecht.',
+  aangekomen: 'Het huis is weg, de spullen pasten in een bus. Wat er nu gebeurt komt allemaal hier terecht.'
+});
 
 import landschap from '../../public/fotos/hero.webp';
 import bus from '../../public/fotos/transporter.webp';
@@ -201,7 +218,7 @@ const schema = {
         <div class="tekst">
           <h2>En nu dan</h2>
           <p>Mijn huis is verkocht. Mijn werk gaat mee, want websites bouw ik overal. En Mo natuurlijk, mijn bruine labrador van acht.</p>
-          <p>In september rijd ik naar Pat. De zoon van de vrienden van mijn ouders in Alfaz del Pi, bij wie ik als kind al kwam. Geen vriend maar hermano, want zo voelt het. De eerste tijd woon ik bij hem, daarna ga ik zoeken naar een eigen plek.</p>
+          <p>In september ben ik naar Pat gereden. De zoon van de vrienden van mijn ouders in Alfaz del Pi, bij wie ik als kind al kwam. Geen vriend maar hermano, want zo voelt het. De eerste tijd zit ik in het appartement van zijn ouders, waar die van mij ook altijd zaten. Daarna ga ik zoeken naar een eigen plek.</p>
           <p>Ruimte, bergen, en genoeg werk om mezelf de komende jaren bezig te houden. Iets om te bouwen.</p>
           <p>Ik was ooit een jongen die hutten bouwde. Zo veel is er niet veranderd.</p>
         </div>
@@ -227,8 +244,8 @@ const schema = {
     <div class="mv-wrap raster">
       <div class="slot-in">
         <p class="eyebrow" style="color:var(--gold)">Waar het nu staat</p>
-        <h2 class="slot-h">Hier zit ik dan,<br />half tussen de dozen.</h2>
-        <p class="slot-p">Nog een paar weken en dan ben ik dakloos. Wat er daarna gebeurt komt allemaal hier terecht.</p>
+        <h2 class="slot-h">{slotKop[0]}<br />{slotKop[1]}</h2>
+        <p class="slot-p">{slotTekst}</p>
         <div class="slot-cta">
           <a class="btn btn-f" href="/#volg">Volg het avontuur</a>
           <a class="btn btn-l" href="/verhalen/">Lees de verhalen</a>

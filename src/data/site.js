@@ -74,7 +74,7 @@ export const contact = {
 export const socials = [
   { naam: 'YouTube', omschrijving: 'De volledige afleveringen', actie: 'Abonneer', href: 'https://www.youtube.com/@wesleyvaders9102' },
   { naam: 'Instagram', omschrijving: "Foto's en dagelijkse dingen", actie: 'Volgen', href: 'https://www.instagram.com/wesleyvaders/' },
-  { naam: 'TikTok', omschrijving: 'De korte dingen. De aankondiging staat er al op', actie: 'Volgen', href: 'https://www.tiktok.com/@wesleyvaders' },
+  { naam: 'TikTok', omschrijving: 'De korte dingen, tussendoor', actie: 'Volgen', href: 'https://www.tiktok.com/@wesleyvaders' },
   { naam: 'Facebook', omschrijving: 'Voor iedereen die daar zit', actie: 'Volgen', href: 'https://www.facebook.com/wesleyvaders' }
 ];
 
@@ -112,16 +112,26 @@ export const cijfers = [
 // Let op: onder de veertien dagen levert {weken} zelf al "nog acht dagen".
 // Schrijf er dus geen tweede "Nog" voor, anders staat er "Nog nog acht
 // dagen" zodra de teller onder de veertien zakt.
+// Het NU-blok hoort bij het nieuwste verhaal en schuift daarmee mee.
+//
+// `bij` is de bestandsnaam van dat verhaal, zonder .md. Klopt die niet
+// meer met het nieuwste verhaal, dan valt de build om met de naam die
+// er had moeten staan. Dat is met opzet: het blok bleef anders stil op
+// 22 september staan terwijl er al een verhaal van 1 oktober stond, en
+// in de browser valt zoiets niet op.
+//
+// De datumregel en de logboekregel NU worden uit dat verhaal afgeleid,
+// uit `datum` en `locatie`. Die typ je hier dus niet.
 export const nu = {
-  label: 'Nu · 22 september 2026',
-  kop: 'Aangekomen.',
+  bij: '2026-10-01-habla-tranquilo-por-favor',
+  kop: 'Ruim een week verder.',
   tekst:
-    'Maandag in één ruk van Tournus naar Alfaz del Pi gereden, 1250 km, 12 uur. De klim naar de Spaanse grens was het zwaarste stuk. Sinds maandagavond ben ik hier, en vanochtend werd ik voor het eerst in Spanje wakker.',
+    'Overal heen racen, van de gestor naar Benidorm en weer terug. Spaans leren gaat sneller in een bar dan in een app. De bus staat nog stil en moet volgende week echt gemaakt worden.',
   logboek: [
-    ['Nu', 'Alfaz del Pi, Spanje'],
-    ['Maandag', '1250 km in één ruk'],
-    ['Totaal', '1950 km vanaf Monster'],
-    ['Bus', 'Heeft het gehaald. Zonder vermogen'],
+    ['Sinds', '21 september hier'],
+    ['Gereden', '1950 km vanaf Monster'],
+    ['Bus', 'Staat stil. Rijdt nu op de scooter'],
+    ['Spaans', 'Habla tranquilo, por favor'],
     ['Mee', 'Mo, en zo min mogelijk spullen']
   ]
 };

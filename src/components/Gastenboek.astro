@@ -1,14 +1,32 @@
 ---
-import { vertrek } from '../data/site.js';
+import { vertrek, aankomst } from '../data/site.js';
 import { haalGastenboek } from '../lib/gastenboek.js';
+import { dagenTot, fase, kies } from '../lib/tijd.js';
 
-const msPerDag = 86400000;
-const vandaag = new Date(); vandaag.setHours(0, 0, 0, 0);
-const dagen = Math.round((new Date(vertrek + 'T00:00:00') - vandaag) / msPerDag);
+const dagen = dagenTot(vertrek);
+const f = fase(vertrek, aankomst);
+
+// De zichtbare tekst en de meta-omschrijving van /gastenboek/ komen uit
+// dezelfde fase. Liepen uiteen: de meta zei al "nu ik in Spanje zit"
+// terwijl hier nog "ik ben onderweg naar het zuiden" stond.
+const kop = kies(f, {
+  aftellen: 'Voordat ik ga',
+  onderweg: 'Onderweg',
+  aangekomen: 'Nu ik hier zit'
+});
+const intro = kies(f, {
+  aftellen: null,   // die zin telt de dagen af en staat hieronder apart
+  onderweg: 'Ik ben onderweg naar het zuiden. Wil je iets kwijt, dan kan dat hier. Ik lees alles.',
+  aangekomen: 'Ik zit in Spanje. Wil je iets kwijt, dan kan dat hier. Ik lees alles.'
+});
 
 const suggesties = [
   'Een herinnering',
-  'Een goede raad voor onderweg',
+  kies(f, {
+    aftellen: 'Een goede raad voor onderweg',
+    onderweg: 'Een goede raad voor onderweg',
+    aangekomen: 'Een goede raad'
+  }),
   'Iets wat ik in Spanje moet doen'
 ];
 
@@ -32,11 +50,11 @@ const fmtNL = (iso) => {
     <div class="grid2 g-gb rv">
       <div class="gb-links">
         <p class="eyebrow">Laat iets achter</p>
-        <h2 class="gb-h">{dagen > 0 ? 'Voordat ik ga' : 'Nu ik weg ben'}</h2>
-        {dagen > 0 ? (
+        <h2 class="gb-h">{kop}</h2>
+        {intro === null ? (
           <p class="gb-intro">Nog <span data-dagen>{dagen}</span> dagen. Als je iets kwijt wil voordat ik vertrek, dan kan dat hier. Ik lees alles.</p>
         ) : (
-          <p class="gb-intro">Ik ben onderweg naar het zuiden. Wil je iets kwijt, dan kan dat hier. Ik lees alles.</p>
+          <p class="gb-intro">{intro}</p>
         )}
         <ul class="gb-sug">
           {suggesties.map(s => (

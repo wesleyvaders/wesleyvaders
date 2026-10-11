@@ -61,9 +61,8 @@ export function dagenTeller(vertrek, aankomst, nu = new Date()) {
       zin: over === 1 ? 'Nog 1 dag' : `Nog ${over} dagen`
     };
   }
-  const sindsAankomst = aankomst ? -dagenTot(aankomst, nu) : -1;
-  const [getal, waar] = sindsAankomst >= 1
-    ? [sindsAankomst, 'in Spanje']
+  const [getal, waar] = fase(vertrek, aankomst, nu) === 'aangekomen'
+    ? [-dagenTot(aankomst, nu), 'in Spanje']
     : [1 - over, 'onderweg'];
   return {
     getal,
@@ -71,4 +70,30 @@ export function dagenTeller(vertrek, aankomst, nu = new Date()) {
     eyebrow: `Dag ${getal} ${waar}`,
     zin: over === 0 ? 'Vandaag' : `${getal} ${getal === 1 ? 'dag' : 'dagen'} ${waar}`
   };
+}
+
+// In welke fase van de reis de site staat. Dit is de enige bron voor
+// "waar is hij nu"; dagenTeller() hierboven rekent met dezelfde datums.
+//
+// Hiervoor had elke plek zijn eigen `dagen > 0`-schakelaar met twee
+// standen. Toen de derde stand kwam, aangekomen, bleef op zes plekken
+// de tekst van onderweg staan: het gastenboek zei "ik ben onderweg naar
+// het zuiden" terwijl de meta-omschrijving van diezelfde pagina al
+// "nu ik in Spanje zit" zei. Vandaar één functie.
+// Let op de grens bij aangekomen: die ligt op dezelfde plek als de
+// teller, dus de ochtend ná de aankomst. Hij kwam 's avonds laat binnen;
+// die avond telt als onderweg. Namen we hier de aankomstdatum zelf, dan
+// stond er op die ene dag "ik ben in Spanje" boven "2 dagen onderweg".
+export function fase(vertrek, aankomst, nu = new Date()) {
+  if (dagenTot(vertrek, nu) > 0) return 'aftellen';
+  if (aankomst && dagenTot(aankomst, nu) < 0) return 'aangekomen';
+  return 'onderweg';
+}
+
+// Kies de tekst die bij de fase hoort. Schrijf alle drie de standen uit,
+// dan kan er geen stand ontbreken:
+//   kies(f, { aftellen: '...', onderweg: '...', aangekomen: '...' })
+export function kies(f, standen) {
+  if (!(f in standen)) throw new Error(`geen tekst voor fase "${f}"`);
+  return standen[f];
 }

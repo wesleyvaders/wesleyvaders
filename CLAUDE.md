@@ -10,7 +10,12 @@ Deze site praat over een vertrek dat steeds dichterbij komt. Daardoor
 veroudert inhoud snel en spreken twee plekken elkaar zomaar tegen. Loop bij
 elke inhoudelijke wijziging deze zes na:
 
-1. **Het NU-blok** in `site.js`: klopt de kop nog met hoe het huis erbij staat, en het logboek met wat er af is?
+1. **Het NU-blok** in `site.js` hoort bij het nieuwste verhaal. Het veld
+   `nu.bij` is de bestandsnaam van dat verhaal; klopt die niet meer, dan
+   **valt de build om** met de naam die er had moeten staan. Werk dan
+   `bij`, `kop`, `tekst`, `logboek` en de twee NU-foto's bovenin
+   `index.astro` bij. De datumregel en de logboekregel NU hoef je niet te
+   typen, die komen uit `datum` en `locatie` van dat verhaal.
 2. **De tijdlijn** op de homepage (`route` in `site.js`): staat `nu` nog op de goede halte, of is die al `gehad`?
 3. **De cijferstrook**: spreekt geen enkel cijfer een andere pagina tegen.
    De eerste twee kolommen rekent de site zelf uit, uit `vertrek` en
@@ -64,14 +69,34 @@ In het NU-blok kun je `{weken}` schrijven voor "Nog twaalf dagen" en
 woordje Nog al in de kop staat. Beide mogen in de kop, de tekst en het
 logboek, en boven de veertien dagen slaan ze vanzelf om naar weken.
 
-**Tekst die vóór, tijdens en ná de reis anders moet luiden staat in
-drievoud in de bron en wordt gekozen op de datum.** Drie standen:
-aftellen, onderweg, aangekomen. Zo is het met `site.omschrijving`,
-`site.omschrijvingOnderweg` en `site.omschrijvingAangekomen` voor de
-herotekst én de meta-omschrijving, met de kop en de intro van het
-gastenboek, en met het label en de kop op `og/gastenboek.jpg`. Nooit met
-de hand omzetten: dan staat er op de dag zelf "Nog 0 dagen tot ik
-vertrek".
+**Tekst die vóór, tijdens en ná de reis anders moet luiden kiest zijn
+stand met `fase()`.** Die staat in `src/lib/tijd.js` en is de enige bron
+voor "waar is hij nu": `aftellen`, `onderweg` of `aangekomen`, gerekend
+uit `vertrek` en `aankomst`. `dagenTeller()` gebruikt dezelfde grens, dus
+de teller en de tekst kunnen niet uiteenlopen.
+
+Schrijf zo'n tekst met `kies()` en zet alle drie de standen erin:
+
+```js
+const kop = kies(fase(vertrek, aankomst), {
+  aftellen: 'Voordat ik ga',
+  onderweg: 'Onderweg',
+  aangekomen: 'Nu ik hier zit'
+});
+```
+
+Ontbreekt er een stand, dan valt de build om. Dat is met opzet: hiervoor
+had elke plek zijn eigen `dagen > 0`-schakelaar met maar twee standen, en
+toen de derde kwam bleef op zes plekken de tekst van onderweg staan. Het
+gastenboek zei zichtbaar "ik ben onderweg naar het zuiden" terwijl de
+meta-omschrijving van diezelfde pagina al "nu ik in Spanje zit" zei.
+
+**Soms is de betere oplossing geen derde stand maar een zin zonder
+houdbaarheidsdatum.** "De aankondiging staat er al op" bij TikTok en
+"Volg onderweg mee" boven de socials sloegen op één moment in de tijd;
+die zijn herschreven naar iets dat blijft kloppen. Een schakelaar die je
+moet onderhouden is alleen de moeite waard als het verschil er echt toe
+doet.
 
 **Vergeet de `<head>` niet.** De meta-omschrijving en `og:description`
 zijn twee weken blijven zeggen "ik vertrek naar Spanje" terwijl de pagina
@@ -108,6 +133,7 @@ npm run preview  # dist/ lokaal bekijken
 | `public/fonts/` | De vier woff2-bestanden. Zelf gehost, latin-subset. |
 | `public/api/` | Het gastenboek: `gastenboek.php` (lezen en plaatsen), `gastenboek-beheer.php` (wijzigen en weggooien), `gastenboek-pad.php` (waar de data staat). |
 | `public/.htaccess` | 58 redirects van de oude site naar burovaders.nl, plus eigen URL's die veranderd zijn, caching en headers. |
+| `src/lib/opvulling.js` | Maakt bij de build een piepkleine vervaagde versie van een foto als base64, voor achter de hero. Zo staat er niet eerst een egaal vlak. |
 | `scripts/grade.py` | Fotogrades. Draaien vóór upload, niet tijdens de build. |
 | `scripts/og.py` | Deelplaatjes van de hoofdfoto's. Handmatig draaien. |
 | `scripts/og-gastenboek.py` | Het deelplaatje van het gastenboek. Loopt mee bij elke build, zodat de aftelling klopt. |

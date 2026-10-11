@@ -2,6 +2,7 @@
 import Merkteken from './Merkteken.astro';
 import { site, nav, navExtra, socials, nu, vertrek } from '../data/site.js';
 import { dagenTot as berekenDagen, wekenZin } from '../lib/tijd.js';
+import { huidigeStand } from '../lib/nu.js';
 
 const { donker = false } = Astro.props;
 
@@ -16,6 +17,9 @@ const dagen = berekenDagen(vertrek);
 // de NU-kop kan {weken} bevatten; die hoort hier net zo vervangen te
 // worden als op de homepage, anders leest het menu letterlijk {weken}
 const kopDelen = nu.kop.split('{weken}');
+
+// dezelfde datumregel als op de homepage, uit het nieuwste verhaal
+const { label: nuLabel } = await huidigeStand();
 ---
 <nav class:list={['nav', donker ? 'nav-donker' : 'nav-licht']} aria-label="Hoofdnavigatie">
   <div class="wrap">
@@ -60,7 +64,7 @@ const kopDelen = nu.kop.split('{weken}');
 
   <div class="menu-nu" data-item style={`--i:${menuItems.length + 2}`}>
     <span class="m-punt" aria-hidden="true"></span>
-    <p>{nu.label}<br /><span>
+    <p>{nuLabel}<br /><span>
       {kopDelen.length > 1
         ? <>{kopDelen[0]}<span data-weken>{wekenZin(dagen)}</span>{kopDelen[1]}</>
         : nu.kop}
