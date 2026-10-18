@@ -68,17 +68,6 @@ const verhalen = defineCollection({
   })
 });
 
-const hierennu = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/hierennu' }),
-  schema: z.object({
-    datum: z.date(),
-    nummer: z.number(),
-    titel: z.string().optional(),
-    locatie: z.string().optional(),
-    coordinaten: z.tuple([z.number(), z.number()]).optional(),
-    concept: z.boolean().default(false)
-  })
-});
 
 const afleveringen = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/afleveringen' }),
@@ -98,5 +87,5 @@ const afleveringen = defineCollection({
   })
 });
 
-export const collections = { verhalen, hierennu, afleveringen };
+export const collections = { verhalen, afleveringen };
 export { categorieen, onderdelen };

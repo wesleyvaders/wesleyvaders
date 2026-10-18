@@ -14,17 +14,11 @@ import transporter from '../../public/fotos/transporter.webp';
 import landschap from '../../public/fotos/hero.webp';
 // De twee foto's bij het NU-blok horen bij waar hij nu is. Verhuizen
 // dus mee met de reis, net als de locatie en het bijschrift eronder.
-import nuGroot from '../../public/fotos/albir-baai.webp';
-import nuKlein from '../../public/fotos/mo-stilstaan.webp';
+import nuGroot from '../../public/fotos/uitzicht-calpe.webp';
+import nuKlein from '../../public/fotos/route-met-mo.webp';
 import boBus from '../../public/fotos/bo_bus.webp';
 import boZwem from '../../public/fotos/bo_zwem.webp';
 
-const berichten = await Promise.all(
-  (await getCollection('hierennu', e => !e.data.concept))
-    .sort((a, b) => b.data.nummer - a.data.nummer)
-    .slice(0, 3)
-    .map(async (b) => ({ data: b.data, Content: (await render(b)).Content }))
-);
 
 const laatsteVerhalen = (await getCollection('verhalen', e => !e.data.concept))
   .sort((a, b) => b.data.datum - a.data.datum)
@@ -134,8 +128,8 @@ const gastenboek = await haalGastenboek();
     <div class="wrap">
       <div class="grid2 g-nu rv">
         <div class="nuphotos">
-          <Image src={nuGroot} alt="De baai van Albir met de bootjes voor de kust" widths={[500, 900]} sizes="(max-width:880px) 90vw, 45vw" />
-          <Image src={nuKlein} class="nu-b" alt="Mo stilstaand op het pad" widths={[400, 700]} sizes="30vw" />
+          <Image src={nuGroot} alt="De Peñón bij Calpe vanaf de heuvels, bij zonsondergang" widths={[500, 900]} sizes="(max-width:880px) 90vw, 45vw" />
+          <Image src={nuKlein} class="nu-b" alt="Mo op het pad tijdens de avondwandeling" widths={[400, 700]} sizes="30vw" />
           <p class="nucap mono">{nuLabel.replace('Nu · ', '')} · {nuWaar}</p>
         </div>
         <div>
@@ -211,19 +205,18 @@ const gastenboek = await haalGastenboek();
     </div>
   </section>
 
-  <!-- 7 · Onderweg -->
-  {(laatsteVerhalen.length > 0 || berichten.length > 0) && (
-    <section class="paper sec-krap" id="onderweg">
+  <!-- 7 · Hoe het gaat -->
+  {laatsteVerhalen.length > 0 && (
+    <section class="paper sec-krap" id="hoe-het-gaat">
       <div class="grain"></div>
       <div class="wrap">
         <div class="rv" style="margin-bottom:2.5rem">
           <p class="eyebrow">Het archief</p>
-          <h2 class="h2" style="margin-top:.6rem">Onderweg</h2>
+          <h2 class="h2" style="margin-top:.6rem">Hoe het gaat</h2>
         </div>
 
         <div class="ow rv">
           <div class="ow-verhalen">
-            <p class="ow-kop mono">Verhalen</p>
             <div class="arch-lijst">
               {laatsteVerhalen.map(v => (
                 <a class="arch" href={`/verhalen/${v.id}/`}>
@@ -239,26 +232,6 @@ const gastenboek = await haalGastenboek();
             <a class="ow-alle mono" href="/verhalen/">Alle verhalen</a>
           </div>
 
-          <div class="ow-nu">
-            <p class="ow-kop mono">Hier en nu</p>
-            <div class="kaarten">
-              {berichten.map((b) => {
-                const Content = b.Content;
-                return (
-                  <article class="kaart">
-                    <p class="kaart-m mono">
-                      <span>{fmt(b.data.datum)}</span>
-                      {b.data.locatie && <><i>/</i><span>{b.data.locatie}</span></>}
-                      <i>/</i><span>Nr. {String(b.data.nummer).padStart(3, '0')}</span>
-                    </p>
-                    {b.data.titel && <h3>{b.data.titel}</h3>}
-                    <Content />
-                  </article>
-                );
-              })}
-            </div>
-            <a class="ow-alle mono" href="/hierennu/">Alle berichten</a>
-          </div>
         </div>
       </div>
     </section>
@@ -294,7 +267,7 @@ const gastenboek = await haalGastenboek();
   <section class="cijfers sec-krap">
     <div class="grain"></div>
     <div class="wrap">
-      <div class="cijfers-grid rv">
+      <div class="cijfers-grid rv" style={`--kolommen:${Math.max(3, 2 + cijfers.length)}`}>
         <div class="cijfer-blok">
           <p class="cijfer-w" data-reisteller>{teller.getal}</p>
           <p class="cijfer-l mono" data-reisteller-l>{teller.label}</p>

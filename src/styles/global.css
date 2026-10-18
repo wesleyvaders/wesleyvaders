@@ -488,20 +488,16 @@ a.stop:hover .stop-l{color:var(--terra-dk)}
 .chan:hover .chan-a{color:var(--gold);opacity:1}
 
 /* ---------- onderweg: verhalen naast korte berichten ---------- */
-.ow{display:grid;grid-template-columns:1.35fr .65fr;
-  gap:clamp(2rem,4vw,3.5rem);align-items:start}
-.ow-nu{border-left:1px solid var(--lijn);padding-left:clamp(1.5rem,3vw,2.5rem)}
-.ow-kop{font-size:.5625rem;color:rgba(20,20,18,.45);margin:0 0 1.25rem}
+/* Stond op twee kolommen met Hier en nu ernaast. Die kolom is weg, dus
+   de verhalenlijst heeft de volle breedte, net als op /verhalen/. */
+.ow{display:block}
 .ow .arch-lijst{border-top:1px solid var(--lijn)}
 .ow .kaarten{display:grid;gap:1rem}
 .ow-alle{display:inline-flex;align-items:center;min-height:44px;margin-top:1.5rem;
   font-size:.625rem;color:rgba(20,20,18,.55);
   border-bottom:1px solid rgba(20,20,18,.28);transition:color .25s,border-color .25s}
 .ow-alle:hover{color:var(--ink);border-color:var(--ink)}
-@media(max-width:900px){
-  .ow{grid-template-columns:1fr;gap:2.5rem}
-  .ow-nu{border-left:0;padding-left:0;border-top:1px solid var(--lijn);padding-top:2rem}
-}
+
 
 /* ---------- routekaart als opening ---------- */
 .rt-opening{position:relative;background:var(--ink);color:var(--paper);
@@ -663,7 +659,12 @@ a.stop:hover .stop-l{color:var(--terra-dk)}
 
 /* ---------- cijferstrook ---------- */
 .cijfers{background:var(--sand);color:var(--ink);position:relative;overflow:hidden}
-.cijfers-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1.5rem,4vw,3rem)}
+/* Het aantal kolommen komt uit index.astro: twee berekende plus wat er
+   in cijfers in site.js staat, met drie als minimum. Dat minimum houdt
+   het ritme gelijk toen de derde kolom eruit ging: de twee cijfers
+   blijven staan waar ze stonden in plaats van uit elkaar te lopen. */
+.cijfers-grid{display:grid;grid-template-columns:repeat(var(--kolommen,3),minmax(0,1fr));
+  gap:clamp(1.5rem,4vw,3rem)}
 .cijfer-blok{text-align:left}
 .cijfer-w{font-family:var(--serif);font-size:clamp(2.75rem,6vw,4.5rem);line-height:.9;
   letter-spacing:-.02em;margin:0}

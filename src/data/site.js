@@ -41,8 +41,7 @@ export const cookiebanner = {
 // klaar: false = de pagina bestaat nog niet en wordt niet getoond.
 // Zet op true zodra je hem gebouwd hebt. Zo geen kapotte links in de nav.
 //
-// /hierennu/ en /beheer/ staan hier bewust niet in: hier en nu hangt
-// aan het Onderweg-blok en beheer is alleen voor Wesley.
+// /beheer/ staat hier bewust niet in, dat is alleen voor Wesley.
 //
 // /route/ bestaat niet meer. Die pagina beschreef de mooie weg langs
 // Mont-Saint-Michel en de Bardenas, en die is er niet van gekomen; de
@@ -62,9 +61,9 @@ export const nav = navAlles.filter(i => i.klaar);
 // Pagina's die er wel zijn maar niet in de hoofdnavigatie horen. Ze
 // staan onderaan het mobiele menu en in de footer, zodat ze niet
 // alleen via een link in de tekst te vinden zijn.
-export const navExtra = [
-  { titel: 'Even in het hier en nu', href: '/hierennu/' }
-];
+//
+// Leeg sinds /hierennu/ eruit is; Nav en Footer slaan de lijst dan over.
+export const navExtra = [];
 
 export const contact = {
   email: 'info@wesleyvaders.nl',
@@ -103,9 +102,10 @@ export const afstand = {
 // vertrek) rekent de site zelf uit; deze twee zijn met de hand.
 // De cijferstrook. De eerste twee kolommen rekent index.astro zelf uit
 // (de teller en de gereden kilometers); deze staat er met de hand bij.
-export const cijfers = [
-  { waarde: '53', label: 'Verdiepingen op één dag' }
-];
+// Cijfers die er met de hand bij staan. De eerste twee kolommen van de
+// strook rekent index.astro zelf uit; wat hier staat komt erachteraan.
+// Leeg is prima, dan toont de strook alleen die twee.
+export const cijfers = [];
 
 // Het NU-blok. Dit is het enige dat je echt vaak aanpast.
 // {weken} wordt berekend uit vertrek, niet ingetypt. Zie src/lib/tijd.js.
@@ -123,15 +123,15 @@ export const cijfers = [
 // De datumregel en de logboekregel NU worden uit dat verhaal afgeleid,
 // uit `datum` en `locatie`. Die typ je hier dus niet.
 export const nu = {
-  bij: '2026-10-11-donde-vayas-ahi-estas',
-  kop: 'Zoekende.',
+  bij: '2026-10-18-no-pasa-nada',
+  kop: 'Oom geworden.',
   tekst:
-    'Heftige regen deze week, en veel alleen geweest. Het voelde of ik stilstond. Dinsdag een bezichtiging, als het doorgaat. Ik zit goed hier, maar het is nog niet waar ik wil zijn.',
+    'Vannacht om tien voor drie belde me broertje: Levi is er. Mooi en rot tegelijk, want 1900 km is dan opeens ver. De bus staat eindelijk bij de garage in Altea, en ik heb een avondroute gevonden met uitzicht op Calpe.',
   logboek: [
     ['Sinds', '21 september hier'],
-    ['Gereden', '1950 km vanaf Monster'],
-    ['Bus', 'Staat nog stil'],
-    ['Dinsdag', 'Een huis bekijken'],
+    ['Nieuw', 'Levi, geboren 18 oktober'],
+    ['Bus', 'Bij de garage in Altea'],
+    ['Deze week', 'Bezichtiging en een NIE-nummer'],
     ['Mee', 'Mo, en zo min mogelijk spullen']
   ]
 };

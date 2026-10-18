@@ -19,7 +19,9 @@ elke inhoudelijke wijziging deze zes na:
 2. **De tijdlijn** op de homepage (`route` in `site.js`): staat `nu` nog op de goede halte, of is die al `gehad`?
 3. **De cijferstrook**: spreekt geen enkel cijfer een andere pagina tegen.
    De eerste twee kolommen rekent de site zelf uit, uit `vertrek` en
-   `afstand` in `site.js`. Alleen de derde staat er met de hand bij.
+   `afstand` in `site.js`. Wat er met de hand bij staat zet je in
+   `cijfers`; dat mag ook leeg zijn, dan toont de strook alleen die twee.
+   Het aantal kolommen volgt vanzelf.
 4. **`afstand.gereden` en `afstand.waar`** in `site.js`: die bepalen waar
    het gouden punt op de routelijn in de hero staat en welke plaats
    eronder. Werk ze bij na elke etappe, anders blijft de reis stilstaan.
@@ -122,7 +124,6 @@ npm run preview  # dist/ lokaal bekijken
 |---|---|
 | `src/data/site.js` | Alle terugkerende content: NU-blok, route, stappen, cijfers, socials, navigatie, vertrekdatum. Dit bestand pas je het vaakst aan. |
 | `src/content/verhalen/` | Losse verhalen. Eén markdown per verhaal. |
-| `src/content/hierennu/` | Korte berichten. Verschijnen op de homepage en op `/hierennu/`. |
 | `src/content.config.js` | De velden die een verhaal of bericht mag hebben. |
 | `src/styles/global.css` | Alle styling en alle merktokens. Ook de stijlen van dingen die JavaScript aanmaakt, want scoped CSS pakt die niet. |
 | `src/components/` | Nav, Footer, Merkteken, Routelijn, Gastenboek, Reacties, Video, Analytics, Cookiebanner. |
@@ -413,7 +414,17 @@ Stap je ooit over naar `cloudflare`, `plausible` of `umami`, dan verdwijnt de ba
 Nu klaar: Mijn verhaal, Het avontuur, Verhalen, Gastenboek, Privacy, Cookies, Contact.
 Nog niet: Afleveringen, Spanje.
 
-`/hierennu/` en `/beheer/` staan bewust niet in de navigatie. De eerste is bereikbaar via het Onderweg-blok op de homepage, de tweede is alleen voor Wesley en staat op noindex.
+`/beheer/` staat bewust niet in de navigatie; die is alleen voor Wesley en staat op noindex.
+
+**`/hierennu/` bestaat niet meer, sinds 18 oktober 2026.** De losse korte
+berichten kwamen er niet meer van en de wekelijkse verhalen doen dat werk
+nu. De pagina's, de collectie en het schema zijn weg; de zeven berichten
+staan in `bewaard/hierennu-zeven-berichten.md` en de URL gaat met een 301
+naar `/verhalen/`, ook de genummerde pagina's.
+
+Daarmee is `navExtra` leeg. Dat is geen fout: Nav en Footer slaan de
+lijst dan gewoon over. Komt er ooit weer een pagina bij die niet in de
+hoofdnavigatie hoort, dan zet je hem daar terug.
 
 **`/route/` bestaat niet meer, sinds 1 oktober 2026.** Die pagina
 beschreef de mooie weg langs Mont-Saint-Michel en de Bardenas, en die is

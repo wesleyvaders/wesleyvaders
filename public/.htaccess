@@ -83,6 +83,12 @@
   # Eigen verhalen die van URL zijn veranderd
   Redirect 301 /verhalen/2026-08-26-mijn-bed-gaat-naar-rijswijk/ https://wesleyvaders.nl/verhalen/2026-08-25-mijn-bed-gaat-naar-rijswijk/
 
+  # /hierennu/ is weggehaald op 18 oktober 2026. De korte berichten
+  # kwamen er niet meer van en de wekelijkse verhalen doen dat werk nu.
+  # De tekst staat in bewaard/hierennu-zeven-berichten.md. Ook de
+  # genummerde pagina's doorsturen, die stonden in de sitemap.
+  RedirectMatch 301 ^/hierennu(/.*)?$ https://wesleyvaders.nl/verhalen/
+
   # /route/ is weggehaald op 1 oktober 2026. Die pagina beschreef de
   # mooie weg langs Mont-Saint-Michel en de Bardenas; de bus is over de
   # snelweg gegaan. De URL stond in de sitemap en is gedeeld, dus geen
