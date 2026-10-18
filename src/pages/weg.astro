@@ -1,0 +1,33 @@
+---
+// De pagina achter ErrorDocument 410. De oude therapeutencontent is weg
+// en gaat niet naar burovaders.nl: een redirect naar een homepage die er
+// niet over gaat leest Google als een zachte 404, en dan blijven die
+// URL's in de index hangen. Een 410 zegt: weg, verwijderen.
+//
+// Maar er kan nog een mens op zo'n oude link klikken, dus die krijgt
+// deze pagina te zien terwijl de status 410 blijft. Daarom noindex, en
+// hij staat niet in de sitemap; zie de filter in astro.config.mjs.
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site.js';
+---
+<Base titel="Deze pagina is weg" omschrijving="Deze pagina bestaat niet meer." noindex={true} navDonker={true}>
+  <section class="sec-ruim" style="min-height:70svh;display:flex;align-items:center">
+    <div class="grain"></div>
+    <div class="wrap">
+      <p class="eyebrow" style="color:var(--gold)">410</p>
+      <h1 class="h2" style="margin:.8rem 0 1.25rem">Deze pagina<br />bestaat niet meer.</h1>
+      <p style="color:rgba(245,241,232,.7);max-width:44ch;line-height:1.7;margin:0 0 1rem">
+        Hier stonden vroegah artikelen over websites en marketing voor therapeuten.
+        Die zijn weg en komen niet terug.
+      </p>
+      <p style="color:rgba(245,241,232,.7);max-width:44ch;line-height:1.7;margin:0 0 2.25rem">
+        Ik schrijf nu hier, op {site.domein.replace('https://', '')}, over mijn vertrek naar
+        Spanje. Mijn werk staat op burovaders.nl.
+      </p>
+      <div class="slot-cta">
+        <a class="btn btn-f" href="/">Naar wesleyvaders.nl</a>
+        <a class="btn btn-l" href="https://burovaders.nl/" rel="noopener">Naar burovaders.nl</a>
+      </div>
+    </div>
+  </section>
+</Base>
