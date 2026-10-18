@@ -740,11 +740,50 @@ a.stop:hover .stop-l{color:var(--terra-dk)}
   font-size:.6875rem;letter-spacing:.14em;border:1px solid rgba(245,241,232,.28);
   border-radius:2px;transition:border-color .25s,background .25s}
 .gb-meer:hover{border-color:var(--sand);background:rgba(217,198,165,.1)}
+/* Op de homepage staat hier geen knop maar de link naar /gastenboek/:
+   de lijst is daar kort en dit is de route naar de rest. Daarom iets
+   nadrukkelijker dan de knop, met het zand als rand. */
+/* inline-block en niet inline-flex: met flex worden de losse woorden
+   flex-items en vallen de spaties ertussen weg, dan staat er
+   "LEES ALLE46BERICHTEN". Dezelfde val als eerder bij .gb-uit-a en in
+   de footer. De 44px komt hier uit de padding. */
+.gb-alle{display:inline-block;padding:.95rem 1.6rem;
+  font-size:.6875rem;letter-spacing:.14em;color:var(--sand);
+  border:1px solid rgba(217,198,165,.55);border-radius:2px;
+  transition:border-color .25s,background .25s,color .25s}
+.gb-alle:hover{border-color:var(--sand);background:rgba(217,198,165,.12);color:var(--paper)}
 .gb-leeg{border-top:1px solid rgba(245,241,232,.16);border-bottom:1px solid rgba(245,241,232,.16);
   padding:2.5rem 0;margin:0;text-align:center;font-family:var(--serif);
   font-size:1.5rem;line-height:1.35;color:rgba(245,241,232,.8)}
 .gb-lijst:has(.gb-item){display:grid;grid-template-columns:1fr 1fr;
   gap:1.25rem;align-items:start}
+/* Op de homepage staan er maar zes, en die verschillen enorm in lengte.
+   In een raster bepaalt het langste bericht de hoogte van zijn hele rij,
+   dus stond er naast elke lange brief een gat. Kolommen vullen zich wel
+   door, zodat de twee kolommen even lang worden. */
+[data-toon] .gb-lijst:has(.gb-item){display:block;columns:2;column-gap:1.25rem}
+/* De versprongen even-berichten horen bij het raster. In kolommen is de
+   volgorde niet meer links-rechts, en dan schuift er zomaar een kader
+   tegen zijn buurman aan. Hier dus recht onder elkaar. */
+[data-toon] .gb-lijst .gb-item{break-inside:avoid;margin-bottom:1.25rem;transform:none}
+/* Op de homepage worden lange berichten afgekapt op een regelgrens, met
+   een beletselteken. Twaalf regels: dat is net genoeg voor een gewoon
+   bericht en kort genoeg om een brief van tien alinea's niet de hele
+   pagina te laten bepalen. Geen verloop eroverheen, want dan zou er
+   tekst onder een waas staan en moet je daar contrast gaan meten.
+   Korte berichten raken dit niet: line-clamp doet niets zolang de tekst
+   past, en de link eronder wordt dan weer weggehaald.
+   Zie haalWegWaarHeel() in Gastenboek.astro. */
+[data-toon] .gb-lijst .gb-tekst{display:-webkit-box;-webkit-box-orient:vertical;
+  -webkit-line-clamp:12;overflow:hidden}
+.gb-verder{display:inline-block;margin-top:.9rem;padding-block:.35rem;
+  font-size:.625rem;color:rgba(217,198,165,.75);
+  border-bottom:1px solid rgba(217,198,165,.35);
+  transition:color .25s,border-color .25s}
+.gb-verder:hover{color:var(--sand);border-color:var(--sand)}
+@media(max-width:700px){
+  [data-toon] .gb-lijst:has(.gb-item){columns:1}
+}
 .gb-item{border:1px solid rgba(245,241,232,.16);border-radius:2px;padding:1.5rem 1.4rem;margin:0}
 .gb-item:nth-child(even){transform:translateY(1.25rem)}
 .gb-kop{display:flex;align-items:baseline;gap:1rem;margin:0 0 .55rem}

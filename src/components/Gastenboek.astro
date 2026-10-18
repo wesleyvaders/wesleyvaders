@@ -32,6 +32,14 @@ const suggesties = [
 
 const MAX = 3000;
 
+// Hoeveel berichten er onder het blok komen te staan. Op /gastenboek/
+// alle, in stappen van tien met een knop eronder. Op de homepage maar
+// een handvol: daar gaat het over de reis, en 46 berichten in hun
+// geheel — waarvan eentje van tien alinea's — maakten dat blok het
+// zwaartepunt van de pagina. De link naar /gastenboek/ is daar de route
+// naar de rest.
+const { toon = null } = Astro.props;
+
 // één bericht uitgelicht. Bij de build kiezen we er alvast een, zodat er
 // meteen iets staat; de browser wisselt hem daarna bij elke weergave.
 const gastenboek = await haalGastenboek();
@@ -44,7 +52,7 @@ const fmtNL = (iso) => {
     { day: '2-digit', month: '2-digit', year: 'numeric' }).format(d).replaceAll('-', '.');
 };
 ---
-<section class="sec" id="gastenboek">
+<section class="sec" id="gastenboek" data-toon={toon ?? undefined}>
   <div class="grain"></div>
   <div class="wrap">
     <div class="grid2 g-gb rv">
@@ -108,14 +116,20 @@ const fmtNL = (iso) => {
     <p class="gb-totaal mono rv" data-totaal hidden></p>
     <div class="gb-lijst rv"></div>
     <div class="gb-meer-wrap rv">
-      <button type="button" class="gb-meer mono" data-meer hidden>Laat meer zien</button>
+      {toon
+        ? <a class="gb-alle mono" href="/gastenboek/">Lees alle <span data-uit-aantal>{gastenboek?.totaal ?? ''}</span> berichten</a>
+        : <button type="button" class="gb-meer mono" data-meer hidden>Laat meer zien</button>}
     </div>
   </div>
 </section>
 
 <script>
   const api = '/api/gastenboek.php';
-  const PER = 10;
+  // data-toon staat alleen op de homepage; daar is de lijst kort en komt
+  // er geen knop onder, maar de link naar /gastenboek/.
+  const blok = document.querySelector('#gastenboek');
+  const TOON = Number(blok?.dataset.toon) || 0;
+  const PER = TOON || 10;
 
   const form = document.querySelector('.gb-form');
   const MAX = Number(form.dataset.max);
@@ -175,11 +189,30 @@ const fmtNL = (iso) => {
     } catch { /* zonder tijdstempel weigert de server, meer hoeft niet */ }
   }
 
+  // De link Lees verder staat er meteen in, op de homepage waar de CSS
+  // afkapt. Dat is met opzet de veilige stand: zou hij pas door een
+  // scriptje worden toegevoegd en dat scriptje faalt, dan staat de tekst
+  // wél afgekapt maar kan niemand verder lezen. Nu haalt haalWegWaarHeel()
+  // hem juist weg bij de berichten die helemaal passen.
   const kaartje = (b) => `
     <article class="gb-item">
       <p class="gb-kop"><span class="gb-naam">${b.naam}</span><span class="gb-datum mono">${fmt(b.datum)}</span></p>
       <p class="gb-tekst">${b.bericht}</p>
+      ${TOON ? '<a class="gb-verder mono" href="/gastenboek/">Lees verder</a>' : ''}
     </article>`;
+
+  // Op de homepage kapt de CSS lange berichten af op twaalf regels. Of
+  // dat echt gebeurd is weet alleen de browser, dus vergelijken we
+  // scrollHeight met clientHeight en halen we de link weg bij alles wat
+  // gewoon past. De marge van 2px vangt afrondingsverschillen op.
+  function haalWegWaarHeel() {
+    lijst.querySelectorAll('.gb-item').forEach(item => {
+      const t = item.querySelector('.gb-tekst');
+      const a = item.querySelector('.gb-verder');
+      if (!t || !a) return;
+      if (t.scrollHeight <= t.clientHeight + 2) a.remove();
+    });
+  }
 
   async function haalBerichten(offset = 0) {
     try {
@@ -192,7 +225,7 @@ const fmtNL = (iso) => {
         if (items.length === 0) {
           lijst.innerHTML = '<p class="gb-leeg">Nog niemand geweest.<br>Jij mag de eerste zijn.</p>';
           totaalEl.hidden = true;
-          meerKnop.hidden = true;
+          if (meerKnop) meerKnop.hidden = true;
           return;
         }
         lijst.innerHTML = '';
@@ -200,10 +233,11 @@ const fmtNL = (iso) => {
 
       lijst.insertAdjacentHTML('beforeend', items.map(kaartje).join(''));
       geladen += items.length;
+      if (TOON) haalWegWaarHeel();
 
       totaalEl.hidden = false;
       totaalEl.textContent = d.totaal === 1 ? '1 bericht' : `${d.totaal} berichten`;
-      meerKnop.hidden = !d.meer;
+      if (meerKnop) meerKnop.hidden = !d.meer;
       zetAantal(d.totaal);
     } catch {
       if (offset === 0) {
@@ -212,7 +246,7 @@ const fmtNL = (iso) => {
     }
   }
 
-  meerKnop.addEventListener('click', () => haalBerichten(geladen));
+  meerKnop?.addEventListener('click', () => haalBerichten(geladen));
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();

@@ -397,6 +397,57 @@ Wie vastloopt schrijft je dat meestal niet, die klikt weg. De rem per IP verschi
 
 Beheren gaat via **`/beheer/`**: inloggen met het token, dan lezen, aanpassen en weggooien, met een filter per bron. Nooit handmatig in `berichten.json` rommelen als het via die pagina kan.
 
+**Het dubbele bericht van Nel onder `2026-09-09-planten-weg` blijft
+bewust staan. Geen openstaand punt.**
+
+**Op de homepage staan alleen de zes nieuwste berichten**, via
+`<Gastenboek toon={6} />`. Op `/gastenboek/` staan ze allemaal, in
+stappen van tien met een knop eronder. Zonder die grens werd dat blok
+het zwaartepunt van de homepage: 46 berichten in hun geheel, waarvan
+eentje van tien alinea's, en dan scrol je minutenlang langs
+afscheidsberichten voordat je bij de verhalen bent. De homepage gaat
+over de reis, het gastenboek blijft het gastenboek.
+
+Op de homepage staat onder die zes geen "Laat meer zien" maar de link
+naar `/gastenboek/`. Het getal daarin is het **totaal**, niet zes;
+`zetAantal()` vult alle `[data-uit-aantal]` met wat de server teruggeeft.
+
+De lijst staat daar in `columns: 2` en niet in een raster. In een raster
+bepaalt het langste bericht de hoogte van zijn hele rij, en met zes
+berichten die enorm in lengte verschillen stond er naast elke lange
+brief een gat. De versprongen even-berichten horen bij dat raster en
+staan in de kolommen uit, anders schuift een kader tegen zijn buurman.
+
+**Op de homepage worden lange berichten afgekapt op twaalf regels**, met
+`-webkit-line-clamp`. Minder berichten tonen lost dit niet op: dan hangt
+de hoogte van de pagina ervan af wie er toevallig als laatste schreef.
+Eén brief van tien alinea's bepaalt anders het hele blok.
+
+Geen `max-height` met een verloop eroverheen: line-clamp kapt af op een
+regelgrens met een beletselteken, in plaats van halverwege een woord of
+achter een waas. Dat scheelt ook contrast meten over leesbare tekst.
+
+**De link "Lees verder" staat standaard bij elk bericht; het script
+haalt hem weg waar niets is afgekapt.** Of er echt afgekapt is weet
+alleen de browser, dus `haalWegWaarHeel()` vergelijkt `scrollHeight` met
+`clientHeight`. De link wijst naar `/gastenboek/`, waar het hele bericht
+staat; er is geen uitklapper in de pagina.
+
+**Dat is met opzet die kant op.** *Als een scriptje iets toevoegt dat
+nodig is om de inhoud te kunnen lezen, hoort het er standaard te staan en
+moet het script het juist weghalen. Niet andersom.* Zette het scriptje de
+link erbij en faalde het, dan stond de tekst wél afgekapt maar kon niemand
+verder lezen. Nu is de slechtste uitkomst een overbodige link onder een
+kort bericht.
+
+Gemeten na invoering, met 46 berichten in het gastenboek:
+
+| | berichten | afgekapt | de lijst |
+|---|---|---|---|
+| homepage 1440 | 6 | 2 | 1.057px |
+| homepage 390 | 6 | 3 | 2.012px |
+| /gastenboek/ | 10 | 0 | ongewijzigd |
+
 ## Analytics
 
 Staat aan, GA4 met meet-id `G-7Q2453G8J1`. Ingesteld in `src/data/site.js`.
