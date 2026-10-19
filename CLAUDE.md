@@ -448,6 +448,24 @@ Gemeten na invoering, met 46 berichten in het gastenboek:
 | homepage 390 | 6 | 3 | 2.012px |
 | /gastenboek/ | 10 | 0 | ongewijzigd |
 
+## Vindbaarheid op zijn eigen naam
+
+Op "wesley vaders" hoort hij bovenaan te staan, en daar concurreert hij
+met anderen met een vergelijkbare naam. Twee dingen dragen dat:
+
+**De Person-schema in `Base.astro`, op elke pagina.** `sameAs` bevat de
+vier socialprofielen; dat is het sterkste signaal om een persoon te
+onderscheiden. Haal daar niets uit.
+
+burovaders.nl staat in `worksFor` en **niet** in `sameAs`. Dat laatste is
+voor andere profielen van dezelfde persoon, niet voor een bedrijf.
+
+**Zijn volledige naam staat in de lopende tekst van `/mijn-verhaal/`**,
+in de eerste zin van hoofdstuk 01. Daarvoor stond hij alleen in de
+`<title>` en in het merkteken in de nav en de footer, en dat telt niet
+als tekst op de pagina. De h1 daar heet "Waarom ik dit doe" en dat blijft
+zo; de naam hoort in de zin eronder.
+
 ## Analytics
 
 Staat aan, GA4 met meet-id `G-7Q2453G8J1`. Ingesteld in `src/data/site.js`.

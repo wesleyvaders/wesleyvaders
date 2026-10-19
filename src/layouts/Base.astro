@@ -46,12 +46,24 @@ const kruimels = kruimelpad && {
 const volledigeTitel = titel ? `${titel} · ${site.naam}` : `${site.naam} · ${site.serie}`;
 const url = new URL(Astro.url.pathname, site.domein).href;
 
+// Deze schema staat op elke pagina. sameAs is de belangrijkste regel:
+// vier profielen die aantoonbaar van dezelfde persoon zijn, zodat
+// zoekmachines hem kunnen onderscheiden van anderen met een
+// vergelijkbare naam.
+//
+// burovaders.nl staat er bewust NIET in sameAs maar in worksFor: sameAs
+// is voor andere profielen van dezelfde persoon, niet voor een bedrijf.
 const persoon = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: site.naam,
   url: site.domein,
   description: omschrijvingNu,
+  worksFor: {
+    '@type': 'Organization',
+    name: 'Buro Vaders',
+    url: 'https://burovaders.nl/'
+  },
   sameAs: [
     'https://www.youtube.com/@wesleyvaders9102',
     'https://www.instagram.com/wesleyvaders/',
