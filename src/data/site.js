@@ -123,15 +123,15 @@ export const cijfers = [];
 // De datumregel en de logboekregel NU worden uit dat verhaal afgeleid,
 // uit `datum` en `locatie`. Die typ je hier dus niet.
 export const nu = {
-  bij: '2026-10-18-no-pasa-nada',
-  kop: 'Oom geworden.',
+  bij: '2026-10-23-tres-rusos-y-un-numero',
+  kop: 'Ik heb me NIE.',
   tekst:
-    'Vannacht om tien voor drie belde me broertje: Levi is er. Mooi en rot tegelijk, want 1900 km is dan opeens ver. De bus staat eindelijk bij de garage in Altea, en ik heb een avondroute gevonden met uitzicht op Calpe.',
+    'Vanochtend op het politiebureau in Benidorm het nummer opgehaald waarmee je hier pas echt bestaat. Gisteren een huis bekeken van 15.000 m², twee gebouwen, waarvan er een helemaal gestript moet worden. Daar ga ik over nadenken.',
   logboek: [
     ['Sinds', '21 september hier'],
-    ['Nieuw', 'Levi, geboren 18 oktober'],
-    ['Bus', 'Bij de garage in Altea'],
-    ['Deze week', 'Bezichtiging en een NIE-nummer'],
+    ['Nieuw', 'NIE-nummer, opgehaald in Benidorm'],
+    ['Bekeken', '15.000 m² bij Finestrat'],
+    ['Bus', 'Staat nog bij de garage'],
     ['Mee', 'Mo, en zo min mogelijk spullen']
   ]
 };
