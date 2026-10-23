@@ -7,11 +7,15 @@
     "dev": "astro dev",
     "prebuild": "python3 scripts/og-gastenboek.py || echo 'og-gastenboek overgeslagen: Python, Pillow of fontTools ontbreekt'",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "controle": "node scripts/controle.cjs"
   },
   "dependencies": {
     "astro": "^5.6.1",
     "@astrojs/sitemap": "^3.3.0",
     "sharp": "^0.34.1"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^24.0.0"
   }
 }

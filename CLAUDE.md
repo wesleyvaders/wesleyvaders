@@ -116,7 +116,32 @@ er op die datum gold en het hoort bij het bericht.
 npm run dev      # lokaal op http://localhost:4321
 npm run build    # naar dist/
 npm run preview  # dist/ lokaal bekijken
+npm run controle # de controles over dist/; zie hieronder
 ```
+
+**`npm run controle`** loopt elke pagina in `dist/` na. Hij wil een
+server op poort 8899:
+
+```bash
+npm run build
+npx serve dist -l 8899     # in een ander venster
+npm run controle
+```
+
+Zonder server kan ook, dan blijven de browsercontroles achter:
+`npm run controle -- --alleen-bestanden`.
+
+Wat hij nakijkt:
+
+- **de apostrof** in Nederlandse samentrekkingen, zie hieronder;
+- per pagina op 1440 en 390 px: afbeeldingen zonder `alt`, lege `alt`
+  buiten `aria-hidden`, aanraakvlakken onder 44 px, precies één `h1`, en
+  interne links die nergens heen gaan.
+
+Hij eindigt met exitcode 1 als er iets mis is. De grens voor
+aanraakvlakken ligt op 43,5 en niet op 44: een knop die precies 44 px is
+komt er op subpixels soms net onder, en dat kostte een keer een halve
+avond zoeken naar een fout die er niet was.
 
 ## Waar staat wat
 
@@ -135,6 +160,8 @@ npm run preview  # dist/ lokaal bekijken
 | `public/api/` | Het gastenboek: `gastenboek.php` (lezen en plaatsen), `gastenboek-beheer.php` (wijzigen en weggooien), `gastenboek-pad.php` (waar de data staat). |
 | `public/.htaccess` | 58 redirects van de oude site naar burovaders.nl, plus eigen URL's die veranderd zijn, caching en headers. |
 | `src/lib/opvulling.js` | Maakt bij de build een piepkleine vervaagde versie van een foto als base64, voor achter de hero. Zo staat er niet eerst een egaal vlak. |
+| `scripts/controle.cjs` | De controles over `dist/`: apostrof, alt-teksten, aanraakvlakken, h1, kapotte links. Draaien met `npm run controle`. |
+| `src/lib/apostrof.mjs` | Zet de Nederlandse apostrof in samentrekkingen terug die smartypants kapot maakt. |
 | `scripts/grade.py` | Fotogrades. Draaien vóór upload, niet tijdens de build. |
 | `scripts/og.py` | Deelplaatjes van de hoofdfoto's. Handmatig draaien. |
 | `scripts/og-gastenboek.py` | Het deelplaatje van het gastenboek. Loopt mee bij elke build, zodat de aftelling klopt. |
@@ -354,6 +381,22 @@ drukt; meet dat eerst.
 ## Regels die niet gebroken worden
 
 **Kleur.** Inkt `#141412`, papier `#F5F1E8`, terracotta `#B0573A`, bos `#2C4739`, zand `#D9C6A5`, goud `#DFAF4A`. Ongeveer 60% papier, 25% inkt, 8% terracotta, 5% zand, 2% goud. **Goud is uitsluitend het NU-punt.** Zie je het vaker dan één keer per scherm, dan is het fout.
+
+**De apostrof in samentrekkingen.** Smartypants ziet de apostrof aan het
+begin van `'s avonds` en denkt dat er een citaat opent: het maakt er
+U+2018 van, het openende enkele aanhalingsteken. Binnen een woord gaat
+het wel goed, vandaar dat `zo'n` klopt en `'s avonds` niet. Het stond op
+elf plekken in zeven verhalen fout.
+
+Niet met de hand corrigeren in de markdown, want dan is het de volgende
+zondag terug. `src/lib/apostrof.mjs` draait als rehype-plugin ná
+smartypants en zet alleen dit geval om: **U+2018 gevolgd door s, t, n, k
+of m en daarna een spatie of koppelteken.** Een echt openend
+aanhalingsteken wordt nooit zo gevolgd, dus `hij zei 'dat is mooi'`
+blijft heel. Getest, inclusief dat laatste.
+
+Smartypants blijft dus gewoon aan; de rest van de typografie klopt.
+`npm run controle` bewaakt het.
 
 **Typografie.** Instrument Serif voor koppen, regelafstand onder 1, altijd zinsvorm en nooit kapitalen. Instrument Sans voor lopende tekst, regelafstand 1.7, maximaal 44ch breed. JetBrains Mono voor alle data en labels, altijd kapitalen, `letter-spacing: .15em`, nooit groter dan 12px. Cursief is alleen voor quotes.
 
