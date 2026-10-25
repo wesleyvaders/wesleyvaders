@@ -45,15 +45,35 @@ const deelUrl = new URL(Astro.url.pathname, site.domein).href;
 const waHref = `https://wa.me/?text=${encodeURIComponent(`${d.titel} ${deelUrl}`)}`;
 const fbHref = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(deelUrl)}`;
 
-const schema = {
-  '@context': 'https://schema.org',
+const artikel = {
   '@type': 'Article',
   headline: d.titel,
   datePublished: d.datum.toISOString(),
   description: d.kort,
   author: { '@type': 'Person', name: site.naam, url: site.domein },
-  mainEntityOfPage: new URL(Astro.url.pathname, site.domein).href
+  mainEntityOfPage: deelUrl
 };
+
+// Staat er een video in de tekst, dan hoort die er als VideoObject bij.
+// Alles komt uit `insluiting` in de frontmatter, dezelfde bron als de
+// knop in de tekst; zie src/content.config.js. thumbnailUrl wijst naar
+// onze eigen kopie in public/video/ en niet naar i.ytimg.com, net als
+// de poster zelf.
+const i = d.insluiting;
+const video = i && {
+  '@type': 'VideoObject',
+  name: i.titel,
+  description: i.omschrijving,
+  thumbnailUrl: new URL(i.poster.src, site.domein).href,
+  uploadDate: i.uploadDatum.toISOString(),
+  duration: i.duur,
+  embedUrl: `https://www.youtube-nocookie.com/embed/${i.youtubeId}`,
+  url: `https://www.youtube.com/watch?v=${i.youtubeId}`
+};
+
+const schema = video
+  ? { '@context': 'https://schema.org', '@graph': [artikel, video] }
+  : { '@context': 'https://schema.org', ...artikel };
 ---
 <Base titel={d.titel} omschrijving={d.kort} type="article" schema={schema}
   og={ogPad} ogAlt={ogTekst}

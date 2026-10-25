@@ -1,0 +1,83 @@
+---
+/* De video in de lopende tekst, zonder dat YouTube meekijkt.
+
+   Bij het laden staat er alleen een eigen posterafbeelding uit deze
+   repo met een afspeelknop erop. Pas als iemand daar op klikt wordt de
+   speler geladen, en dan via youtube-nocookie.com. Zo komt er geen
+   enkel verzoek naar Google zolang je de video niet wilt zien.
+
+   Dit is de uitzondering op "nooit insluiten, altijd linken" uit
+   CLAUDE.md. De cookietabel en de privacypagina zijn erop aangevuld.
+
+   Zonder JavaScript blijft er een gewone link naar YouTube staan; het
+   scriptje maakt daar een echte button van. Die kant op, net als bij
+   "Lees verder" in het gastenboek: faalt het script, dan is de slechtste
+   uitkomst een link in plaats van een speler, en niet een plaatje
+   waar niets achter zit.
+
+   De gegevens komen uit `insluiting` in de frontmatter van het verhaal,
+   zodat de VideoObject-structuurdata op de pagina en deze knop uit
+   dezelfde bron komen en niet uiteen kunnen lopen. */
+import { Image } from 'astro:assets';
+
+const { id, titel, duur, poster } = Astro.props;
+
+// PT8M59S -> 8:59. Eén bron voor de duur: de ISO-notatie die ook in de
+// structuurdata staat, hier alleen anders opgeschreven.
+function duurKort(iso) {
+  const m = /^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/.exec(iso ?? '');
+  if (!m) return null;
+  const [u, min, s] = [m[1], m[2], m[3]].map(v => Number(v ?? 0));
+  const mm = u ? String(min).padStart(2, '0') : String(min);
+  return `${u ? u + ':' : ''}${mm}:${String(s).padStart(2, '0')}`;
+}
+
+const kort = duurKort(duur);
+const watch = `https://www.youtube.com/watch?v=${id}`;
+---
+<figure class="vid">
+  <a class="vid-vlak" href={watch} target="_blank" rel="noopener"
+     data-vid={id} data-vid-titel={titel}>
+    <span class="vid-doek">
+      <Image class="vid-beeld" src={poster} alt="" aria-hidden="true"
+        widths={[640, 900, 1280]} sizes="(max-width:46rem) 100vw, 44rem" quality={72} />
+      <span class="vid-play" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      </span>
+    </span>
+    <span class="vid-band">
+      <span class="vid-t">{titel}</span>
+      <span class="vid-h mono"><span data-vid-hint>Bekijk op YouTube</span>{kort && <span> · {kort}</span>}</span>
+    </span>
+  </a>
+</figure>
+
+<script>
+  // De link wordt een echte button. Dat gebeurt meteen, zonder netwerk,
+  // dus de bezoeker ziet geen tussenstand.
+  for (const link of document.querySelectorAll('a[data-vid]')) {
+    const id = link.dataset.vid;
+    const titel = link.dataset.vidTitel ?? 'de video';
+
+    const knop = document.createElement('button');
+    knop.type = 'button';
+    knop.className = link.className;
+    knop.setAttribute('aria-label', `Video afspelen: ${titel}`);
+    while (link.firstChild) knop.appendChild(link.firstChild);
+    link.replaceWith(knop);
+
+    const hint = knop.querySelector('[data-vid-hint]');
+    if (hint) hint.textContent = 'Afspelen';
+
+    knop.addEventListener('click', () => {
+      const frame = document.createElement('iframe');
+      frame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+      frame.title = titel;
+      frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      frame.allowFullscreen = true;
+      frame.className = 'vid-speler';
+      knop.replaceWith(frame);
+      frame.focus();
+    }, { once: true });
+  }
+</script>

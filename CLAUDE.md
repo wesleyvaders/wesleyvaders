@@ -43,6 +43,35 @@ elke inhoudelijke wijziging deze zes na:
      eerste dag is de eerste keer wakker worden, precies zoals het
      verhaal het zegt.
 
+   **De afspraak in datums: 21 september 2026 is dag 0, 22 september is
+   dag 1.** De aankomstdag zelf telt nog als de laatste dag *onderweg*;
+   `dagenTeller()` zegt op 21 september "Dag 2 onderweg" en op de 22e
+   "Dag 1 in Spanje". Reken een getal op de site hier altijd tegenaan na.
+   Op 25 oktober 2026 is het dag 34.
+
+   **De zomertijd doet er niets aan af, en dat is geen toeval.**
+   `dagenTot()` trekt twee *lokale* middernachten van elkaar af en haalt
+   er `Math.round` overheen. Over de nacht waarin de klok verzet wordt is
+   het verschil geen heel aantal dagen maar 35,0417 — precies dat ene
+   uur. Round vangt dat op; **`Math.floor` of `Math.ceil` zou hier een
+   dag verspringen** en mag er dus nooit voor in de plaats komen.
+   Hetzelfde geldt voor het browserscript in `Base.astro`, dat dezelfde
+   som nog eens maakt.
+
+   Nagerekend over 100 dagen in Europe/Madrid, Europe/Amsterdam, UTC en
+   America/Los_Angeles, inclusief de nacht van 24 op 25 oktober 2026
+   waarin Spanje van UTC+2 naar UTC+1 ging: geen enkel dagnummer
+   overgeslagen of herhaald, en de omslag valt overal op lokale
+   middernacht. In de browser nagemeten met een vastgezette klok:
+   33 · 34 · 35 op 24, 25 en 26 oktober.
+
+   Staat er live een dag minder dan je verwacht, kijk dan **niet** naar
+   de rekensom maar naar de laatste deploy. De nachtelijke build staat op
+   04:00 UTC maar GitHub voert hem vaak pas rond 08:45 UTC uit; tot dat
+   moment staat de HTML van gisteren er nog. De browser rekent hem daarna
+   wel meteen bij, dus dit zie je alleen zonder JavaScript of op een
+   schermafdruk.
+
    Let op het verschil met `data-dagen`: dat is het aantal dagen tót het vertrek en
    dat blijft daarna op nul staan. De teller zelf hangt aan
    `data-reisteller`, met `-l` voor het label en `-e` voor de eyebrow.
@@ -151,11 +180,12 @@ avond zoeken naar een fout die er niet was.
 | `src/content/verhalen/` | Losse verhalen. Eén markdown per verhaal. |
 | `src/content.config.js` | De velden die een verhaal of bericht mag hebben. |
 | `src/styles/global.css` | Alle styling en alle merktokens. Ook de stijlen van dingen die JavaScript aanmaakt, want scoped CSS pakt die niet. |
-| `src/components/` | Nav, Footer, Merkteken, Routelijn, Gastenboek, Reacties, Video, Analytics, Cookiebanner. |
+| `src/components/` | Nav, Footer, Merkteken, Routelijn, Gastenboek, Reacties, Video, VideoInsluiten, Analytics, Cookiebanner. |
 | `bewaard/` | Tekst die van de site af is maar bewaard blijft. Staat buiten de build en wordt niet gepubliceerd. |
 | `src/lib/gastenboek.js` | Haalt bij de build het aantal berichten op voor de hero, en het aantal per bron voor de verhalenpagina. Faalt dat, dan blijven die stukjes leeg. |
 | `public/fotos/` | Gegradeerde foto's. |
 | `public/og/` | Deelplaatjes, 1200x630. |
+| `public/video/` | Posterafbeeldingen van de eigen video's. Zelf gehost, zodat er bij het laden geen verzoek naar i.ytimg.com gaat. |
 | `public/fonts/` | De vier woff2-bestanden. Zelf gehost, latin-subset. |
 | `public/api/` | Het gastenboek: `gastenboek.php` (lezen en plaatsen), `gastenboek-beheer.php` (wijzigen en weggooien), `gastenboek-pad.php` (waar de data staat). |
 | `public/.htaccess` | 58 redirects van de oude site naar burovaders.nl, plus eigen URL's die veranderd zijn, caching en headers. |
@@ -224,8 +254,9 @@ Zet je een verkeerd domein in een sleutel, dan valt de build om met
 die naar het verkeerde platform wijst.
 
 **Nooit insluiten, altijd linken.** Een YouTube- of TikTok-speler zet
-cookies van derden, en dan moet de cookietabel op de privacypagina worden
-uitgebreid.
+cookies van derden. Daar is sinds 25 oktober 2026 één uitzondering op, en
+alleen deze ene: `VideoInsluiten` hieronder, die pas na een klik laadt.
+TikTok, Instagram en Facebook worden nooit ingesloten.
 
 ### `video:` of een losse knop in de tekst
 
@@ -244,6 +275,70 @@ Zo'n losse knop schrijf je als HTML in de markdown:
 ```html
 <p class="knop-los"><a class="deel-knop mono" href="..." target="_blank" rel="noopener">Zie de rupsen aan het werk</a></p>
 ```
+
+### De video middenin de tekst
+
+Sinds 25 oktober 2026 kan een video ook ín het verhaal staan, met
+`src/components/VideoInsluiten.astro`. Dat is iets anders dan `video:`
+hierboven: dat blijven knoppen onderaan.
+
+Bij het laden staat er alleen een eigen posterafbeelding uit
+`public/video/` met een afspeelknop erop. **Er gaat dan geen enkel
+verzoek naar Google.** Pas bij een klik komt de speler, via
+`youtube-nocookie.com`. De poster komt bewust niet van `i.ytimg.com`,
+want dan stond dat verzoek er bij het laden alsnog. Haal hem één keer op
+en zet hem in de repo.
+
+De gegevens staan in `insluiting:` in de frontmatter en worden op twee
+plekken gebruikt: de knop in de tekst en de VideoObject-structuurdata op
+de verhaalpagina. Eén bron, dus die twee kunnen niet uiteenlopen.
+
+```yaml
+insluiting:
+  youtubeId: WQCi-ZBlOe8
+  titel: Ik vond een plek in Spanje waar NIEMAND komt
+  omschrijving: Weg van de kust, weg van de drukte.
+  duur: PT8M59S          # ISO 8601, valt om bij een andere notatie
+  uploadDatum: 2026-10-24T21:11:05Z
+  poster: ../../../public/video/els-arcs-video.jpg
+```
+
+**Zoek `duur` en `uploadDatum` op de videopagina zelf op, gok ze niet.**
+Ze staan in `ytInitialPlayerResponse`: `microformat.playerMicroformatRenderer.publishDate`
+en `videoDetails.lengthSeconds`. YouTube noteert die datum in zijn eigen
+tijdzone; reken hem om naar UTC en zet de oorspronkelijke notatie als
+commentaar erbij. Het afspelervenster toont 8:58 waar de video 8:59
+duurt, dus neem die weergave niet over.
+
+Zonder JavaScript blijft er een gewone link naar YouTube staan; het
+scriptje maakt daar een echte button van met de videotitel in zijn naam.
+**Die kant op, net als bij "Lees verder" in het gastenboek**: faalt het
+script, dan heb je een link in plaats van een speler, en niet een plaatje
+waar niets achter zit.
+
+**`.mdx` alleen als een verhaal echt een component in de lopende tekst
+nodig heeft. Anders gewoon `.md`.** Op dit moment is dat één verhaal, en
+alleen vanwege de videoknop. Foto's, koppen, citaten en losse knoppen
+kunnen allemaal in markdown, dus daar is `.mdx` geen reden voor: het
+kost een extra bouwstap en JSX-regels in een bestand waar Wesley zelf in
+schrijft. Twijfel je, neem dan `.md`.
+
+MDX erft smartypants en de apostrof-plugin, dus de typografie klopt er
+net zo goed (nagerekend op dit verhaal: nul U+2018).
+
+Nagelopen welke plekken op de extensie filteren, en dat zijn er maar
+drie: `scripts/og.py` (twee globs, nu `*.md*`), de twee collecties in
+`src/content.config.js` (nu `**/*.{md,mdx}`, ook die van afleveringen)
+en het vangnet in `src/lib/nu.js` (nu `/\.mdx?$/`). Het archief, de
+sitemap, "Lees ook" en `scripts/controle.cjs` kijken naar de collectie
+of naar de gebouwde pagina's en hebben er dus geen last van; een
+RSS-feed is er niet. De build-guard is nagetest met het `.mdx`-verhaal:
+die valt nog gewoon om, met de juiste naam zonder extensie.
+
+**Sluit je hier ooit iets anders in, dan moeten `/privacy-policy/` en
+`/cookies/` mee.** Dat is bij deze speler gebeurd: de cookietabel heeft
+een rij "Cookies van YouTube" en beide pagina's leggen uit dat er pas na
+een klik iets geladen wordt.
 
 Optionele velden die nu al bestaan en later gebruikt worden: `coordinaten` ([lat, lng] voor de kaart), `aflevering`, `onderdeel` (De Finca), `budget`, `voorNa`, `galerij`, `tags`. **Vul `coordinaten` altijd in.** Later terugkomen op vijftig verhalen om er coördinaten bij te zoeken is een middag werk, nu is het tien seconden.
 
@@ -288,8 +383,16 @@ gegradeerde foto met die naam in `public/fotos/`, dan maakt `og.py` hem
 er vanzelf bij; staat die er niet, dan laat het script het bestand met
 rust, want dan is het met de hand gemaakt.
 
+**De onderregel van het deelplaatje is een verplicht veld bij elk
+verhaal.** Hij staat als `ONDER` in het instellingenblok van
+`citaatplaatje.py` en hoort uit de briefing te komen, net als de titel
+en de foto. Ontbreekt hij, zeg dat dan en vraag erom; verzin er geen
+stilletjes bij. Dat is één keer misgegaan bij hoofdstuk 06, waar een
+zelfbedachte regel achteraf vervangen moest worden.
+
 `scripts/citaatplaatje.py` maakt de citaatplaatjes. Alle instellingen
-staan in één blok bovenin: foto, label, titel, URL en bestandsnaam. Het
+staan in één blok bovenin: foto, label, titel, onderregel, URL en
+bestandsnaam. Het
 merkteken en de onderste regel worden vastgezet op een deel van de
 hoogte, dus je stuurt zelf wat er in de vierkante uitsnede overeind
 blijft. De aftelling wordt berekend uit `vertrek`, nooit ingetypt.
@@ -555,7 +658,7 @@ Monster via Hoeven naar Alfaz del Pi en komt uit `afstand` in `site.js`.
 
 ## Juridische pagina's
 
-`privacy-policy.astro` en `cookies.astro` zijn geschreven op de huidige situatie: GA4 met Consent Mode, hosting bij CloudMonsters, Bunny CDN, zelf gehoste lettertypen, geen embeds, en drie formulieren die naam en bericht openbaar op de site zetten (het gastenboek, de tips per etappe en de reacties onder een verhaal). **Verandert een van die dingen, dan moeten deze pagina's mee.** Vooral bij het insluiten van YouTube of TikTok, want dan komen er cookies van derden bij en moet de cookietabel worden aangevuld.
+`privacy-policy.astro` en `cookies.astro` zijn geschreven op de huidige situatie: GA4 met Consent Mode, hosting bij CloudMonsters, Bunny CDN, zelf gehoste lettertypen, de YouTube-speler die pas na een klik laadt, en drie formulieren die naam en bericht openbaar op de site zetten (het gastenboek, de tips per etappe en de reacties onder een verhaal). **Verandert een van die dingen, dan moeten deze pagina's mee.** Vooral bij het insluiten van nog iets van een ander platform, want dan komen er cookies van derden bij en moet de cookietabel worden aangevuld.
 
 Het e-mailadres staat in `site.js` onder `contact.email`.
 

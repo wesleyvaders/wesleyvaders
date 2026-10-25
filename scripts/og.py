@@ -21,9 +21,9 @@ VAST = ["transporter", "hero", "mo-dozen"]
 
 
 def verhaalfotos():
-    """hoofdfoto's uit de frontmatter van alle verhalen"""
+    """hoofdfoto's uit de frontmatter van alle verhalen (.md en .mdx)"""
     namen = []
-    for md in sorted((WORTEL / "src" / "content" / "verhalen").glob("*.md")):
+    for md in sorted((WORTEL / "src" / "content" / "verhalen").glob("*.md*")):
         m = re.search(r"^foto:\s*\S*/([\w-]+)\.webp\s*$", md.read_text(), re.M)
         if m:
             namen.append(m.group(1))
@@ -39,7 +39,7 @@ def eigen_deelplaatjes():
     Staat die foto er niet, dan is het deelplaatje elders gemaakt
     (og-zaterdagnacht.jpg, gastenboek.jpg) en laten we het met rust."""
     namen = []
-    for md in sorted((WORTEL / "src" / "content" / "verhalen").glob("*.md")):
+    for md in sorted((WORTEL / "src" / "content" / "verhalen").glob("*.md*")):
         m = re.search(r"^deelplaatje:\s*([\w-]+)\.jpg\s*$", md.read_text(), re.M)
         if m and (FOTOS / f"{m.group(1)}.webp").exists():
             namen.append(m.group(1))

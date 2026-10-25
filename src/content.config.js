@@ -23,7 +23,7 @@ const onderdelen = [
 ];
 
 const verhalen = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/verhalen' }),
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/verhalen' }),
   schema: ({ image }) => z.object({
     titel: z.string(),
     datum: z.date(),
@@ -59,6 +59,26 @@ const verhalen = defineCollection({
         { message: 'Dit is geen Instagram-URL' }).optional()
     }).optional(),
 
+    // De video die in de lopende tekst van dit verhaal staat, als
+    // eigen poster met een afspeelknop. Eén bron voor twee dingen: de
+    // knop in de tekst (src/components/VideoInsluiten.astro) en de
+    // VideoObject-structuurdata op de verhaalpagina. Zo kunnen de titel,
+    // de duur en de datum op de pagina niet uiteenlopen met wat er in
+    // de structuurdata staat.
+    //
+    // Alleen in een .mdx-verhaal te gebruiken, want de knop is een
+    // component en geen markdown. De poster staat in public/video/ en
+    // wordt zelf uitgeserveerd, niet van i.ytimg.com gehaald.
+    insluiting: z.object({
+      youtubeId: z.string(),
+      titel: z.string(),
+      omschrijving: z.string(),
+      // ISO 8601, zoals schema.org het wil: PT8M59S
+      duur: z.string().regex(/^PT(\d+H)?(\d+M)?(\d+S)?$/, 'Duur moet ISO 8601 zijn, bijvoorbeeld PT8M59S'),
+      uploadDatum: z.date(),
+      poster: image()
+    }).optional(),
+
     aflevering: z.number().optional(),
     onderdeel: z.enum(onderdelen).optional(),
     budget: z.number().optional(),
@@ -70,7 +90,7 @@ const verhalen = defineCollection({
 
 
 const afleveringen = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/afleveringen' }),
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/afleveringen' }),
   schema: ({ image }) => z.object({
     nummer: z.number(),
     titel: z.string(),

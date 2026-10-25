@@ -827,6 +827,51 @@ footer{background:var(--forest);color:var(--paper);position:relative;overflow:hi
 /* een losse knop midden in een verhaal, zelfde stijl als de deelknoppen */
 .artikel .knop-los{margin:2rem 0}
 
+/* Een gewone tekstlink in de lopende tekst van een verhaal. Bewust geen
+   knop: een knop geeft de link evenveel gewicht als de rest en nodigt
+   uit tot klikken, en bij TikTok willen we juist dat mensen naar YouTube
+   gaan. De knoppen houden hun eigen stijl, vandaar de :not().
+
+   display is inline-block en nadrukkelijk NIET inline-flex: dat laatste
+   slikt de spaties rond de woorden op. Dat is in dit project al drie
+   keer misgegaan, voor het laatst met "LEES ALLE46BERICHTEN".
+
+   Kleur is terracotta-donker en niet de gewone terracotta: die haalt op
+   papier 4,36:1 en dat is te krap voor lopende tekst. Deze haalt 6,29. */
+.artikel a:not(.deel-knop){display:inline-block;color:var(--terra-dk);
+  text-decoration:underline;text-underline-offset:.2em;text-decoration-thickness:1px}
+.artikel a:not(.deel-knop):hover{color:var(--ink)}
+
+/* ---------- de video in een verhaal ----------
+   Zie src/components/VideoInsluiten.astro. Bij het laden staat hier
+   alleen een eigen poster met een afspeelknop; de speler komt pas na
+   een klik. Het vlak is zonder JavaScript een link en daarna een echte
+   button, dus de knopstijlen moeten voor allebei kloppen. */
+.vid{margin:2.5rem 0}
+.artikel .vid img{margin:0}
+.vid-vlak{display:block;width:100%;padding:0;font:inherit;color:var(--ink);text-align:left;
+  background:none;border:1px solid var(--lijn);border-radius:2px;overflow:hidden;
+  cursor:pointer;transition:border-color .25s}
+.vid-vlak:hover,.vid-vlak:focus-visible{border-color:var(--ink)}
+.vid-doek{display:block;position:relative;background:var(--ink)}
+.vid-beeld{width:100%;aspect-ratio:16/9;object-fit:cover}
+.vid-play{position:absolute;inset:0;margin:auto;width:60px;height:60px;border-radius:2px;
+  background:var(--terra);color:var(--paper);display:grid;place-items:center;
+  transition:background .25s,transform .25s}
+.vid-vlak:hover .vid-play,.vid-vlak:focus-visible .vid-play{background:var(--terra-dk);transform:scale(1.06)}
+.vid-band{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+  padding:.85rem 1rem;background:var(--paper)}
+.vid-t{font-family:var(--serif);font-size:1.0625rem;line-height:1.25}
+.vid-h{font-size:.5625rem;color:rgba(20,20,18,.72);white-space:nowrap}
+.vid-speler{display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:2px}
+@media (max-width:30rem){
+  .vid-band{flex-direction:column;align-items:flex-start;gap:.5rem}
+  .vid-h{white-space:normal}
+}
+@media (prefers-reduced-motion:reduce){
+  .vid-vlak:hover .vid-play,.vid-vlak:focus-visible .vid-play{transform:none}
+}
+
 /* ---------- reacties onder een verhaal ----------
    Zelfde eindpunt als het gastenboek, maar op papier in plaats van op
    inkt. De veldstijlen komen van .gb-veld en worden hier omgezet naar

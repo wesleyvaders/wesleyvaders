@@ -78,7 +78,7 @@ Ik heb mijn huis in Monster verkocht omdat het te groot was, en nu sta ik te kij
 
 Ik stond daar in de tuin, keek over het terrein en het uitzicht, en voelde een bepaalde rust door mijn lichaam heen komen. Mijn ziel wordt hier heel gelukkig van.
 
-Alleen: het is prijzig. En dat betekent dat ik minder budget overhoud om te verbouwen en in te richten naar smaak. Het is te doen, maar stap voor stap.
+Alleen: het is prijzig. En dat betekent dat ik minder budget overhoud om te verbouwen en in te richten naar smaak. Het is te doen, maar niet allemaal tegelijk.
 
 Un poco de todo.
 

@@ -16,7 +16,11 @@ export async function huidigeStand() {
   const nieuwste = verhalen[0];
   if (!nieuwste) throw new Error('Geen verhalen, dus geen NU-blok.');
 
-  const slug = nieuwste.id.replace(/\.md$/, '');
+  // De glob-loader levert de id al zonder extensie; dit is een vangnet
+  // voor als dat ooit verandert. .mdx hoort er dus ook bij, anders
+  // zou een verhaal met een component in de tekst de guard laten
+  // klagen over een naam die wél klopt.
+  const slug = nieuwste.id.replace(/\.mdx?$/, '');
   if (nu.bij !== slug) {
     throw new Error(
       `Het NU-blok hoort bij "${nu.bij}" maar het nieuwste verhaal is "${slug}". ` +

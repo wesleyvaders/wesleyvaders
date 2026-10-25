@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import { contact, analytics } from '../data/site.js';
 
-const bijgewerkt = '20 augustus 2026';
+const bijgewerkt = '25 oktober 2026';
 
 const cookies = [
   {
@@ -18,6 +18,13 @@ const cookies = [
     doel: 'Houdt de sessie bij tijdens je bezoek.',
     duur: '2 jaar',
     soort: 'Statistieken'
+  },
+  {
+    naam: 'Cookies van YouTube',
+    partij: 'Google Ireland Limited, via youtube-nocookie.com',
+    doel: 'Alleen als jij zelf op de afspeelknop van een video klikt. Pas dan wordt de speler geladen en mag YouTube gegevens op je apparaat zetten om hem te laten werken en bij te houden wat je kijkt. Klik je niet, dan wordt er niets geladen en komt er niets. Hoe lang die gegevens blijven staan bepaalt YouTube, niet ik.',
+    duur: 'Van YouTube',
+    soort: 'Video'
   },
   {
     naam: 'wv-consent',
@@ -44,7 +51,7 @@ const cookies = [
   <section class="paper" style="padding-bottom:var(--lucht)">
     <div class="wrap">
       <div class="artikel">
-        <p>Drie cookies. Twee daarvan komen pas als jij daar ja tegen zegt.</p>
+        <p>Twee cookies van mij, en één rij die er alleen is als jij op een afspeelknop drukt. Niets daarvan komt ongevraagd.</p>
       </div>
 
       <div style="max-width:60rem;margin-top:2.5rem;border-top:1px solid var(--lijn)">
@@ -58,7 +65,9 @@ const cookies = [
               <p style="margin:0 0 .3rem;font-size:.9375rem;line-height:1.6;color:rgba(20,20,18,.78)">{c.doel}</p>
               <p style="margin:0;font-size:.8125rem;color:rgba(20,20,18,.5)">{c.partij}</p>
             </div>
-            <p class="mono" style="color:rgba(20,20,18,.5);margin:0;white-space:nowrap">{c.duur}</p>
+            {/* geen nowrap: op 390 duwde "Tot je hem wist" de pagina 25px breder
+                 dan het scherm, en dan kun je zijwaarts scrollen */}
+            <p class="mono" style="color:rgba(20,20,18,.5);margin:0">{c.duur}</p>
           </div>
         ))}
       </div>
@@ -71,8 +80,11 @@ const cookies = [
         <h2>Van gedachten veranderd</h2>
         <p>Wis de cookies en de opslag van deze site in je browserinstellingen. De balk verschijnt dan opnieuw en je kunt opnieuw kiezen.</p>
 
+        <h2>Video's in een verhaal</h2>
+        <p>Staat er een video in een verhaal, dan zie je eerst alleen een afbeelding van mijn eigen server met een afspeelknop erop. Zolang je daar niet op klikt gaat er geen enkel verzoek naar YouTube of Google, en komt er dus ook geen cookie. Druk je wel op afspelen, dan wordt de speler alsnog geladen, via <code>youtube-nocookie.com</code>, en gelden de voorwaarden van Google. Dat staat uitgebreider op de <a href="/privacy-policy/">privacypagina</a>.</p>
+
         <h2>Wat er niet is</h2>
-        <p>Geen advertentiecookies, geen trackingpixels van Meta of TikTok, geen ingesloten video's die je volgen. Video's link ik naar YouTube of TikTok in plaats van ze hier in te sluiten, precies om die reden.</p>
+        <p>Geen advertentiecookies, geen trackingpixels van Meta of TikTok. Van TikTok, Instagram en Facebook sluit ik niets in; daar link ik alleen naartoe.</p>
 
         <p>Meer weten? Dat staat op de <a href="/privacy-policy/">privacypagina</a>, of mail me op <a href={`mailto:${contact.email}`}>{contact.email}</a>.</p>
       </div>
