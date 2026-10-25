@@ -11,13 +11,16 @@ import { opvulling } from '../lib/opvulling.js';
 import { dagenTot as dagenTotDatum, dagenTeller, fase, kies, wekenZin, wekenKort, tijdZin } from '../lib/tijd.js';
 
 import transporter from '../../public/fotos/transporter.webp';
-import landschap from '../../public/fotos/hero.webp';
+// De foto achter het citaat. Stond op hero.webp: dat is ondanks zijn
+// naam niet de hero, en in dit smalle blok viel er alleen droog gras
+// van over. De baai van Altea heeft de lucht en de horizon die bij
+// "Alles komt goed" horen.
+import citaatFoto from '../../public/fotos/baai-van-altea.webp';
 // De twee foto's bij het NU-blok horen bij waar hij nu is. Verhuizen
 // dus mee met de reis, net als de locatie en het bijschrift eronder.
 import nuGroot from '../../public/fotos/els-arcs-boog.webp';
 import nuKlein from '../../public/fotos/els-arcs-pad.webp';
 import boBus from '../../public/fotos/bo_bus.webp';
-import boZwem from '../../public/fotos/bo_zwem.webp';
 
 
 const laatsteVerhalen = (await getCollection('verhalen', e => !e.data.concept))
@@ -158,15 +161,9 @@ const gastenboek = await haalGastenboek();
     </div>
   </section>
 
-  <!-- 4 · Gastenboek
-       Staat bewust hoog: tot 20 september is dit het meest urgente
-       blok van de site. Daarna verhuist het naar plek 9, tussen de
-       cijfers en Volg het mee. -->
-  <Gastenboek toon={6} />
-
-  <!-- 5 · Story break -->
+  <!-- 4 · Story break -->
   <section class="break">
-    <Image src={landschap} alt="Spaans berglandschap met terrassen en amandelbomen"
+    <Image src={citaatFoto} alt="De baai van Altea, met de zee en de bergen aan de horizon"
       class="break-bg" widths={[900, 1400, 1600]} sizes="100vw" />
     <div class="wrap">
       <p class="quote rv">Alles komt goed. Rustaghhh.
@@ -174,7 +171,11 @@ const gastenboek = await haalGastenboek();
     </div>
   </section>
 
-  <!-- 6 · De bus -->
+  <!-- 5 · De bus
+       De grote foto is de bus zelf en niet de hond: de kop gaat over
+       de Transporter van zijn vader en de zwaarste alinea over hun
+       droom, en daar hoorde geen enkel beeld bij. Bo blijft staan,
+       want ze wordt in de tekst genoemd. -->
   <section class="bus sec-ruim">
     <div class="grain"></div>
     <div class="wrap">
@@ -193,19 +194,19 @@ const gastenboek = await haalGastenboek();
         </div>
         <div class="busimgs">
           <figure>
-            <Image src={boBus} alt="Bo, witte labrador, in de bus onderweg" widths={[500, 900]} sizes="(max-width:880px) 90vw, 45vw" loading="eager" />
-            <figcaption class="figcap mono"><span>Lieve Bo</span><span>Dezelfde rit, acht jaar terug</span></figcaption>
+            <Image src={transporter} alt="De zwarte Transporter op een bergweg in de Pyreneeën, met de rotsen van de Mallos erachter" widths={[500, 900]} sizes="(max-width:880px) 90vw, 45vw" loading="eager" />
+            <figcaption class="figcap mono"><span>De Transporter</span><span>Dezelfde rit, acht jaar terug</span></figcaption>
           </figure>
           <figure>
-            <Image src={boZwem} alt="Wesley in het zwembad met Bo aan de rand" widths={[400, 800]} sizes="30vw" loading="eager" />
-            <figcaption class="figcap mono"><span>Alfaz del Pi</span></figcaption>
+            <Image src={boBus} alt="Bo, witte labrador, in de bus onderweg" widths={[400, 800]} sizes="30vw" loading="eager" />
+            <figcaption class="figcap mono"><span>Lieve Bo</span></figcaption>
           </figure>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 7 · Hoe het gaat -->
+  <!-- 6 · Hoe het gaat -->
   {laatsteVerhalen.length > 0 && (
     <section class="paper sec-krap" id="hoe-het-gaat">
       <div class="grain"></div>
@@ -237,7 +238,7 @@ const gastenboek = await haalGastenboek();
     </section>
   )}
 
-  <!-- 8 · De route -->
+  <!-- 7 · De route -->
   <section class="paper sec" id="avontuur">
     <div class="grain"></div>
     <div class="wrap">
@@ -263,7 +264,7 @@ const gastenboek = await haalGastenboek();
     </div>
   </section>
 
-  <!-- 9 · Cijfers -->
+  <!-- 8 · Cijfers -->
   <section class="cijfers sec-krap">
     <div class="grain"></div>
     <div class="wrap">
@@ -285,6 +286,16 @@ const gastenboek = await haalGastenboek();
       </div>
     </div>
   </section>
+
+  <!-- 9 · Gastenboek
+       Stond tot 25 oktober 2026 op plek 4. Dat was met opzet zolang er
+       afgeteld werd naar 20 september: toen was dit het meest urgente
+       blok van de site. Nu hij weg is hoort het hier, achter de cijfers:
+       een groen vlak met een formulier en zes berichten, waarvan er een
+       een scherm hoog kan zijn, hoort niet vóór het verhaal zelf.
+       Er wijst geen anker naar #gastenboek; de teller in de hero gaat
+       naar /gastenboek/ en die staat los van dit blok. -->
+  <Gastenboek toon={6} />
 
   <!-- 10 · Volg het mee -->
   <section class="sec" id="volg">

@@ -4,3 +4,6 @@ dist/
 .DS_Store
 *.log
 .env
+
+# losse controle-uitsnede van scripts/kenteken.py --kijk
+kenteken-controle.png

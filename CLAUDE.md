@@ -165,7 +165,37 @@ Wat hij nakijkt:
 - **de apostrof** in Nederlandse samentrekkingen, zie hieronder;
 - per pagina op 1440 en 390 px: afbeeldingen zonder `alt`, lege `alt`
   buiten `aria-hidden`, aanraakvlakken onder 44 px, precies één `h1`, en
-  interne links die nergens heen gaan.
+  interne links die nergens heen gaan;
+- **het contrast van tekst die over een foto staat**, op het zwakste
+  stukje van de regel. Zie hieronder.
+
+### Contrast meten gaat altijd mis, dus dat doet het script nu
+
+Vier keer op rij wees een handmatige meting een foto af die prima was,
+en elke keer zat de fout in de meting en niet in het beeld. Daarom zit
+het in `scripts/controle.cjs` en niet meer in een los scriptje, mét de
+vier valkuilen als harde stap:
+
+1. **De cookiebalk eruit en de reveal-animaties bevriezen**, vóór er
+   gemeten wordt. `maakMeetbaar()` doet dat en **controleert daarna of
+   het gelukt is**; zo niet, dan gooit hij een fout in plaats van een
+   getal. De terracotta PRIMA-knop stond een keer precies in het meetvak.
+2. **De tekst gaat op onzichtbaar voordat het plaatje gemaakt wordt.**
+   Contrast meet je nooit op een beeld waar letters op staan.
+3. **`scrollIntoView` krijgt `behavior:'instant'`** mee, want
+   `global.css` zet `scroll-behavior:smooth` en anders meet je halverwege
+   de animatie. Daarna 900 ms wachten: boven het citaat staan luie
+   afbeeldingen die nog een paar pixels verschuiven.
+4. **De clip van `tab.screenshot` rekent vanaf de linkerbovenhoek van
+   het DOCUMENT, niet van het venster**, en `captureBeyondViewport` moet
+   expliciet op `true`. Met venstercoördinaten maakte hij een plaatje
+   van de hero en stond er bij elke build hetzelfde cijfer, wat de foto
+   ook was. Daar zijn drie builds aan opgegaan en bijna een verzwaard
+   verloop dat nergens voor nodig was.
+
+De eis volgt de tekstgrootte: 3,0:1 vanaf 24 px (of 18,66 px vet),
+anders 4,5:1. De dekking van het element en van alles erboven wordt
+meegerekend, want de naamregel onder het citaat staat op 0,7.
 
 Hij eindigt met exitcode 1 als er iets mis is. De grens voor
 aanraakvlakken ligt op 43,5 en niet op 44: een knop die precies 44 px is
@@ -196,6 +226,7 @@ avond zoeken naar een fout die er niet was.
 | `scripts/og.py` | Deelplaatjes van de hoofdfoto's. Handmatig draaien. |
 | `scripts/og-gastenboek.py` | Het deelplaatje van het gastenboek. Loopt mee bij elke build, zodat de aftelling klopt. |
 | `scripts/citaatplaatje.py` | Citaatplaatjes voor Instagram, 1080x1350. Instellingen staan in één blok bovenin. Schrijft naar `~/Downloads/citaat/`, niet naar de site. |
+| `scripts/kenteken.py` | Maakt het kenteken van de bus onleesbaar in het beeldbestand zelf. Draaien vóór upload, daarna `og.py`. |
 | `scripts/carrousel.py` | De slides ná de eerste van een carrousel: kale foto's zonder tekst, 1080x1350. Instellingen in één blok onderin. Schrijft naar `~/Downloads/citaat/`. |
 | `scripts/contrast.py` | Meet het contrast van het citaatplaatje dat op dat moment in `citaatplaatje.py` staat ingesteld. Tekent zelf geen enkele letter en schrijft de meetgebieden weg als losse uitsnedes om te bekijken. |
 | `scripts/gastenboek-pdf.py` | De berichten als A5-boekje. Voor Wesley zelf, schrijft niet naar de site. |
@@ -348,6 +379,19 @@ Optionele velden die nu al bestaan en later gebruikt worden: `coordinaten` ([lat
 **Verkleinen geldt niet als het onleesbaar maken van gegevens.** Staat er
 op een foto iets dat niet gedeeld mag worden, dan gaat die foto er niet
 op, of hij wordt opnieuw gemaakt. Niet vertrouwen op de uitleverbreedte.
+
+**Het kenteken van de bus staat nergens leesbaar op.** Een Nederlands
+kenteken is via de RDW te herleiden tot het voertuig. Op
+`transporter.webp` is het sinds 25 oktober 2026 overschreven met een
+dichte vulling in het geel van de plaat, ingebakken in het bestand; zie
+`scripts/kenteken.py`. **Geen blur**, want een zwakke blur over een
+kenteken is terug te rekenen, en geen laagje in CSS, want alles in
+`public/fotos/` is rechtstreeks op te halen. Dezelfde redenering als bij
+de NIE-brief.
+
+Wordt die foto ooit opnieuw gegradeerd vanaf het origineel, dan is de
+afdekking weg. Draai dan `scripts/kenteken.py` opnieuw, en daarna
+`scripts/og.py`, anders houdt het deelplaatje het oude kenteken.
 
 Dat die breedte nu op 1300 en 1600 ligt is een ontwerpkeuze, geen slot:
 het bestand in `public/fotos/` staat rechtstreeks op `/fotos/<naam>.webp`

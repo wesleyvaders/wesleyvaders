@@ -305,7 +305,7 @@ footer .brand .wm small{font-size:.5rem;letter-spacing:.24em;opacity:.8;margin-t
 .grid2{display:grid;gap:clamp(2.5rem,6vw,6.5rem);align-items:start}
 .g-intro{grid-template-columns:1.05fr .95fr}
 .g-nu{grid-template-columns:1.15fr .85fr;align-items:center}
-.g-bus{grid-template-columns:1fr .92fr;align-items:start}
+.g-bus{grid-template-columns:1fr 1.12fr;align-items:start}
 .g-mow{grid-template-columns:.8fr 1.2fr;align-items:center}
 @media(max-width:880px){.grid2{grid-template-columns:1fr !important;gap:2rem}}
 .lead{max-width:44ch;font-size:1.0625rem;line-height:1.72;color:rgba(20,20,18,.78)}
@@ -385,6 +385,11 @@ footer .brand .wm small{font-size:.5rem;letter-spacing:.24em;opacity:.8;margin-t
 /* ---------- story break ---------- */
 .break{position:relative;min-height:80svh;display:flex;align-items:flex-end;overflow:hidden}
 .break-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 58%}
+/* Het verloop is er voor de leesbaarheid: de tekst staat onderin over
+   de foto. Nagemeten met npm run controle, op de foto zonder letters:
+   het citaat haalt 12,25:1 en de naamregel 5,24:1. Verzwaren hoeft dus
+   niet, en dat is ook geprobeerd; het maakte de onderkant alleen
+   donkerder zonder dat er een eis mee gehaald werd. */
 .break::after{content:"";position:absolute;inset:0;
   background:linear-gradient(180deg,rgba(20,20,18,.45),rgba(20,20,18,.22) 32%,rgba(20,20,18,.94))}
 .break .wrap{position:relative;z-index:2;padding-block:4rem}
@@ -398,15 +403,33 @@ footer .brand .wm small{font-size:.5rem;letter-spacing:.24em;opacity:.8;margin-t
 .bustext p{font-size:1.0625rem;line-height:1.75;color:rgba(245,241,232,.78);max-width:42ch;margin:0 0 1.2rem}
 .bustext p:last-child{margin-bottom:0}
 .bus-h{font-family:var(--serif);font-size:clamp(2rem,4.4vw,3.5rem);line-height:1.02;margin:.6rem 0 1.5rem}
-.busimgs{display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:start}
+/* De bus krijgt meer breedte dan Bo, en niet half om half: twee even
+   brede kolommen wil deze site nergens, en de liggende busfoto heeft
+   die breedte ook echt nodig. align-self:center verdeelt de ruimte die
+   overblijft boven en onder de foto's, in plaats van hem allemaal
+   onder de knop te laten vallen. */
+.busimgs{display:grid;grid-template-columns:1.45fr 1fr;gap:1rem;
+  align-items:start;align-self:center}
 .busimgs figure{margin:0;width:100%}
 .busimgs figure:first-child{margin-right:0}
-.busimgs figure:first-child img{aspect-ratio:3/4;object-fit:cover;object-position:50% 28%}
+/* De eerste figuur stond op 3/4 toen er een staande foto van Bo in
+   zat. Daar staat nu de bus in, en die foto is liggend 4:3: in een
+   staand kader viel de voorkant van de bus eruit en hield je alleen de
+   rotsen over. Dezelfde verhouding als het bestand betekent dat er
+   niets wordt afgesneden. De tweede figuur blijft staand; twee even
+   hoge kaders naast elkaar wil deze site nergens. */
+.busimgs figure:first-child img{aspect-ratio:4/3;object-fit:cover}
 .busimgs figure:nth-child(2){margin-top:clamp(2rem,2.5vw,3rem)}
 .busimgs figure:nth-child(2) img{aspect-ratio:3/4;object-fit:cover}
+/* Op een telefoon staan ze onder elkaar in plaats van naast elkaar.
+   Naast elkaar kreeg de liggende busfoto een kolom van 180 px en was
+   de bus nog een donker vlekje; dat is precies de foto die deze
+   sectie moet dragen. Nu krijgt hij de volle breedte en schuift Bo
+   eronder naar rechts. */
 @media(max-width:880px){
-  .busimgs{grid-template-columns:1fr 1fr;gap:.75rem}
-  .busimgs figure:nth-child(2){margin-top:2rem}
+  .busimgs{grid-template-columns:.38fr 1fr;gap:.75rem}
+  .busimgs figure:first-child{grid-column:1 / -1}
+  .busimgs figure:nth-child(2){grid-column:2 / -1;margin-top:1.25rem}
 }
 .figcap{display:flex;flex-direction:column;gap:.1rem;align-items:flex-start;margin-top:.7rem;color:rgba(217,198,165,.55)}
 
