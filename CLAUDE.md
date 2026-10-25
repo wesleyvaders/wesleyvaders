@@ -196,6 +196,7 @@ avond zoeken naar een fout die er niet was.
 | `scripts/og.py` | Deelplaatjes van de hoofdfoto's. Handmatig draaien. |
 | `scripts/og-gastenboek.py` | Het deelplaatje van het gastenboek. Loopt mee bij elke build, zodat de aftelling klopt. |
 | `scripts/citaatplaatje.py` | Citaatplaatjes voor Instagram, 1080x1350. Instellingen staan in één blok bovenin. Schrijft naar `~/Downloads/citaat/`, niet naar de site. |
+| `scripts/carrousel.py` | De slides ná de eerste van een carrousel: kale foto's zonder tekst, 1080x1350. Instellingen in één blok onderin. Schrijft naar `~/Downloads/citaat/`. |
 | `scripts/contrast.py` | Meet het contrast van het citaatplaatje dat op dat moment in `citaatplaatje.py` staat ingesteld. Tekent zelf geen enkele letter en schrijft de meetgebieden weg als losse uitsnedes om te bekijken. |
 | `scripts/gastenboek-pdf.py` | De berichten als A5-boekje. Voor Wesley zelf, schrijft niet naar de site. |
 
@@ -371,6 +372,35 @@ Posts voor Instagram, WhatsApp en Facebook zijn **altijd 1080x1350**. Nooit ligg
 De enige uitzondering is de **og:image**, het plaatje dat automatisch bij een gedeelde link verschijnt. Die is 1200x630. `scripts/og.py` maakt ze van de hoofdfoto van een verhaal; `scripts/og-gastenboek.py` maakt die van het gastenboek bij elke build opnieuw, zodat de aftelling erop klopt.
 
 Tekst blijft altijd binnen **13,5% marge boven en onder**. Dan blijft een vierkante uitsnede ook leesbaar.
+
+### Carrousels
+
+**Een carrousel neemt de verhouding van de eerste slide over.** Die is
+1080x1350, dus elke volgende slide moet dat ook zijn. Lever je er een
+vierkante of liggende bij, dan snijdt Instagram hem er alsnog naar toe
+en bepaalt hij zelf wat eraf valt.
+
+**Past het onderwerp van een volgende slide niet in die uitsnede, dan
+vullen we aan met het crème van het tekstblok** (`#F3ECDE`, dezelfde
+kleur als slide 1). Niet strakker snijden. **Nooit een logo, een gezicht
+of tekst aansnijden om een verhouding te halen** — dan is het beeld zijn
+onderwerp kwijt en heeft de slide geen werk meer te doen.
+
+Dat crème is bovendien geen noodverband: slide 1 heeft dezelfde kleur
+onder de foto, dus de twee staan in de feed op één ondergrond in plaats
+van naast elkaar als losse plaatjes.
+
+`scripts/carrousel.py` doet dit. Hij snijdt alleen van de breedte af,
+nooit van de hoogte, en hij heeft een harde ondergrens: de breedte
+waarop de foto het doek precies vult. Vraag je om minder, dan blijft hij
+op die grens staan, want daaronder snijd je inhoud weg én hou je crème
+over. Een staande foto laat hij met rust en zegt hij "niets afgesneden".
+
+Gemeten aan het Kruidvat-tasje van hoofdstuk 07: een rechtstreekse
+4:5-uitsnede houdt 60% van de breedte over terwijl de logobalk er 75%
+van beslaat. De eerste poging hakte de t van Kruidvat eraf, precies het
+woord waar die slide om draait. Vierkant uitsnijden en aanvullen met 135
+px crème boven en onder houdt het logo heel en de tas groot.
 
 **Beide deelplaatjes komen uit de scripts in deze repo**, ook als er al
 een kant-en-klaar bestand klaarstaat: `scripts/og.py` voor de og:image en
