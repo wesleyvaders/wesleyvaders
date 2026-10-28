@@ -877,7 +877,7 @@ footer{background:var(--forest);color:var(--paper);position:relative;overflow:hi
   cursor:pointer;transition:border-color .25s}
 .vid-vlak:hover,.vid-vlak:focus-visible{border-color:var(--ink)}
 .vid-doek{display:block;position:relative;background:var(--ink)}
-.vid-beeld{width:100%;aspect-ratio:16/9;object-fit:cover}
+.vid-beeld{width:100%;aspect-ratio:var(--vid-verhouding,16/9);object-fit:cover}
 .vid-play{position:absolute;inset:0;margin:auto;width:60px;height:60px;border-radius:2px;
   background:var(--terra);color:var(--paper);display:grid;place-items:center;
   transition:background .25s,transform .25s}
@@ -886,7 +886,14 @@ footer{background:var(--forest);color:var(--paper);position:relative;overflow:hi
   padding:.85rem 1rem;background:var(--paper)}
 .vid-t{font-family:var(--serif);font-size:1.0625rem;line-height:1.25}
 .vid-h{font-size:.5625rem;color:rgba(20,20,18,.72);white-space:nowrap}
-.vid-speler{display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:2px}
+.vid-speler{display:block;width:100%;aspect-ratio:var(--vid-verhouding,16/9);border:0;border-radius:2px}
+/* Een staande video (een Short) op de volle kolombreedte wordt bijna
+   900 px hoog en duwt de tekst eronder van het scherm. Vandaar een
+   smaller vlak, gecentreerd. De speler die na de klik in de plaats komt
+   hoort er net zo breed te zijn, anders springt het beeld op het moment
+   dat je op afspelen drukt. */
+.vid[data-staand] .vid-vlak,
+.vid[data-staand] .vid-speler{max-width:22rem;margin-inline:auto}
 @media (max-width:30rem){
   .vid-band{flex-direction:column;align-items:flex-start;gap:.5rem}
   .vid-h{white-space:normal}

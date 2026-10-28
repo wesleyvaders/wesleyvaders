@@ -321,6 +321,14 @@ verzoek naar Google.** Pas bij een klik komt de speler, via
 want dan stond dat verzoek er bij het laden alsnog. Haal hem één keer op
 en zet hem in de repo.
 
+**Bij een Short deugt `maxresdefault.jpg` niet.** Dat is daar een
+liggende 1280x720 met het beeld in het midden en wazige balken ernaast.
+`oardefault.jpg` is wel staand (1080x1920), maar komt nog steeds van
+i.ytimg.com. Neem dus een staand frame uit de video zelf of een van zijn
+eigen foto's uit dat verhaal, bijgesneden naar 9:16 en door `grade.py`
+heen. Bij hoofdstuk 08 is dat de kajakfoto geworden, uit de sectie waar
+de video ook staat.
+
 De gegevens staan in `insluiting:` in de frontmatter en worden op twee
 plekken gebruikt: de knop in de tekst en de VideoObject-structuurdata op
 de verhaalpagina. Eén bron, dus die twee kunnen niet uiteenlopen.
@@ -333,11 +341,24 @@ insluiting:
   duur: PT8M59S          # ISO 8601, valt om bij een andere notatie
   uploadDatum: 2026-10-24T21:11:05Z
   poster: ../../../public/video/els-arcs-video.jpg
+  verhouding: 9/16       # alleen bij een Short; standaard is 16/9
 ```
+
+**Een Short is staand.** Zet dan `verhouding: 9/16` erbij, anders krijgt
+hij het liggende kader van een gewone vlog en staan er zwarte balken
+naast. De waarde gaat als custom property naar de CSS, zodat de poster
+en de speler die er na de klik voor in de plaats komt precies even
+breed zijn; anders springt het beeld op het moment dat je afspeelt.
+Een staande video krijgt bovendien een smaller vlak (22rem,
+gecentreerd), want op de volle kolombreedte wordt hij bijna 900 px hoog
+en duwt hij de tekst van het scherm.
 
 **Zoek `duur` en `uploadDatum` op de videopagina zelf op, gok ze niet.**
 Ze staan in `ytInitialPlayerResponse`: `microformat.playerMicroformatRenderer.publishDate`
-en `videoDetails.lengthSeconds`. YouTube noteert die datum in zijn eigen
+en `videoDetails.lengthSeconds`. Loop je in de browser tegen de
+toestemmingsmuur van YouTube aan, klik die dan **niet** weg maar haal de
+pagina met `curl` op en lees er hetzelfde blok uit; dat werkt zonder
+cookies. YouTube noteert die datum in zijn eigen
 tijdzone; reken hem om naar UTC en zet de oorspronkelijke notatie als
 commentaar erbij. Het afspelervenster toont 8:58 waar de video 8:59
 duurt, dus neem die weergave niet over.

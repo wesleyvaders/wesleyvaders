@@ -76,7 +76,11 @@ const verhalen = defineCollection({
       // ISO 8601, zoals schema.org het wil: PT8M59S
       duur: z.string().regex(/^PT(\d+H)?(\d+M)?(\d+S)?$/, 'Duur moet ISO 8601 zijn, bijvoorbeeld PT8M59S'),
       uploadDatum: z.date(),
-      poster: image()
+      poster: image(),
+      // De beeldverhouding, als CSS-waarde. Een gewone vlog is 16/9 en
+      // dat is de standaard; een Short is staand 9/16. Zonder dit veld
+      // kreeg een Short zwarte balken links en rechts.
+      verhouding: z.string().regex(/^\d+\s*\/\s*\d+$/, 'Verhouding als "9/16"').default('16/9')
     }).optional(),
 
     aflevering: z.number().optional(),

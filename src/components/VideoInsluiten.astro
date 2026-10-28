@@ -20,7 +20,15 @@
    dezelfde bron komen en niet uiteen kunnen lopen. */
 import { Image } from 'astro:assets';
 
-const { id, titel, duur, poster } = Astro.props;
+// `verhouding` is de beeldverhouding van de video, als CSS-waarde.
+// Standaard 16/9, want dat zijn de gewone vlogs. Een Short is staand
+// 9/16; stond dit hardcoded, dan kreeg die enorme zwarte balken.
+// De waarde gaat als custom property naar de CSS, zodat de poster en
+// de speler die erna in de plaats komt dezelfde verhouding houden.
+const { id, titel, duur, poster, verhouding = '16/9' } = Astro.props;
+
+const [vb, vh] = verhouding.split('/').map(Number);
+const staand = vb && vh ? vh > vb : false;
 
 // PT8M59S -> 8:59. Eén bron voor de duur: de ISO-notatie die ook in de
 // structuurdata staat, hier alleen anders opgeschreven.
@@ -35,12 +43,13 @@ function duurKort(iso) {
 const kort = duurKort(duur);
 const watch = `https://www.youtube.com/watch?v=${id}`;
 ---
-<figure class="vid">
+<figure class="vid" style={`--vid-verhouding:${verhouding}`} data-staand={staand ? '' : undefined}>
   <a class="vid-vlak" href={watch} target="_blank" rel="noopener"
      data-vid={id} data-vid-titel={titel}>
     <span class="vid-doek">
       <Image class="vid-beeld" src={poster} alt="" aria-hidden="true"
-        widths={[640, 900, 1280]} sizes="(max-width:46rem) 100vw, 44rem" quality={72} />
+        widths={staand ? [360, 720] : [640, 900, 1280]}
+        sizes={staand ? '22rem' : '(max-width:46rem) 100vw, 44rem'} quality={72} />
       <span class="vid-play" aria-hidden="true">
         <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
       </span>
