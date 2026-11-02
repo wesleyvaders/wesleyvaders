@@ -235,11 +235,11 @@ def maak(naam):
 # er gaat hier dus geen tweede grade overheen.
 # ---------------------------------------------------------------
 SJABLOON = "licht"   # "donker" of "licht"; zie SJABLONEN bovenin
-FOTO   = str(WORTEL / "public" / "fotos" / "meer-guadalest.webp")
-LABEL  = "28 OKTOBER 2026"
-TITEL  = ["Todo pasa por algo"]
+FOTO   = str(WORTEL / "public" / "fotos" / "parasolden-sacarest.webp")
+LABEL  = "2 NOVEMBER 2026"
+TITEL  = ["El mundo es un pañuelo"]
 URL    = "WESLEYVADERS.NL"
-NAAM   = "todo-pasa-por-algo-instagram.jpg"
+NAAM   = "el-mundo-instagram.jpg"
 
 # De aftelling wordt niet ingetypt maar berekend, net als op de site.
 WOORD = ["nul", "één", "twee", "drie", "vier", "vijf", "zes", "zeven",
@@ -259,7 +259,7 @@ def aftelzin(dagen):
 # Meestal de berekende aftelling, aftelzin(DAGEN). Staat hier een vaste
 # zin, dan is dat omdat het plaatje iets anders wil zeggen dan waar hij
 # staat in de tijd; het label zegt dat hier al.
-ONDER = "Alles gebeurt met een reden"
+ONDER = "Wat is de wereld toch klein"
 
 # Waar de tekst begint en eindigt, als deel van de hoogte. Instagram
 # toont in het grid een vierkante uitsnede; hierbinnen valt niets weg.
