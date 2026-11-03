@@ -120,7 +120,7 @@ def uitmap():
     if not pad.is_dir():
         raise SystemExit(
             f"De map {pad} bestaat niet.\n" +
-            (f"Dat is wat er in MAP staat; klopt dat pad nog?"
+            (f"Dat pad komt uit MAP in het instellingenblok."
              if MAP else
              f"Heet de map anders? Zet hem dan in MAP in het instellingenblok."))
     return pad

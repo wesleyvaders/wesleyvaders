@@ -18,13 +18,16 @@ elke inhoudelijke wijziging deze zes na:
    typen, die komen uit `datum` en `locatie` van dat verhaal.
 2. **De tijdlijn** op de homepage (`route` in `site.js`): staat `nu` nog op de goede halte, of is die al `gehad`?
 3. **De cijferstrook**: spreekt geen enkel cijfer een andere pagina tegen.
-   De eerste twee kolommen rekent de site zelf uit, uit `vertrek` en
-   `afstand` in `site.js`. Wat er met de hand bij staat zet je in
-   `cijfers`; dat mag ook leeg zijn, dan toont de strook alleen die twee.
-   Het aantal kolommen volgt vanzelf.
+   De eerste twee kolommen rekent de site zelf uit: de teller uit
+   `vertrek` en `aankomst`, en het aantal verhalen door de collectie te
+   tellen. Daar hoef je dus niets aan bij te werken. Wat er met de
+   hand bij staat zet je in `cijfers`; dat mag ook leeg zijn, dan toont
+   de strook alleen die twee. Het aantal kolommen volgt vanzelf.
 4. **`afstand.gereden` en `afstand.waar`** in `site.js`: die bepalen waar
    het gouden punt op de routelijn in de hero staat en welke plaats
    eronder. Werk ze bij na elke etappe, anders blijft de reis stilstaan.
+   Ze staan nog alleen in `Routelijn.astro`; uit de cijferstrook zijn ze
+   weg, zie hieronder.
 5. **De aftelling**: hero, gastenboek, menu en route horen hetzelfde te zeggen.
    Na de vertrekdatum telt de site de dagen **onderweg**. Zodra hij in
    Alfaz del Pi aankomt vul je `aankomst` in `site.js` in; vanaf dan telt
@@ -88,6 +91,34 @@ ingetypt:** de aftelling, het NU-blok, de cijferstrook, de tijdlijn. Dat
 komt uit `vertrek` in `site.js` via `src/lib/tijd.js` en wordt in de
 browser bijgewerkt via `data-dagen`, `data-weken`, `data-tijd` en `data-aftel` in
 `Base.astro`. Schrijf dus `{weken}` in de tekst, geen "drie weken".
+
+**Een getal op de homepage wordt geteld of uitgerekend, nooit ingetypt.
+Kun je het niet berekenen, dan hoort het er niet als teller te staan.**
+
+Twee gevallen die dat op 3 november 2026 hebben bewezen, allebei waar op
+de dag dat ze getypt werden en allebei fout een maand later:
+
+- **"Oktober · Prio 2 · Even terug naar Nederland. Ik word oom."** stond
+  in de tijdlijn. Levi werd op 18 oktober geboren, dus "ik word oom"
+  klopte niet meer, en oktober ging voorbij zonder dat die reis er was.
+  Die halte is eruit; gaat hij in december alsnog, dan wordt dat een
+  verhaal en geen etappe in de verhuizing.
+- **`1.950` kilometer gereden** stond als tweede kolom in de
+  cijferstrook. Dat getal verandert nooit meer, en het stond naast een
+  teller die elke dag oploopt. Nu staat daar het aantal gepubliceerde
+  verhalen, geteld uit de collectie in `index.astro`.
+
+  Het label daarbij is **Verhalen** en niet Hoofdstukken, al telt dat
+  getal wel alle hoofdstukken. Elf berichten van vóór het vertrek staan
+  namelijk allemaal op hoofdstuk `00`, dus er zijn twintig verhalen en
+  tien verschillende hoofdstuknummers. "20 Hoofdstukken" zou de hero
+  tegenspreken, waar "Hoofdstuk 09" staat. Tel dus wat je telt en noem
+  het zo.
+
+De vuistregel die daaruit volgt: een cijfer naast een lopende teller
+moet zelf ook lopen. Een vast getal hoort in de tekst van een verhaal,
+waar het bevriest bij de datum, en niet op een pagina die de huidige
+stand beschrijft.
 
 **Zet geen "Nog" vóór `{weken}`.** Onder de veertien dagen levert de
 plaatshouder zelf al "nog acht dagen" op, en dan staat er "Nog nog acht

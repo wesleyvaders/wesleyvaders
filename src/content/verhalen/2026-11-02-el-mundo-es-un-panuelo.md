@@ -202,7 +202,7 @@ Daar keken wij vroeger met het hele gezin naar. Elke vakantie weer, vanaf de kus
 
 Nu heb ik hem van de andere kant gezien.
 
-Die kerf heet officieel El Portell, maar hier noemt iedereen hem de Tajo de Roldán. Het verhaal gaat dat Roland daarboven vocht met de aanvoerder van het Moorse leger, uithaalde met zijn zwaard, miste, en een stuk van de berg af sloeg. Dat stuk viel in zee.
+Die kerf heet officieel El Portell, maar hier noemt iedereen hem de Tajo de Roldán. Roland was een veldheer van Karel de Grote. Hij sneuvelde in 778 in de Pyreneeën en werd daarna de held van het Roelantslied, het bekendste ridderverhaal van de middeleeuwen. Het verhaal gaat dat hij daarboven vocht met de aanvoerder van het Moorse leger, uithaalde met zijn zwaard Durendal, miste, en een stuk van de berg af sloeg. Dat stuk viel in zee.
 
 Dat is het eiland voor de kust van Benidorm.
 
@@ -211,6 +211,8 @@ In een andere versie sloeg hij die hap er juist met opzet uit, zodat de zon late
 En toen is er een geoloog geweest die het is gaan narekenen. Het gesteente van de Puig Campana is Laat-Jura, het kalksteen van dat eiland is Vroeg-Krijt. Het past niet.
 
 Iemand heeft dus serieus een legende van twaalfhonderd jaar oud met steenmonsters onderuit gehaald.
+
+En het is niet eens de enige. In de Pyreneeën zit een kerf in de bergkam van 40 m breed en 100 m hoog, de Brèche de Roland, en daar vertellen ze exact hetzelfde verhaal. Dezelfde man, hetzelfde zwaard, 500 km noordelijker.
 
 Ik hou het gewoon op Roland.
 

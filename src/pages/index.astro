@@ -3,7 +3,7 @@ import { Image, getImage } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Routelijn from '../components/Routelijn.astro';
-import { site, nu, route, stappen, socials, vertrek, aankomst, afstand, cijfers } from '../data/site.js';
+import { site, nu, route, stappen, socials, vertrek, aankomst, cijfers } from '../data/site.js';
 import Gastenboek from '../components/Gastenboek.astro';
 import { haalGastenboek } from '../lib/gastenboek.js';
 import { huidigeStand } from '../lib/nu.js';
@@ -23,9 +23,9 @@ import nuKlein from '../../public/fotos/parasolden-sacarest.webp';
 import boBus from '../../public/fotos/bo_bus.webp';
 
 
-const laatsteVerhalen = (await getCollection('verhalen', e => !e.data.concept))
-  .sort((a, b) => b.data.datum - a.data.datum)
-  .slice(0, 3);
+const alleVerhalen = (await getCollection('verhalen', e => !e.data.concept))
+  .sort((a, b) => b.data.datum - a.data.datum);
+const laatsteVerhalen = alleVerhalen.slice(0, 3);
 
 const fmt = (d) =>
   new Intl.DateTimeFormat('nl-NL', { day: '2-digit', month: '2-digit', year: 'numeric' })
@@ -274,8 +274,8 @@ const gastenboek = await haalGastenboek();
           <p class="cijfer-l mono" data-reisteller-l>{teller.label}</p>
         </div>
         <div class="cijfer-blok">
-          <p class="cijfer-w">{afstand.gereden.toLocaleString('nl-NL')}</p>
-          <p class="cijfer-l mono">Kilometer gereden</p>
+          <p class="cijfer-w">{alleVerhalen.length}</p>
+          <p class="cijfer-l mono">Verhalen</p>
         </div>
         {cijfers.map(c => (
           <div class="cijfer-blok">
