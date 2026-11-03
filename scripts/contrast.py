@@ -72,8 +72,10 @@ if __name__ == "__main__":
     # een letter, dan deugt de meting niet.
     import sys
     bg = kaal()
-    uit = os.path.expanduser("~/Downloads/citaat/")
-    os.makedirs(uit, exist_ok=True)
+    # Dezelfde map als het plaatje zelf, via citaatplaatje.py. Niet hier
+    # nog een keer uitrekenen: dan lopen de meetvakken en het plaatje
+    # uit elkaar zodra die bestemming verandert.
+    uit = str(m.uitmap()) + "/"
     p = posities()
     xl, xr = 150, 930
     # Bij blok-onder begint het crèmeblok vlak boven het merkteken. Niet
@@ -103,6 +105,6 @@ if __name__ == "__main__":
         if not ok and not naam.startswith("  "):
             slecht += 1
         print(f"{naam:28s} {c:8.2f}:1   >= {eis}  {'ok' if ok else 'TE LAAG'}")
-    print("\nBekijk vak-boven.png, vak-titel.png en vak-onder.png in ~/Downloads/citaat/")
+    print(f"\nBekijk vak-boven.png, vak-titel.png en vak-onder.png in {uit}")
     print("voordat je deze cijfers gelooft. Zie je een letter, dan is de meting ongeldig.")
     sys.exit(1 if slecht else 0)

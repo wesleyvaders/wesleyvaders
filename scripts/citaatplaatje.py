@@ -11,7 +11,7 @@ weg en valt je tekst eraf.
 from PIL import Image, ImageDraw, ImageFont
 from fontTools.ttLib import TTFont
 from pathlib import Path
-import datetime, os, math, tempfile
+import datetime, os, math, re, tempfile
 
 INK   = (20, 20, 18)
 PAPER = (245, 241, 232)
@@ -81,7 +81,49 @@ serif = lambda s: ImageFont.truetype(ttf("instrument-serif-latin"), s)
 sans  = lambda s: ImageFont.truetype(ttf("instrument-sans-latin"), s)
 mono  = lambda s: ImageFont.truetype(ttf("jetbrains-mono-latin"), s)
 
-UIT = os.path.expanduser("~/Downloads/citaat/")
+# Waar het deelplaatje terechtkomt: in de map van het verhaal zelf,
+# naast de foto's en het md-bestand waar je die week toch al in werkt.
+#
+# Niet meer in één verzamelmap. Dat werd een platte map met tientallen
+# bestanden waar je elke week doorheen moest zoeken.
+# ~/Downloads/citaat/ blijft staan als archief van alles van vóór
+# 3 november 2026; daar wordt niets meer bij geschreven en niets uit
+# weggehaald.
+MAANDEN = ["januari", "februari", "maart", "april", "mei", "juni", "juli",
+           "augustus", "september", "oktober", "november", "december"]
+
+
+def uitmap():
+    """De map van dit verhaal.
+
+    Staat MAP leeg, dan wordt hij afgeleid uit LABEL: daar staat de
+    datum al in en die typ je per verhaal toch in, dus er valt niets
+    uit de pas te lopen. "2 NOVEMBER 2026" wordt
+    ~/Downloads/verhaal-2-november.
+
+    Klopt die afleiding niet, dan bestaat de map niet en stopt het
+    script met de naam die het zocht. Dat is met opzet: het plaatje
+    hoort bij de foto's van dat verhaal, en een map aanmaken zou alleen
+    maar lege mappen opleveren op de plek waar je het niet zoekt."""
+    if MAP:
+        pad = Path(os.path.expanduser(MAP))
+    else:
+        d = re.match(r"\s*(\d{1,2})\s+([A-Za-z\u00e9\u00eb\u00ef]+)", LABEL)
+        if not d:
+            raise SystemExit(f"Geen datum te herkennen in LABEL ({LABEL!r}).\n"
+                             f"Zet de map dan in MAP in het instellingenblok.")
+        dag, maand = int(d.group(1)), d.group(2).lower()
+        if maand not in MAANDEN:
+            raise SystemExit(f"Onbekende maand in LABEL: {maand!r}.\n"
+                             f"Zet de map dan in MAP in het instellingenblok.")
+        pad = Path(os.path.expanduser(f"~/Downloads/verhaal-{dag}-{maand}"))
+    if not pad.is_dir():
+        raise SystemExit(
+            f"De map {pad} bestaat niet.\n" +
+            (f"Dat is wat er in MAP staat; klopt dat pad nog?"
+             if MAP else
+             f"Heet de map anders? Zet hem dan in MAP in het instellingenblok."))
+    return pad
 
 VERTREK  = datetime.date(2026, 9, 20)
 # De aankomst in Alfaz del Pi. Leeg laten zolang hij onderweg is.
@@ -209,8 +251,7 @@ def maak(naam):
     yb += 48
     cenm(yb, f"WESLEYVADERS.NL/ROUTE   \u00b7   NOG {DAGEN} DAGEN", mono(18), SAND, 3.0)
 
-    uit = UIT
-    os.makedirs(uit, exist_ok=True)
+    uit = str(uitmap()) + "/"
     kaart.save(uit + naam, quality=92, subsampling=0)
 
     # controle: alle uitsnedes die Instagram kan maken
@@ -240,6 +281,9 @@ LABEL  = "2 NOVEMBER 2026"
 TITEL  = ["El mundo es un pañuelo"]
 URL    = "WESLEYVADERS.NL"
 NAAM   = "el-mundo-instagram.jpg"
+# Leeg = de map van dit verhaal, afgeleid uit LABEL; zie uitmap() bovenin.
+# Vul hem met de hand als de map anders heet dan verhaal-<dag>-<maand>.
+MAP    = ""
 
 # De aftelling wordt niet ingetypt maar berekend, net als op de site.
 WOORD = ["nul", "één", "twee", "drie", "vier", "vijf", "zes", "zeven",
@@ -441,14 +485,14 @@ def citaat(naam):
     maak = citaat_blok if SJABLONEN[SJABLOON]["ontwerp"] == "blok-onder" else citaat_over_foto
     kaart, merk_y, y_url, furl = maak(naam)
 
-    os.makedirs(UIT, exist_ok=True)
-    kaart.save(UIT+naam, quality=92, subsampling=0)
+    uit = uitmap()
+    kaart.save(uit / naam, quality=92, subsampling=0)
 
     # controlestrook: de drie vierkante uitsnedes die Instagram kan maken
     strook = Image.new("RGB", (B*3+40, B), (60, 60, 58))
     for i, box in enumerate([(0, (H-B)//2, B, (H-B)//2+B), (0, 0, B, B), (0, H-B, B, H)]):
         strook.paste(kaart.crop(box), (i*(B+20), 0))
-    strook.save(UIT+"controle-alles.jpg", quality=80)
+    strook.save(uit / "controle-alles.jpg", quality=80)
 
     d = ImageDraw.Draw(kaart)
     print(f"{naam}  {kaart.size}  sjabloon {SJABLOON}")
@@ -457,5 +501,9 @@ def citaat(naam):
     print(f"  onderregel: {ONDER!r}")
 
 
-citaat(NAAM)
+# Alleen tekenen als dit script zelf gedraaid wordt. contrast.py laadt
+# deze module om bij de instellingen te komen; zonder deze regel maakte
+# dat het plaatje een tweede keer en printte het alles dubbel.
+if __name__ == "__main__":
+    citaat(NAAM)
 

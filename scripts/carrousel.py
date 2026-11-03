@@ -3,7 +3,8 @@ DE SPAANSE DROOM · losse slides van een carrousel
 
 De eerste slide van een carrousel maakt `citaatplaatje.py`: foto boven,
 tekst op crème eronder. De slides daarna zijn kale foto's zonder tekst,
-en die maakt dit script.
+en die maakt dit script. Het resultaat komt naast de bronfoto te staan,
+dus in de map van het verhaal zelf.
 
 Instagram houdt een hele carrousel op de verhouding van de eerste
 slide. Die is 1080x1350, dus elke volgende slide moet dat ook zijn,
@@ -32,7 +33,6 @@ import pillow_heif
 pillow_heif.register_heif_opener()
 
 WORTEL = Path(__file__).resolve().parents[1]
-UIT = Path(os.path.expanduser("~/Downloads/citaat/"))
 
 # 1080x1350, gelijk aan citaatplaatje.py. Nooit liggend op Instagram.
 DOEK = (1080, 1350)
@@ -90,8 +90,11 @@ def maak(bron, profiel, naam, keuze="vierkant"):
     doek = Image.new("RGB", DOEK, CREME)
     doek.paste(foto, ((DOEK[0] - fb) // 2, (DOEK[1] - fh) // 2))
 
-    UIT.mkdir(parents=True, exist_ok=True)
-    pad = UIT / naam
+    # Naast de bronfoto, dus in de map van het verhaal zelf. Die map
+    # staat al in BRON, dus er valt hier niets af te leiden en niets uit
+    # de pas te lopen. ~/Downloads/citaat/ is het archief van vóór
+    # 3 november 2026 en blijft zoals het is.
+    pad = Path(bron).parent / naam
     doek.save(pad, quality=92, subsampling=0)
 
     rand_x, rand_y = (DOEK[0] - fb) // 2, (DOEK[1] - fh) // 2

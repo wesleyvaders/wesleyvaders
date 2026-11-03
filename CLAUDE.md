@@ -225,9 +225,9 @@ avond zoeken naar een fout die er niet was.
 | `scripts/grade.py` | Fotogrades. Draaien vóór upload, niet tijdens de build. |
 | `scripts/og.py` | Deelplaatjes van de hoofdfoto's. Handmatig draaien. |
 | `scripts/og-gastenboek.py` | Het deelplaatje van het gastenboek. Loopt mee bij elke build, zodat de aftelling klopt. |
-| `scripts/citaatplaatje.py` | Citaatplaatjes voor Instagram, 1080x1350. Instellingen staan in één blok bovenin. Schrijft naar `~/Downloads/citaat/`, niet naar de site. |
+| `scripts/citaatplaatje.py` | Citaatplaatjes voor Instagram, 1080x1350. Instellingen staan in één blok onderin. Schrijft naar de map van het verhaal, niet naar de site. |
 | `scripts/kenteken.py` | Maakt het kenteken van de bus onleesbaar in het beeldbestand zelf. Draaien vóór upload, daarna `og.py`. |
-| `scripts/carrousel.py` | De slides ná de eerste van een carrousel: kale foto's zonder tekst, 1080x1350. Instellingen in één blok onderin. Schrijft naar `~/Downloads/citaat/`. |
+| `scripts/carrousel.py` | De slides ná de eerste van een carrousel: kale foto's zonder tekst, 1080x1350. Instellingen in één blok onderin. Schrijft naast de bronfoto. |
 | `scripts/contrast.py` | Meet het contrast van het citaatplaatje dat op dat moment in `citaatplaatje.py` staat ingesteld. Tekent zelf geen enkele letter en schrijft de meetgebieden weg als losse uitsnedes om te bekijken. |
 | `scripts/gastenboek-pdf.py` | De berichten als A5-boekje. Voor Wesley zelf, schrijft niet naar de site. |
 
@@ -492,6 +492,37 @@ gegradeerde foto met die naam in `public/fotos/`, dan maakt `og.py` hem
 er vanzelf bij; staat die er niet, dan laat het script het bestand met
 rust, want dan is het met de hand gemaakt.
 
+### Waar de deelplaatjes terechtkomen
+
+**Bij de foto's van dat verhaal, niet in één verzamelmap.** Dus
+`~/Downloads/verhaal-2-november/el-mundo-instagram.jpg`, naast de
+bronfoto's en het md-bestand waar je die week toch al in werkt. Dat
+geldt voor `citaatplaatje.py`, voor de meetvakken van `contrast.py` en
+voor `carrousel.py`.
+
+`~/Downloads/citaat/` is het archief van alles van vóór 3 november
+2026. Daar wordt niets meer bij geschreven en er is niets uit
+weggehaald; het stond daar met tweeëntwintig bestanden door elkaar en
+dat was precies het probleem.
+
+De twee scripts leiden die map op hun eigen manier af, en allebei uit
+iets dat er toch al stond:
+
+- **`carrousel.py` schrijft naast `BRON`.** Dat pad wijst al in de map
+  van het verhaal, dus er valt niets af te leiden en niets uit de pas
+  te lopen.
+- **`citaatplaatje.py` leidt hem af uit `LABEL`.** "2 NOVEMBER 2026"
+  wordt `~/Downloads/verhaal-2-november`. Die datum typ je per verhaal
+  toch in, dus er is geen tweede plek die mee moet veranderen.
+  `contrast.py` vraagt die map op via `uitmap()` en rekent hem niet
+  zelf nog eens uit.
+
+**Klopt de afleiding niet, dan stopt het script**, met de naam van de
+map die het zocht. Het maakt die map niet aan: dan zou het plaatje
+ergens belanden waar je het niet zoekt. Heet de map anders dan
+`verhaal-<dag>-<maand>`, zet dan `MAP` bovenin het instellingenblok met
+de hand.
+
 **De onderregel van het deelplaatje is een verplicht veld bij elk
 verhaal.** Hij staat als `ONDER` in het instellingenblok van
 `citaatplaatje.py` en hoort uit de briefing te komen, net als de titel
@@ -518,8 +549,8 @@ waarin het merkteken, de onderregel en de URL nog werden getekend.
 
 Werkwijze: draai `scripts/contrast.py` na `citaatplaatje.py`. Die tekent
 zelf geen enkele letter en kan de fout dus niet maken. Hij zet de drie
-meetgebieden als losse uitsnedes in `~/Downloads/citaat/`: bekijk die met
-eigen ogen voordat je een cijfer gelooft. Zie je een letter, dan is de
+meetgebieden als losse uitsnedes in dezelfde verhaalmap als het plaatje:
+bekijk die met eigen ogen voordat je een cijfer gelooft. Zie je een letter, dan is de
 meting ongeldig. Hij meet het zwakste stukje van een regel en niet het
 gemiddelde, want een enkel woord boven een fel raam verdwijnt terwijl de
 rest donker genoeg is.
