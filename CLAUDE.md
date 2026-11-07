@@ -702,9 +702,21 @@ Verhalen van vóór een verhuizing houden hun eigen locatie; die bevriezen, net 
 
 ## Gastenboek en tips
 
-Het enige dynamische deel van de site. De berichten staan **niet** in de repo maar op de server, in `domains/wesleyvaders.nl/gastenboek-data/` naast `public_html`. Dat pad wordt afgeleid van het eindpunt zelf, dus er staat nergens een accountnaam in. Buiten `public_html`, want de FTP-deploy gooit alles weg wat niet in `dist/` zit.
+Het enige dynamische deel van de site. De berichten staan **niet** in de repo maar op de server, naast `public_html`:
 
-Drie bestanden horen daar: `berichten.json`, `token.txt` (jouw wachtwoord voor `/beheer/`, mag een zin zijn die je onthoudt) en `geheim.txt` (ondertekent het tijdstempel van het formulier).
+```
+/home/cm32678/domains/wesleyvaders.nl/gastenboek-data/
+```
+
+Dat pad wordt in `gastenboek-pad.php` afgeleid van het eindpunt zelf, dus er staat nergens een accountnaam in. Buiten `public_html`, want de FTP-deploy gooit alles weg wat niet in `dist/` zit.
+
+**Tot 27 augustus 2026 stond het in `/home/cm32678/gastenboek-data/`, buiten de domeinmap. Daar kwam je in DirectAdmin niet bij, en dat is precies waarom het verhuisd is.** Die oude map is geen terugvaloptie meer; het script kijkt er niet meer naar. Kopieer je daar ooit uit, dan krijg je of niets, of een stand van vóór die verhuizing die er compleet uitziet en maanden oud is. Welke map er echt gebruikt wordt staat onderaan de beheerpagina.
+
+Vier bestanden horen daar: `berichten.json`, `ips.json` (de rem per IP, alleen hashes), `token.txt` (jouw wachtwoord voor `/beheer/`, mag een zin zijn die je onthoudt) en `geheim.txt` (ondertekent het tijdstempel van het formulier).
+
+**`berichten.json` bevat alle bronnen door elkaar**, dus zowel het gastenboek als de reacties onder de verhalen en de tips. Een telling die op het aantal gastenboekberichten uitkomt is dus onvolledig. Op 7 november 2026: **105 berichten in totaal, waarvan 47 met bron `gastenboek`** en 58 reacties verdeeld over vijftien verhalen. Wil je weten hoe de verdeling nu is, vraag dan `?tellen=1` op het eindpunt; dat geeft het aantal per bron.
+
+Bij een back-up: `berichten.json` is het enige dat niet opnieuw te maken is. `token.txt` en `geheim.txt` zijn wachtwoorden en horen niet in een gewone back-upmap; die maak je desnoods opnieuw aan.
 
 Elk bericht heeft een **bron**: `gastenboek`, `route:03-dune-du-pilat` voor een tip bij een etappe, of `verhaal:2026-09-05-de-laatste-zaterdagnacht` voor een reactie onder een verhaal. Berichten zonder bron tellen als gastenboek. De filters zijn voor alle drie gelijk: honeypot, minstens vier seconden tussen laden en versturen, geen links, maximaal 3000 tekens. Dat was 1200, maar dit is een
 afscheidsgastenboek en daar hoort een lange brief bij: het eerste echt
