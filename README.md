@@ -17,7 +17,17 @@ Push naar `main`. GitHub Actions bouwt de site en zet hem via FTPS op de server 
 
 De secrets `FTP_HOST`, `FTP_USER` en `FTP_PASSWORD` staan in GitHub onder Settings > Secrets and variables > Actions.
 
-Werkt dat niet, gebruik dan `./deploy.sh` (rsync, gegevens bovenin invullen).
+Werkt dat niet, dan kan het handmatig vanaf een machine waarvan het IP bij
+CloudMonsters op de whitelist staat:
+
+```bash
+npm run build
+node scripts/deploy.cjs kijken      # controleert, schrijft niets
+node scripts/deploy.cjs uploaden
+```
+
+De inloggegevens komen dan uit `~/.config/wesleyvaders/deploy.env`. Zie
+het kopje Handmatig deployen in `CLAUDE.md`; draai altijd eerst `kijken`.
 
 ## Eerste keer nalopen
 

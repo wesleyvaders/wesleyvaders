@@ -251,6 +251,7 @@ avond zoeken naar een fout die er niet was.
 | `public/api/` | Het gastenboek: `gastenboek.php` (lezen en plaatsen), `gastenboek-beheer.php` (wijzigen en weggooien), `gastenboek-pad.php` (waar de data staat). |
 | `public/.htaccess` | 58 redirects van de oude site naar burovaders.nl, plus eigen URL's die veranderd zijn, caching en headers. |
 | `src/lib/opvulling.js` | Maakt bij de build een piepkleine vervaagde versie van een foto als base64, voor achter de hero. Zo staat er niet eerst een egaal vlak. |
+| `scripts/deploy.cjs` | Handmatige FTPS-deploy als GitHub Actions er niet bij kan. `kijken` controleert eerst, `uploaden` schrijft pas daarna. Verwijdert nooit iets. |
 | `scripts/controle.cjs` | De controles over `dist/`: apostrof, alt-teksten, aanraakvlakken, h1, kapotte links. Draaien met `npm run controle`. |
 | `src/lib/apostrof.mjs` | Zet de Nederlandse apostrof in samentrekkingen terug die smartypants kapot maakt. |
 | `scripts/grade.py` | Fotogrades. Draaien vóór upload, niet tijdens de build. |
@@ -883,4 +884,108 @@ laatste push. Zie `schedule` in `deploy.yml`.
 
 **Gebruik de Git Deploy plugin in DirectAdmin niet meer.** Die schrijft naar dezelfde map en overschrijft dan wat Actions net heeft neergezet.
 
-Handmatig kan nog steeds: `npm run build` en dan de inhoud van `dist/` naar `public_html/`. Zie `deploy.sh`.
+Het doelpad op de server is `/home/cm32678/domains/wesleyvaders.nl/public_html/`
+en **niet** `/home/cm32678/public_html/`; dat tweede wijst naar een ander
+domein en daar is al eens een andere site mee overschreven. Dat geldt
+als je met SSH of rsync werkt. Via FTP bestaat geen van beide paden;
+zie hieronder.
+
+## Handmatig deployen
+
+Dat moest in november 2026, toen CloudMonsters poort 21 dichtzette en
+per IP ging whitelisten. Wesley's eigen IP mag erin, dat van een
+GitHub-runner wisselt en kan er dus niet op; acht runs op rij faalden op
+`connect ETIMEDOUT ...:21` zonder dat er ooit een inlogpoging was.
+
+```bash
+npm run build
+node scripts/deploy.cjs kijken      # controleert, schrijft niets
+node scripts/deploy.cjs uploaden    # pas hierna
+```
+
+Inloggegevens in `~/.config/wesleyvaders/deploy.env` met rechten 600,
+buiten de repo: `FTP_HOST`, `FTP_USER`, `FTP_PASSWORD`, dezelfde drie
+als de GitHub-secrets. Het wachtwoord gaat nooit over de opdrachtregel.
+
+**Draai altijd eerst `kijken`, en de eerste controle daarin is deze:
+haal het `versie.txt` op dat in de doelmap ligt en vergelijk het byte
+voor byte met wat `https://wesleyvaders.nl/versie.txt` teruggeeft.**
+
+Dat is het hele punt. Je controleert niet of het pad er goed uitziet,
+je bewijst dat die map en dat domein bij elkaar horen. Een pad kan er
+kloppend uitzien en toch naar een ander domein wijzen; dat is vroeg in
+dit project al een keer gebeurd en er is toen een andere site mee
+overschreven. Een pad dat je herkent is geen bewijs. Twee identieke
+`versie.txt`-regels wel, want die kunnen alleen gelijk zijn als de
+webserver uitserveert wat jij daar ziet liggen.
+
+Komen ze niet overeen, dan stopt het script. Niet doorduwen.
+
+**Het FTP-account is gechroot in de `public_html` van dit domein.** De
+login komt uit in `/`, en die `/` *is*
+`/home/cm32678/domains/wesleyvaders.nl/public_html`. Daarom staat er
+`server-dir: ./` in de workflow. Over FTP bestaat geen van beide
+absolute paden:
+
+```
+/domains/wesleyvaders.nl/public_html   ->  550 Can't check for file existence
+/public_html                           ->  550 Can't check for file existence
+```
+
+De waarschuwing hieronder over het juiste en het verkeerde absolute pad
+gaat dus over SSH en rsync, niet over FTP. Via FTP kun je dit account
+niet uit zijn eigen map krijgen; die chroot is strenger dan welke
+controle je zelf ook inbouwt.
+
+**Verbind op `theems.cloudmonsters.nl`, niet op `ftp.wesleyvaders.nl`.**
+Het certificaat van de server staat alleen op die eerste naam:
+
+```
+Host: ftp.wesleyvaders.nl is not in the cert's altnames:
+DNS:theems.cloudmonsters.nl
+```
+
+Op de juiste naam slaagt de verificatie wel, en dan kan de
+certificaatcontrole aan blijven staan in plaats van uit. Beide namen
+wijzen naar hetzelfde IP, 185.79.153.198.
+
+Daarom kan `FTP_HOST` in GitHub Secrets ook op `theems.cloudmonsters.nl`
+en kan `security: loose` dan uit de workflow. **Doe dat pas op het
+moment dat de automatische deploy weer werkt**, zodat het meteen getest
+wordt; anders verander je twee dingen tegelijk en weet je bij de
+volgende fout niet welke van de twee het was.
+
+Het script verwijdert niets, alleen toevoegen en overschrijven. Het
+toestandsbestand `.ftp-deploy-sync-state.json` van de action blijft zo
+ongemoeid en de automatische deploy pakt het vanzelf weer op.
+
+### versie.txt van buitenaf is geen bewijs
+
+**Een `curl` van `https://wesleyvaders.nl/versie.txt` kan een verouderde
+kopie teruggeven terwijl andere bestanden op diezelfde server wel
+actueel zijn.** Dat is gebeurd op 25 oktober 2026 en opnieuw op
+7 november.
+
+Dat is gekmakend, want dit bestand is juist bedoeld als de snelle
+waarheid over wat er draait, en het staat met opzet op `no-cache` in
+`public/.htaccess`. Maar tussen jou en Apache zitten nog een
+nginx-laag (zichtbaar aan `x-accel-version`) en een CDN, en één
+tussenstation dat zich niet aan die header houdt is genoeg. Welk
+antwoord je krijgt kan dan per netwerk en per moment verschillen: de
+een ziet de nieuwe regel, de ander nog de oude.
+
+Dus na een deploy:
+
+- **Controleer de inhoud die daadwerkelijk veranderd is**, niet alleen
+  het versienummer. Is de cijferstrook bijgewerkt, staat de nieuwe
+  alinea erin, is die halte verdwenen. Dat zijn de pagina's waar het om
+  gaat en daar is geen twijfel over mogelijk.
+- **Vertrouw `versie.txt` alleen als je hem rechtstreeks van de server
+  leest**, zoals `scripts/deploy.cjs` doet: dat haalt hem over FTP op
+  uit de map zelf en kijkt dus langs elke cache heen.
+
+De vergelijking in dat script blijft overigens wel kloppen, juist omdat
+hij beide kanten ophaalt: komt de HTTP-kant verouderd terug terwijl de
+FTP-kant nieuw is, dan stopt hij, en dat is precies het gedrag dat je
+wilt. Alleen moet je de uitslag dan lezen als "de cache loopt achter"
+en niet als "de upload is mislukt".
