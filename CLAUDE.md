@@ -177,6 +177,9 @@ npm run dev      # lokaal op http://localhost:4321
 npm run build    # naar dist/
 npm run preview  # dist/ lokaal bekijken
 npm run controle # de controles over dist/; zie hieronder
+
+npm run deploy:kijken  # handmatig deployen: eerst kijken
+npm run deploy         # en daarna uploaden; zie Handmatig deployen
 ```
 
 **`npm run controle`** loopt elke pagina in `dist/` na. Hij wil een
@@ -251,7 +254,7 @@ avond zoeken naar een fout die er niet was.
 | `public/api/` | Het gastenboek: `gastenboek.php` (lezen en plaatsen), `gastenboek-beheer.php` (wijzigen en weggooien), `gastenboek-pad.php` (waar de data staat). |
 | `public/.htaccess` | 58 redirects van de oude site naar burovaders.nl, plus eigen URL's die veranderd zijn, caching en headers. |
 | `src/lib/opvulling.js` | Maakt bij de build een piepkleine vervaagde versie van een foto als base64, voor achter de hero. Zo staat er niet eerst een egaal vlak. |
-| `scripts/deploy.cjs` | Handmatige FTPS-deploy als GitHub Actions er niet bij kan. `kijken` controleert eerst, `uploaden` schrijft pas daarna. Verwijdert nooit iets. |
+| `scripts/deploy.cjs` | Handmatige FTPS-deploy als GitHub Actions er niet bij kan. Draaien via `npm run deploy:kijken` en `npm run deploy`, in die volgorde. Verwijdert nooit iets. |
 | `scripts/controle.cjs` | De controles over `dist/`: apostrof, alt-teksten, aanraakvlakken, h1, kapotte links. Draaien met `npm run controle`. |
 | `src/lib/apostrof.mjs` | Zet de Nederlandse apostrof in samentrekkingen terug die smartypants kapot maakt. |
 | `scripts/grade.py` | Fotogrades. Draaien vóór upload, niet tijdens de build. |
@@ -909,11 +912,21 @@ per IP ging whitelisten. Wesley's eigen IP mag erin, dat van een
 GitHub-runner wisselt en kan er dus niet op; acht runs op rij faalden op
 `connect ETIMEDOUT ...:21` zonder dat er ooit een inlogpoging was.
 
+**Dit is de manier om handmatig te deployen, en de volgorde staat
+vast: eerst kijken, dan deployen.**
+
 ```bash
 npm run build
-node scripts/deploy.cjs kijken      # controleert, schrijft niets
-node scripts/deploy.cjs uploaden    # pas hierna
+npm run deploy:kijken    # verbinden en controleren, schrijft niets
+npm run deploy           # kijken en daarna uploaden
 ```
+
+Die twee staan als npm-script in `package.json` en roepen
+`scripts/deploy.cjs` aan met `kijken` of `uploaden`. `npm run deploy`
+doet dezelfde drie controles nog een keer en begint pas aan de upload als
+die alle drie slagen, dus je kunt hem niet per ongeluk overslaan.
+`npm run deploy:kijken` is er om vooraf te kijken zonder dat er iets
+geschreven wordt.
 
 Inloggegevens in `~/.config/wesleyvaders/deploy.env` met rechten 600,
 buiten de repo: `FTP_HOST`, `FTP_USER`, `FTP_PASSWORD`, dezelfde drie
@@ -993,7 +1006,7 @@ Dus na een deploy:
   alinea erin, is die halte verdwenen. Dat zijn de pagina's waar het om
   gaat en daar is geen twijfel over mogelijk.
 - **Vertrouw `versie.txt` alleen als je hem rechtstreeks van de server
-  leest**, zoals `scripts/deploy.cjs` doet: dat haalt hem over FTP op
+  leest**, zoals `npm run deploy:kijken` doet: dat haalt hem over FTP op
   uit de map zelf en kijkt dus langs elke cache heen.
 
 De vergelijking in dat script blijft overigens wel kloppen, juist omdat

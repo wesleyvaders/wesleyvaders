@@ -8,7 +8,9 @@
     "prebuild": "python3 scripts/og-gastenboek.py || echo 'og-gastenboek overgeslagen: Python, Pillow of fontTools ontbreekt'",
     "build": "astro build",
     "preview": "astro preview",
-    "controle": "node scripts/controle.cjs"
+    "controle": "node scripts/controle.cjs",
+    "deploy:kijken": "node scripts/deploy.cjs kijken",
+    "deploy": "node scripts/deploy.cjs uploaden"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.14",

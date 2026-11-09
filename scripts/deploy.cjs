@@ -18,8 +18,11 @@
  * Het wachtwoord gaat nooit over de opdrachtregel.
  *
  *   npm run build
- *   node scripts/deploy.cjs kijken     verbinden en controleren, schrijft niets
- *   node scripts/deploy.cjs uploaden   idem, en daarna pas uploaden
+ *   npm run deploy:kijken   verbinden en controleren, schrijft niets
+ *   npm run deploy          idem, en daarna pas uploaden
+ *
+ * Die twee npm-scripts zijn de manier om dit te draaien; ze roepen dit
+ * bestand aan met `kijken` of `uploaden`.
  *
  * Draai altijd eerst `kijken`. Die bewijst dat je in de goede map zit
  * door het versie.txt dat daar ligt te vergelijken met wat de site
@@ -75,7 +78,7 @@ function bestanden(map, voorvoegsel = '') {
 (async () => {
   const doen = process.argv[2];
   if (!['kijken', 'uploaden'].includes(doen)) {
-    console.error('Gebruik: node deploy-handmatig.cjs kijken|uploaden'); process.exit(2);
+    console.error('Gebruik: npm run deploy:kijken  of  npm run deploy'); process.exit(2);
   }
   const g = lees(ENV);
   // Een host uit de omgeving wint, om te kunnen proberen of het
