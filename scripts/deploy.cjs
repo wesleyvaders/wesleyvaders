@@ -1,17 +1,19 @@
 /**
- * Handmatige FTPS-deploy van wesleyvaders.nl.
+ * FTPS-deploy van wesleyvaders.nl. Dit is de manier waarop de site live
+ * komt; GitHub Actions bouwt alleen en publiceert niet meer. Zie de kop
+ * van .github/workflows/deploy.yml en het kopje Deploy in CLAUDE.md.
  *
- * Normaal doet GitHub Actions dit bij elke push. Dit script is er voor
- * als dat niet kan, zoals in november 2026 toen CloudMonsters poort 21
- * dichtzette en per IP ging whitelisten: Wesley's eigen IP mag erin, dat
- * van een GitHub-runner wisselt en kan er dus niet op.
+ * Draaien moet van een machine waarvan het IP bij CloudMonsters op de
+ * whitelist staat. Die whitelist is beleid en geen storing: het IP van
+ * een GitHub-runner wisselt per run en komt er dus niet op.
  *
- * Zelfde bibliotheek en instellingen als SamKirkland/FTP-Deploy-Action:
- * basic-ftp, expliciete FTPS op poort 21, dezelfde exclude-lijst.
+ * Zelfde bibliotheek en instellingen als SamKirkland/FTP-Deploy-Action,
+ * die hier eerder het werk deed: basic-ftp, expliciete FTPS op poort 21,
+ * dezelfde exclude-lijst.
  *
- * VERWIJDERT NIETS. Alleen toevoegen en overschrijven, want het
- * toestandsbestand van de action (.ftp-deploy-sync-state.json) blijft
- * zo ongemoeid en de automatische deploy pakt het vanzelf weer op.
+ * VERWIJDERT NIETS. Alleen toevoegen en overschrijven. In de doelmap
+ * staan dingen die niet uit dist/ komen, zoals .well-known voor de
+ * certificaten en het oude .ftp-deploy-sync-state.json.
  *
  * Inloggegevens in ~/.config/wesleyvaders/deploy.env, rechten 600,
  * buiten de repo. Drie regels: FTP_HOST, FTP_USER, FTP_PASSWORD.

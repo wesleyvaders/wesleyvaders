@@ -1,27 +1,61 @@
-# Bouwt de site bij elke push naar main en zet hem via FTPS op de server.
-# De inloggegevens staan in GitHub onder Settings > Secrets and variables > Actions.
-# Handmatig starten kan ook, via het tabblad Actions.
+# Bouwt de site bij elke push naar main. Publiceren doet deze workflow
+# niet; dat gaat met de hand, zie "Handmatig deployen" in CLAUDE.md.
+#
+# Deze run is dus een bouwcontrole: valt de build om, of struikelt een
+# guard in de content, dan zie je dat hier. Een rood kruis betekent
+# daarom weer iets.
+#
+# WAAROM DE UPLOADSTAP ERUIT IS, EN WANNEER HIJ TERUG MAG
+#
+# CloudMonsters heeft de beheerpoorten als beleid dichtgezet en
+# whitelist per IP. Het IP van Wesley's Mac staat erop, dat van een
+# GitHub-runner wisselt per run en kan er dus niet op. Acht runs op rij
+# faalden op `connect ETIMEDOUT ...:21` zonder dat er ooit een
+# inlogpoging was: de verbinding kwam niet tot stand. Er loopt geen
+# ticket en dit gaat niet overwaaien; hun eigen antwoord op
+# geautomatiseerd deployen is een eigen VPS met een self-hosted runner.
+#
+# De stap stond er dus elke push en elke nacht voor niets te falen, en
+# die mislukte runs kwamen in de mailbox terecht. Weg dus.
+#
+# Zet hem alleen terug als een van deze twee echt waar is, en test het
+# meteen aan een echte push:
+#
+#   1. Er deployt een runner vanaf een IP dat op de whitelist staat,
+#      bijvoorbeeld een self-hosted runner op een eigen VPS. Dan hoort
+#      FTP_HOST op theems.cloudmonsters.nl en kan de
+#      certificaatcontrole aan blijven staan; op ftp.wesleyvaders.nl
+#      staat het certificaat niet.
+#   2. CloudMonsters zet poort 21 weer open voor iedereen. Op dit
+#      moment is dat geen verwachting en geen openstaand verzoek.
+#
+# Een stap terugzetten "omdat hij er hoorde te staan" levert alleen
+# weer dagelijkse ruis op. De drie secrets FTP_HOST, FTP_USER en
+# FTP_PASSWORD blijven in GitHub staan, zodat dit later niet opnieuw
+# ingevoerd hoeft te worden.
+#
+# De nachtelijke herbouw op 04:00 UTC is om dezelfde reden weg. Die
+# bestond om de berekende datums vers te houden voor de deploy die
+# erachteraan kwam. Zonder die deploy bouwde hij elke nacht dezelfde
+# commit opnieuw, faalde hij opnieuw, en kwam er niets op de server.
+# Wat dat voor de dagenteller en het deelplaatje betekent staat in
+# CLAUDE.md onder Deploy.
+#
+# Handmatig starten kan via het tabblad Actions.
 
-name: Bouwen en publiceren
+name: Bouwen
 
 on:
   push:
     branches: [main]
-  # Elke nacht opnieuw bouwen. De site rekent datums uit bij de build:
-  # de dagenteller, de cijferstrook en het label op og/gastenboek.jpg.
-  # In de browser worden die bijgewerkt, maar een deelplaatje is een
-  # afbeelding en corrigeert zichzelf niet. Zonder dit blijft daar de
-  # stand van de laatste push op staan.
-  schedule:
-    - cron: '0 4 * * *'
   workflow_dispatch:
 
 concurrency:
-  group: deploy
+  group: bouwen
   cancel-in-progress: true
 
 jobs:
-  publiceren:
+  bouwen:
     runs-on: ubuntu-latest
     steps:
       - name: Code ophalen
@@ -44,24 +78,9 @@ jobs:
       - name: Pakketten installeren
         run: npm ci
 
+      # Het versiestempel zit in de build zelf, als postbuild-stap
+      # (scripts/versiestempel.cjs). Hier staat dus geen aparte stap
+      # meer voor; dat was juist de fout waardoor dist/ zonder
+      # versie.txt kon komen zodra het publiceren ergens anders gebeurde.
       - name: Site bouwen
         run: npm run build
-
-      - name: Versiestempel
-        run: echo "$GITHUB_SHA $(date -u +%FT%TZ)" > dist/versie.txt
-
-      - name: Naar de server zetten
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
-          local-dir: ./dist/
-          server-dir: ./
-          # Deze bestanden nooit weggooien of overschrijven op de server
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            .well-known/**

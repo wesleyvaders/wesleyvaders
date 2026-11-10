@@ -13,15 +13,8 @@ Open http://localhost:4321
 
 ## Live zetten
 
-Push naar `main`. GitHub Actions bouwt de site en zet hem via FTPS op de server (`.github/workflows/deploy.yml`). Handmatig starten kan via het tabblad Actions.
-
-De secrets `FTP_HOST`, `FTP_USER` en `FTP_PASSWORD` staan in GitHub onder Settings > Secrets and variables > Actions.
-
-## Handmatig deployen
-
-Werkt Actions niet, dan kan het handmatig vanaf een machine waarvan het IP
-bij CloudMonsters op de whitelist staat. Dit is de manier, en de volgorde
-staat vast: eerst kijken, dan deployen.
+Met de hand, vanaf een machine waarvan het IP bij CloudMonsters op de
+whitelist staat. De volgorde staat vast: eerst kijken, dan deployen.
 
 ```bash
 npm run build
@@ -39,8 +32,19 @@ npm run deploy
 niets. `npm run deploy` doet die controles nog een keer en uploadt pas
 daarna; verwijderen doet hij nooit.
 
+De build zet zelf `dist/versie.txt` met de commit en het bouwtijdstip.
+Bouw je met niet-gecommitte wijzigingen, dan komt er `VUILE-WERKBOOM`
+achter en waarschuwt de build; de live site is dan niet exact die
+commit.
+
 De inloggegevens komen uit `~/.config/wesleyvaders/deploy.env`, buiten de
 repo met rechten 600. Zie het kopje Handmatig deployen in `CLAUDE.md`.
+
+GitHub Actions (`.github/workflows/deploy.yml`) bouwt bij elke push naar
+`main`, maar publiceert niet: CloudMonsters laat een runner niet bij
+poort 21. Die run is dus een bouwcontrole. Waarom de uploadstap eruit is
+en wat er nodig is om hem terug te zetten staat in de kop van dat
+bestand.
 
 ## Eerste keer nalopen
 

@@ -7,6 +7,7 @@
     "dev": "astro dev",
     "prebuild": "python3 scripts/og-gastenboek.py || echo 'og-gastenboek overgeslagen: Python, Pillow of fontTools ontbreekt'",
     "build": "astro build",
+    "postbuild": "node scripts/versiestempel.cjs",
     "preview": "astro preview",
     "controle": "node scripts/controle.cjs",
     "deploy:kijken": "node scripts/deploy.cjs kijken",

@@ -2,7 +2,7 @@
 
 Persoonlijke site en archief van Wesley Vaders, die zijn huis in Den Haag verkocht en naar Spanje vertrekt om daar een finca te kopen en te verbouwen. De site is de thuisbasis van het verhaal. YouTube, Instagram, TikTok en Facebook zijn distributie.
 
-Astro 5, statisch, geen database, geen CMS. Bouwt naar `dist/` en gaat bij elke push naar `main` vanzelf via GitHub Actions naar de server. Alleen het gastenboek draait op een klein PHP-eindpunt.
+Astro 5, statisch, geen database, geen CMS. Bouwt naar `dist/` en gaat met de hand naar de server met `npm run deploy`; GitHub Actions controleert bij elke push alleen of het bouwt. Alleen het gastenboek draait op een klein PHP-eindpunt.
 
 ## Voor je iets aanpast
 
@@ -69,11 +69,12 @@ elke inhoudelijke wijziging deze zes na:
    33 · 34 · 35 op 24, 25 en 26 oktober.
 
    Staat er live een dag minder dan je verwacht, kijk dan **niet** naar
-   de rekensom maar naar de laatste deploy. De nachtelijke build staat op
-   04:00 UTC maar GitHub voert hem vaak pas rond 08:45 UTC uit; tot dat
-   moment staat de HTML van gisteren er nog. De browser rekent hem daarna
-   wel meteen bij, dus dit zie je alleen zonder JavaScript of op een
-   schermafdruk.
+   de rekensom maar naar de laatste deploy. In de uitgeleverde HTML staat
+   de stand van het moment dat je voor het laatst `npm run deploy` hebt
+   gedraaid; er bouwt niets meer vanzelf bij. De browser rekent het wel
+   meteen bij, dus dit zie je alleen zonder JavaScript of op een
+   schermafdruk. **Het deelplaatje van het gastenboek corrigeert zich
+   niet**, want dat is een afbeelding; zie Deploy.
 
    Let op het verschil met `data-dagen`: dat is het aantal dagen tót het vertrek en
    dat blijft daarna op nul staan. De teller zelf hangt aan
@@ -174,7 +175,7 @@ er op die datum gold en het hoort bij het bericht.
 
 ```bash
 npm run dev      # lokaal op http://localhost:4321
-npm run build    # naar dist/
+npm run build    # naar dist/, inclusief versie.txt
 npm run preview  # dist/ lokaal bekijken
 npm run controle # de controles over dist/; zie hieronder
 
@@ -254,7 +255,8 @@ avond zoeken naar een fout die er niet was.
 | `public/api/` | Het gastenboek: `gastenboek.php` (lezen en plaatsen), `gastenboek-beheer.php` (wijzigen en weggooien), `gastenboek-pad.php` (waar de data staat). |
 | `public/.htaccess` | 58 redirects van de oude site naar burovaders.nl, plus eigen URL's die veranderd zijn, caching en headers. |
 | `src/lib/opvulling.js` | Maakt bij de build een piepkleine vervaagde versie van een foto als base64, voor achter de hero. Zo staat er niet eerst een egaal vlak. |
-| `scripts/deploy.cjs` | Handmatige FTPS-deploy als GitHub Actions er niet bij kan. Draaien via `npm run deploy:kijken` en `npm run deploy`, in die volgorde. Verwijdert nooit iets. |
+| `scripts/versiestempel.cjs` | Schrijft `dist/versie.txt` bij elke build, als `postbuild`. Zet `VUILE-WERKBOOM` achter het stempel als er niet-gecommitte wijzigingen zijn. |
+| `scripts/deploy.cjs` | De FTPS-deploy; zo komt de site live. Draaien via `npm run deploy:kijken` en `npm run deploy`, in die volgorde. Verwijdert nooit iets. |
 | `scripts/controle.cjs` | De controles over `dist/`: apostrof, alt-teksten, aanraakvlakken, h1, kapotte links. Draaien met `npm run controle`. |
 | `src/lib/apostrof.mjs` | Zet de Nederlandse apostrof in samentrekkingen terug die smartypants kapot maakt. |
 | `scripts/grade.py` | Fotogrades. Draaien vóór upload, niet tijdens de build. |
@@ -887,17 +889,50 @@ De finca, de verbouwing, before-after, het budget, de plattegrond, de aflevering
 
 ## Deploy
 
-Elke push naar `main` deployt vanzelf. GitHub Actions (`.github/workflows/deploy.yml`) bouwt de site en zet `dist/` via FTPS op de server. De inloggegevens staan in GitHub onder Settings > Secrets and variables > Actions: `FTP_HOST`, `FTP_USER`, `FTP_PASSWORD`.
+**Publiceren gaat met de hand, met `npm run deploy`. Dat is de
+werkwijze en geen noodoplossing.** Zie Handmatig deployen hieronder.
 
-**Er loopt ook elke nacht een build, om 04:00 UTC.** Niet omdat er dan
-iets verandert in de repo, maar omdat de site datums uitrekent. De
+GitHub Actions (`.github/workflows/deploy.yml`) bouwt bij elke push naar
+`main`, maar publiceert niets meer. Dat is dus een bouwcontrole: valt de build om of struikelt een guard in de
+content, dan zie je dat daar. **Een rood kruis betekent daarom weer
+iets**, en dat was de reden om het zo te doen: de uploadstap faalde bij
+elke push en elke nacht, en die mislukte runs kwamen in de mailbox
+terecht.
+
+CloudMonsters heeft de beheerpoorten als beleid dichtgezet en whitelist
+per IP. Het IP van Wesley's Mac staat erop, dat van een GitHub-runner
+wisselt per run en kan er niet op. **Er loopt geen ticket en dit gaat
+niet overwaaien**; hun eigen antwoord op geautomatiseerd deployen is een
+eigen VPS met een self-hosted runner. Wat er nodig is om de uploadstap
+ooit terug te zetten staat in de kop van `deploy.yml`; de drie secrets
+`FTP_HOST`, `FTP_USER` en `FTP_PASSWORD` blijven in GitHub staan zodat
+dat later niet opnieuw ingevoerd hoeft te worden.
+
+**De nachtelijke herbouw op 04:00 UTC is weg, en definitief.** Die
+bestond om de berekende datums vers te houden voor de deploy die
+erachteraan kwam; zonder die deploy bouwde hij elke nacht dezelfde commit
+opnieuw en faalde hij opnieuw.
+
+Dat heeft één echt gevolg, en daar moet je bij een deploy aan denken. De
 teller, de cijferstrook en het label op `og/gastenboek.jpg` worden bij de
-build vastgelegd; in de browser worden ze daarna bijgewerkt, maar het
-deelplaatje niet, want dat is een afbeelding. Zonder die nachtelijke
-build staat er in de uitgeleverde HTML en op dat plaatje de stand van de
-laatste push. Zie `schedule` in `deploy.yml`.
+build vastgelegd. In de browser worden de eerste twee bijgewerkt, maar
+**een deelplaatje is een afbeelding en corrigeert zich niet**: op
+`og/gastenboek.jpg` staat de stand van je laatste handmatige deploy. Het
+wordt bij elke lokale build opnieuw getekend door `prebuild`, dus
+`npm run build` gevolgd door `npm run deploy` zet hem goed. Wie op een
+gedeelde link een aftelling van vorige week ziet staan, ziet dus geen
+fout in de rekensom maar een deploy van vorige week.
 
-**Gebruik de Git Deploy plugin in DirectAdmin niet meer.** Die schrijft naar dezelfde map en overschrijft dan wat Actions net heeft neergezet.
+**Het versiestempel hoort bij de build, niet bij het publiceren.**
+`scripts/versiestempel.cjs` draait als `postbuild`, dus `npm run build`
+levert altijd een complete `dist/` op, inclusief `versie.txt`, en het
+maakt niet uit wie hem daarna uploadt of hoe. Dat is met schade geleerd:
+het stempel hing aan de uploadstap van de workflow, en toen die eruit
+ging leverde de build opeens een `dist/` zonder `versie.txt` op. Omdat de
+deploy nooit verwijdert bleef het oude bestand op de server staan en
+meldde dat dagen later nog een commit die er niet meer draaide.
+
+**Gebruik de Git Deploy plugin in DirectAdmin niet meer.** Die schrijft naar dezelfde map en overschrijft dan wat je er net zelf hebt neergezet.
 
 Het doelpad op de server is `/home/cm32678/domains/wesleyvaders.nl/public_html/`
 en **niet** `/home/cm32678/public_html/`; dat tweede wijst naar een ander
@@ -907,13 +942,14 @@ zie hieronder.
 
 ## Handmatig deployen
 
-Dat moest in november 2026, toen CloudMonsters poort 21 dichtzette en
-per IP ging whitelisten. Wesley's eigen IP mag erin, dat van een
-GitHub-runner wisselt en kan er dus niet op; acht runs op rij faalden op
-`connect ETIMEDOUT ...:21` zonder dat er ooit een inlogpoging was.
+**Dit is sinds november 2026 de manier waarop de site live komt.** Niet
+een omweg voor als Actions het laat liggen: Actions publiceert niet meer,
+zie Deploy hierboven. Draait dit niet, dan verandert er niets aan de
+site, hoeveel je ook pusht.
 
-**Dit is de manier om handmatig te deployen, en de volgorde staat
-vast: eerst kijken, dan deployen.**
+Het moet van de Mac van Wesley, of van een andere machine waarvan het IP
+bij CloudMonsters op de whitelist staat. **De volgorde staat vast: eerst
+kijken, dan deployen.**
 
 ```bash
 npm run build
@@ -974,15 +1010,41 @@ Op de juiste naam slaagt de verificatie wel, en dan kan de
 certificaatcontrole aan blijven staan in plaats van uit. Beide namen
 wijzen naar hetzelfde IP, 185.79.153.198.
 
-Daarom kan `FTP_HOST` in GitHub Secrets ook op `theems.cloudmonsters.nl`
-en kan `security: loose` dan uit de workflow. **Doe dat pas op het
-moment dat de automatische deploy weer werkt**, zodat het meteen getest
-wordt; anders verander je twee dingen tegelijk en weet je bij de
-volgende fout niet welke van de twee het was.
+`scripts/deploy.cjs` verbindt al op die naam en houdt de
+certificaatcontrole dus aan. In de workflow speelt dit niet meer, want
+daar staat geen uploadstap; komt die er ooit terug, dan hoort
+`FTP_HOST` in GitHub Secrets ook op `theems.cloudmonsters.nl` te staan
+en kan `security: loose` eruit.
 
-Het script verwijdert niets, alleen toevoegen en overschrijven. Het
-toestandsbestand `.ftp-deploy-sync-state.json` van de action blijft zo
-ongemoeid en de automatische deploy pakt het vanzelf weer op.
+**Het script verwijdert niets, alleen toevoegen en overschrijven.** Dat
+is geen voorzichtigheid om de voorzichtigheid: in de doelmap staan
+dingen die niet uit `dist/` komen, zoals `.well-known` voor de
+certificaten en het toestandsbestand `.ftp-deploy-sync-state.json` van
+de oude action. Een deploy die opruimt wat hij niet zelf heeft
+neergezet, gooit die weg.
+
+### Wat er in versie.txt staat
+
+Eén regel: de commit-sha en het tijdstip van de build in ISO, UTC.
+
+```
+eb0d0acb1b5f07abe2df85fa17fc2d23193e14f8 2026-11-10T11:02:19Z
+```
+
+**Staat er `VUILE-WERKBOOM` achter, dan is de live site niet exact die
+commit.** Er is dan gebouwd met wijzigingen die nog niet waren
+ingediend, dus er zit in `dist/` iets dat in die commit niet te vinden
+is. Dat mag: soms zet je even snel iets recht. Maar dan moet het stempel
+het zeggen in plaats van een commit te noemen die het niet is. Tijdens de
+build staat die waarschuwing ook in beeld, met de bestanden erbij.
+
+`public/og/gastenboek.jpg` telt daarbij niet mee. Dat wordt door
+`prebuild` bij elke build opnieuw getekend met de aftelling van die dag,
+dus het wijkt van de commit af zodra je op een andere dag bouwt. Zou dat
+meetellen, dan stond de markering er altijd en zei hij niets meer.
+
+`GEEN-GIT` betekent dat er geen git beschikbaar was en de commit dus niet
+vast te stellen; dan staat er `onbekende-commit` in plaats van een sha.
 
 ### versie.txt van buitenaf is geen bewijs
 
