@@ -276,11 +276,11 @@ def maak(naam):
 # er gaat hier dus geen tweede grade overheen.
 # ---------------------------------------------------------------
 SJABLOON = "licht"   # "donker" of "licht"; zie SJABLONEN bovenin
-FOTO   = str(WORTEL / "public" / "fotos" / "parasolden-sacarest.webp")
-LABEL  = "2 NOVEMBER 2026"
-TITEL  = ["El mundo es un pañuelo"]
+FOTO   = str(WORTEL / "public" / "fotos" / "finca-door-de-dennen.webp")
+LABEL  = "13 NOVEMBER 2026"
+TITEL  = ["Trato hecho"]
 URL    = "WESLEYVADERS.NL"
-NAAM   = "el-mundo-instagram.jpg"
+NAAM   = "trato-hecho-instagram.jpg"
 # Leeg = de map van dit verhaal, afgeleid uit LABEL; zie uitmap() bovenin.
 # Vul hem met de hand als de map anders heet dan verhaal-<dag>-<maand>.
 MAP    = ""
@@ -303,7 +303,7 @@ def aftelzin(dagen):
 # Meestal de berekende aftelling, aftelzin(DAGEN). Staat hier een vaste
 # zin, dan is dat omdat het plaatje iets anders wil zeggen dan waar hij
 # staat in de tijd; het label zegt dat hier al.
-ONDER = "Wat is de wereld toch klein"
+ONDER = "Afgesproken. 11 november, 11:11 uur."
 
 # Waar de tekst begint en eindigt, als deel van de hoogte. Instagram
 # toont in het grid een vierkante uitsnede; hierbinnen valt niets weg.

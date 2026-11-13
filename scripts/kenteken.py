@@ -20,6 +20,16 @@ de plaat houdt zijn eigen licht-naar-donkerverloop en blijft op een
 lege plaat lijken in plaats van op een sticker. Het blauwe NL-balkje
 blijft staan; daar staat niets persoonlijks op.
 
+**Spaanse platen zijn wit en die staan er ook op.** Sinds de finca in
+Orxeta staan er auto's van anderen op de foto's. Een Spaans kenteken is
+via de DGT net zo goed te herleiden als een Nederlands via de RDW, en
+het is niet eens zijn eigen auto. Geef dan `--wit` mee; dan zoekt en
+vult hij op het wit van de plaat in plaats van op het geel.
+
+De schaal waarop de foto uitgeleverd wordt telt hier niet mee. Het
+kenteken van de 2CV op `voorkant-veranda.webp` is op ware grootte een
+veeg, maar op acht keer vergroot las je er 1052 in. Dat is dus leesbaar.
+
 Draaien vóór upload, net als grade.py, en daarna scripts/og.py,
 anders houdt het deelplaatje het oude kenteken.
 
@@ -29,6 +39,7 @@ Zonder --vak zoekt hij de plaat zelf op kleur. Vindt hij niets of het
 verkeerde, geef het vak dan met de hand op:
 
     python3 scripts/kenteken.py public/fotos/bus.webp --vak 193 888 291 917
+    python3 scripts/kenteken.py public/fotos/voorkant-veranda.webp --wit --vak 58 651 91 658
 """
 import argparse, sys
 from pathlib import Path
@@ -44,8 +55,18 @@ def geelmasker(a):
             (a[..., 0] - a[..., 2] > 55) & (a[..., 1] - a[..., 2] > 35))
 
 
-def zoek_plaat(a, marge=3):
-    g = geelmasker(a)
+def witmasker(a):
+    """Het wit van een Spaanse plaat: licht en kleurloos. Op zichzelf
+    zoekt dit te veel (een lucht is ook licht en kleurloos), dus met
+    --wit hoort meestal een --vak. Voor het vullen is het wel precies
+    genoeg: binnen het vak is alleen de plaat zo."""
+    helder = a.mean(axis=2)
+    spreiding = a.max(axis=2) - a.min(axis=2)
+    return (helder > 145) & (spreiding < 28)
+
+
+def zoek_plaat(a, masker=geelmasker, marge=3):
+    g = masker(a)
     ys, xs = np.nonzero(g)
     if len(xs) < 200:
         return None
@@ -53,13 +74,13 @@ def zoek_plaat(a, marge=3):
             min(a.shape[1] - 1, xs.max() + marge), min(a.shape[0] - 1, ys.max() + marge))
 
 
-def vul(a, vak):
-    """Per kolom de mediaan van het geel dat er stond, daarna glad
-    gestreken over de breedte. Kolommen zonder geel (volledig bedekt
-    door een teken) lenen van hun buren."""
+def vul(a, vak, masker=geelmasker):
+    """Per kolom de mediaan van de plaatkleur die er stond, daarna glad
+    gestreken over de breedte. Kolommen zonder plaatkleur (volledig
+    bedekt door een teken) lenen van hun buren."""
     x0, y0, x1, y1 = vak
     deel = a[y0:y1 + 1, x0:x1 + 1]
-    g = geelmasker(deel)
+    g = masker(deel)
 
     kolommen = np.zeros((deel.shape[1], 3), np.float64)
     heeft = np.zeros(deel.shape[1], bool)
@@ -69,7 +90,7 @@ def vul(a, vak):
             kolommen[i] = np.median(pix, axis=0)
             heeft[i] = True
     if not heeft.any():
-        sys.exit("Geen geel gevonden in het opgegeven vak.")
+        sys.exit("Geen plaatkleur gevonden in het opgegeven vak.")
 
     # gaten opvullen door links en rechts te interpoleren
     idx = np.arange(deel.shape[1])
@@ -102,6 +123,7 @@ if __name__ == "__main__":
     pa = argparse.ArgumentParser()
     pa.add_argument("bestand")
     pa.add_argument("--vak", nargs=4, type=int, metavar=("X0", "Y0", "X1", "Y1"))
+    pa.add_argument("--wit", action="store_true", help="witte plaat (Spaans) in plaats van gele")
     pa.add_argument("--kijk", action="store_true", help="schrijft een uitsnede weg om te bekijken")
     arg = pa.parse_args()
 
@@ -111,12 +133,13 @@ if __name__ == "__main__":
     im = Image.open(pad).convert("RGB")
     a = np.asarray(im, np.int16).copy()
 
-    vak = tuple(arg.vak) if arg.vak else zoek_plaat(a)
+    masker = witmasker if arg.wit else geelmasker
+    vak = tuple(arg.vak) if arg.vak else zoek_plaat(a, masker)
     if vak is None:
         sys.exit("Geen kentekenplaat gevonden. Geef het vak met --vak.")
 
     voor = controleer(a, vak)
-    a = vul(a, vak)
+    a = vul(a, vak, masker)
     na = controleer(a, vak)
 
     uit = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))

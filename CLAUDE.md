@@ -263,7 +263,7 @@ avond zoeken naar een fout die er niet was.
 | `scripts/og.py` | Deelplaatjes van de hoofdfoto's. Handmatig draaien. |
 | `scripts/og-gastenboek.py` | Het deelplaatje van het gastenboek. Loopt mee bij elke build, zodat de aftelling klopt. |
 | `scripts/citaatplaatje.py` | Citaatplaatjes voor Instagram, 1080x1350. Instellingen staan in één blok onderin. Schrijft naar de map van het verhaal, niet naar de site. |
-| `scripts/kenteken.py` | Maakt het kenteken van de bus onleesbaar in het beeldbestand zelf. Draaien vóór upload, daarna `og.py`. |
+| `scripts/kenteken.py` | Maakt een kenteken onleesbaar in het beeldbestand zelf: de bus, en met `--wit` ook de Spaanse platen van anderen. Draaien vóór upload, daarna `og.py`. |
 | `scripts/carrousel.py` | De slides ná de eerste van een carrousel: kale foto's zonder tekst, 1080x1350. Instellingen in één blok onderin. Schrijft naast de bronfoto. |
 | `scripts/contrast.py` | Meet het contrast van het citaatplaatje dat op dat moment in `citaatplaatje.py` staat ingesteld. Tekent zelf geen enkele letter en schrijft de meetgebieden weg als losse uitsnedes om te bekijken. |
 | `scripts/gastenboek-pdf.py` | De berichten als A5-boekje. Voor Wesley zelf, schrijft niet naar de site. |
@@ -464,6 +464,26 @@ de NIE-brief.
 Wordt die foto ooit opnieuw gegradeerd vanaf het origineel, dan is de
 afdekking weg. Draai dan `scripts/kenteken.py` opnieuw, en daarna
 `scripts/og.py`, anders houdt het deelplaatje het oude kenteken.
+
+**Dat geldt net zo goed voor auto's van anderen.** Sinds de bezichtigingen
+staan er Spaanse platen op de foto's: van verkopers, van makelaars, van
+mensen die er verder niets mee te maken hebben. Een Spaans kenteken is via
+de DGT te herleiden, dus die gaan er ook af. `scripts/kenteken.py --wit`
+doet dat; zonder `--wit` zoekt hij alleen geel en vindt hij een witte plaat
+niet. Meestal moet je het vak er met de hand bij geven, want wit is op
+zichzelf te weinig onderscheidend om op te zoeken.
+
+Twee dingen die dat op 13 november 2026 hebben bepaald, bij
+`voorkant-veranda.webp`:
+
+- **Staat de auto in de hoek en voegt hij niets toe, snijd hem er dan af.**
+  Een Golf stond met alleen zijn neus linksonder in beeld. 10% van de
+  breedte eraf en hij is uit het bestand, wat schoner is dan een vulling
+  over een scheve plaat heen leggen.
+- **Meet leesbaarheid op het bestand en niet op het scherm.** Het kenteken
+  van de 2CV was op ware grootte een veeg van 34 px breed. Op acht keer
+  vergroot las je er `1052` in, en het bestand staat rechtstreeks op
+  `/fotos/<naam>.webp`. Dus overschrijven.
 
 Dat die breedte nu op 1300 en 1600 ligt is een ontwerpkeuze, geen slot:
 het bestand in `public/fotos/` staat rechtstreeks op `/fotos/<naam>.webp`

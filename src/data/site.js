@@ -123,16 +123,16 @@ export const cijfers = [];
 // De datumregel en de logboekregel NU worden uit dat verhaal afgeleid,
 // uit `datum` en `locatie`. Die typ je hier dus niet.
 export const nu = {
-  bij: '2026-11-02-el-mundo-es-un-panuelo',
-  kop: 'De wereld is een zakdoek.',
+  bij: '2026-11-13-trato-hecho',
+  kop: 'Ik heb een huis gekocht.',
   tekst:
-    'Vrijdag in een bar in Albir mijn oude buurman uit Oud-Rijswijk tegen het lijf gelopen, die hier nu vlakbij blijkt te wonen. Zaterdag in de stromende regen door het kasteel van Xàtiva gerend, een half uur rijden van twee goede vrienden uit Nederland. En zondag de Coll de Sacarest op.',
+    'Weken bezichtigen, een paar keer een interne nee en één keer net te laat. En toen op 11 november om 11:11 uur in Orxeta de hand geschud met de verkoper. Een rood huisje op bijna 10.000 m² middenin de natuur, met een ruïne, een drooggelegd zwembad en 4 ezels die nog moeten verhuizen.',
   logboek: [
     ['Sinds', '21 september hier'],
-    ['Gelopen', 'Coll de Sacarest, 7,59 km achter de Puig Campana langs'],
-    ['Weer', 'Zaterdag regen in Xàtiva, zondag zon'],
-    ['Ontdekt', 'Goede vrienden wonen een half uur verderop'],
-    ['Mee', 'Mo, en zo min mogelijk spullen']
+    ['Gekocht', 'Een finca in Orxeta, op 11 november om 11:11 uur'],
+    ['Grond', 'Bijna 10.000 m², middenin de natuur'],
+    ['Erbij', 'Een ruïne, een drooggelegd zwembad en 4 ezels die nog verhuizen'],
+    ['Daarna', 'Voor de kerst wil ik er wonen']
   ]
 };
 
@@ -144,7 +144,7 @@ export const route = [
   { wanneer: 'Hoeven', titel: 'Tussenstop', tekst: 'Huis overgedragen, bus vol. Hier wachtte ik zondag af.', status: 'gehad' },
   { wanneer: '20 september', titel: 'Prio 1', tekst: 'In één rechte lijn naar Spanje, over de snelweg. De mooie route is er niet van gekomen.', status: 'gehad' },
   { wanneer: '21 september', titel: 'Alfaz del Pi', tekst: 'Aangekomen bij Pat en Sori. Tijdelijk onderdak, en van hieruit zoeken.', status: 'nu' },
-  { wanneer: '?', titel: 'De finca', tekst: 'Bestaat nog niet. Staat er wel ergens.', status: 'komt' }
+  { wanneer: '11 november', titel: 'De finca', tekst: 'Gekocht in Orxeta. Bijna 10.000 m², een rood huisje, een ruïne en 4 ezels die nog verhuizen.', status: 'komt' }
 ];
 
 // De drie stappen. Het gouden puntje hangt aan nu: true, dus die vlag
