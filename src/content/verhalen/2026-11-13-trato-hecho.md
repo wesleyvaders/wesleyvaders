@@ -9,6 +9,8 @@ klimaat: ES
 kort: Vier huizen die het niet werden, één die ik te laat was, en toen op 11 november om 11:11 een hand van een oudere Engelsman.
 foto: ../../../public/fotos/finca-door-de-dennen.webp
 fotoAlt: Het rode huisje vanaf het terrein gezien, door de dennen heen
+deelplaatje: twee-stoeltjes-berg.jpg
+deelplaatjeAlt: Twee verweerde bankjes op het terrein, met uitzicht op de berg aan de overkant van het dal
 concept: false
 ---
 
